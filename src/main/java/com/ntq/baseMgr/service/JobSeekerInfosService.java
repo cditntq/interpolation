@@ -1,7 +1,9 @@
 package com.ntq.baseMgr.service;
 
 import com.ntq.baseMgr.entity.JobSeekerInfos;
-import com.ntq.baseMgr.vo.JobSeekerInfosVo;
+import com.ntq.baseMgr.entity.JobSeekerInfosExtDto;
+import com.ntq.baseMgr.entity.JobSeekerInfosVo;
+import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.vo.UploadFileVo;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,7 +18,7 @@ import java.util.List;
  * @author: shuangyang
  * @date: 17-3-19 下午2:35
  */
-public interface JobSeekerInfosService extends BaseService<JobSeekerInfos,Long>{
+public interface JobSeekerInfosService extends BaseService<JobSeekerInfos,Long> {
 
     /**
      * 插入求职者个人信息并返回key
@@ -40,20 +42,29 @@ public interface JobSeekerInfosService extends BaseService<JobSeekerInfos,Long>{
      * @param whereCondition 查询条件
      * @return
      */
-    List<JobSeekerInfos> queryJobSeekerInfosListByCondition(int page, int size, String whereCondition);
+   /* List<JobSeekerInfos> queryJobSeekerInfosListByCondition(int page, int size, String whereCondition);*/
 
-    /**
+    ResponseResult<List<JobSeekerInfosExtDto>> queryJobSeekerInfosListByCondition(int page, int size, String whereCondition);
+
+/*    *//**
      * 通过求职者信息id查看投递简历相信信息
      * @param id
      * @return
-     */
-    JobSeekerInfosVo getJobSeekerInfoVoById(Long id);
+     *//*
+    ResponseResult<JobSeekerInfosVo> getJobSeekerInfoVoById(Long id);*/
 
     /**
      * 批量删除求职者个人信息以及附件信息
      * @param ids
      * @return
      */
-    @Override
-    int deleteBatch(String ids);
+
+    ResponseResult<String>  deleteBatchJobSeekerInfoList(String ids);
+
+    /**
+     * 通过求职者信息id查看投递简历相信信息
+     * @param id
+     * @return
+     */
+    ResponseResult<JobSeekerInfosVo> getJobSeekerInfoVoById(Long id);
 }

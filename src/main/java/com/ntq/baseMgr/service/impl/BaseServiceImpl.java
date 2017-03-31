@@ -1,4 +1,4 @@
-package com.ntq.baseMgr.serivce.impl;
+package com.ntq.baseMgr.service.impl;
 
 
 import com.ntq.baseMgr.dao.BaseMapper;

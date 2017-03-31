@@ -12,6 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>用户管理</title>
+    <%@include file="/common/tag.jspf"%>
     <%@include file="/common/common_css_js.jspf" %>
     <%--引入自定义通用工具类--%>
     <script src="${baseUrl}/js/knockout_common.js"></script>
@@ -21,38 +22,55 @@
     var model;
     //节点数据
     var originValue = ko.observable({
-        id: 0,
-        name: '',
-        roleDescription: "",
-        available: ''
+      //  id: 0,
+        /*姓名*/
+        jobSeekerName: '',
+        /*性别*/
+        jobSeekerSex: "",
+        /*电话*/
+        jobSeekerPhone: '',
+       /*邮箱*/
+        jobSeekerEmail: "",
+        /*微信*/
+        jobSeekerWeixin: "",
+        /*毕业院校*/
+        graduateSchool: "",
+        /*所学专业*/
+        majorSubjects: "",
+        /*毕业时间*/
+        graduateDate:"",
+        isValid:"",
+        serverCreateDate:"",
+        serverUpdateDate:"",
+
 
     });
     var params = {
-        pageSize: 10,//显示的页面大小
-        currentPage: 1,//当前页
+        pageSize: 2,//显示的页面大小
+        currentPage: 0,//当前页
         //初始化节点数据
         EntityValue: ko.observable(new originValue()),
         //用于清空数据
         initValue: ko.observable(new originValue()),
         // 询的数据
         entityQueryUrl: function () {
-            return "${baseUrl}/sysRole/querySysRoles.action";
+            return "${baseUrl}/jobSeekerInfo/queryJobSeekerInfoListByCondition.do";
         },
         //新增实体url
         entityAddUrl: function () {
-            return "${baseUrl}/sysRole/addSysRole.action";
+           // return "${baseUrl}/jobSeekerInfo/addSysUser.action";
         },
         //更改实体url
         entityUpdateUrl: function () {
-            return "${baseUrl}/sysRole/updateSysRole.action";
+           // return "${baseUrl}/jobSeekerInfo/updateSysUser.action";
         },
         //删除实体url
         entityDeleteUrl: function () {
-            return "${baseUrl}/sysRole/deleteSysRoles.action";
+            //return "${baseUrl}/jobSeekerInfo/deleteSysUsers.action";
         },
         //总共记录查询
         totalCountQueryUrl: function () {
-            return "${baseUrl}/sysRole/totalCount.action";
+            //return "${baseUrl}/jobSeekerInfo/totalCount.action";
 
         },
         //返回选中框的标题
@@ -61,11 +79,15 @@
         }
     };
     $(function () {
+
         var model = new globalViewModel(params);
         //查询数据
         model.init();
+
         //激活绑定数据
         ko.applyBindings(model);
+//        model.getPage = ko.observable(1);
+
     })
 
 
@@ -79,14 +101,14 @@
 
     <div class="main_container">
         <%--导航--%>
-        <%@include file="navbar.jspf" %>
-
+       <%-- <%@include file="navbar.jspf" %>
+--%>
         <!-- 主页内容-->
         <div class="right_col" role="main" style="min-height: 1000px;">
             <div class="page-title">
                 <div class="title_left">
                     <h3>
-                        角色管理
+                        求职者用户管理
                     </h3>
                 </div>
 
@@ -102,49 +124,80 @@
                 </div>
             </div>
             <%--弹窗--%>
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+      <%--      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                     aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title " id="myModalLabel">角色信息</h4>
+                            <h4 class="modal-title " id="myModalLabel">用户信息</h4>
                         </div>
-                        <%--主题内容--%>
+                        &lt;%&ndash;主题内容&ndash;%&gt;
                         <div class="modal-body">
                             <form class="form-horizontal form-label-left" data-parsley-validate="" id="demo-form2"
                                   data-bind="with: EntityValue">
                                 <div class="form-group">
-                                    <label for="name" class="control-label col-md-3 col-sm-3 col-xs-12">角色名称
+                                    <label for="nameid" class="control-label col-md-3 col-sm-3 col-xs-12">id
                                         <span class="required">*</span>
                                     </label>
 
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <input type="text" class="form-control col-md-7 col-xs-12" required="required"
-                                               data-bind='value:name'
+                                               data-bind='value:id'
+                                               id="nameid">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="name" class="control-label col-md-3 col-sm-3 col-xs-12">姓名
+                                        <span class="required">*</span>
+                                    </label>
+
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="text" class="form-control col-md-7 col-xs-12" required="required"
+                                               data-bind='value:username'
                                                id="name">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="usercode" class="control-label col-md-3 col-sm-3 col-xs-12">描述
+                                    <label for="usercode" class="control-label col-md-3 col-sm-3 col-xs-12">编号
                                         <span class="required">*</span>
                                     </label>
 
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <input type="text" class="form-control col-md-7 col-xs-12" required="required"
-                                               data-bind='value:roleDescription' id="usercode">
+                                               data-bind='value:usercode' id="usercode">
                                     </div>
                                 </div>
-
                                 <div class="form-group">
-                                    <label for="salt" class="control-label col-md-3 col-sm-3 col-xs-12">可用性
+                                    <label for="email" class="control-label col-md-3 col-sm-3 col-xs-12">邮箱
+                                        <span class="required">*</span>
+                                    </label>
+
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="email" class="form-control col-md-7 col-xs-12" required="required"
+                                               data-bind='value:email' id="email">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="salt" class="control-label col-md-3 col-sm-3 col-xs-12">盐
                                         <span class="required">*</span>
                                     </label>
 
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                         <input type="text" class="form-control col-md-7 col-xs-12" required="required"
-                                               data-bind='value:available' id="salt">
+                                               data-bind='value:salt' id="salt">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="password" class="control-label col-md-3 col-sm-3 col-xs-12">密码
+                                        <span class="required">*</span>
+                                    </label>
+
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="password" class="form-control col-md-7 col-xs-12"
+                                               required="required"
+                                               data-bind='value:password' id="password">
                                     </div>
                                 </div>
                             </form>
@@ -155,7 +208,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>--%>
 
             <%--表格内容显示--%>
             <div class="x_panel">
@@ -177,20 +230,28 @@
                             <th style="width: 45px" id="checkItemId" name="itemCheck"
                                 data-bind="click:$root.selectAll"><input type="checkbox">
                             </th>
-                            <th>角色名称</th>
-                            <th>角色描述</th>
-                            <th>可用性</th>
+                            <th>求职者姓名</th>
+                            <th>求职者邮箱</th>
+                            <th>性别</th>
+                            <th>电话</th>
+                            <th>微信</th>
+                            <th>毕业院校</th>
+                            <th>所学专业</th>
                             <th>操作</th>
                         </tr>
                         </thead>
                         <%--绑定需操作数据--%>
                         <tbody data-bind="foreach:EntityValues">
                         <tr>
-                            <th style="width: 45px"><input type="checkbox" name="itemCheck"
+                            <th style="width: 15px"><input type="checkbox" name="itemCheck"
                                                            data-bind="value:id,attr:{id:id}"></th>
-                            <td data-bind="text:name" class="col-sm-3"></td>
-                            <td data-bind="text:roleDescription" class="col-sm-3"></td>
-                            <td data-bind="text:available" class="col-sm-3"></td>
+                            <td data-bind="text:jobSeekerName" class="col-sm-1"></td>
+                            <td data-bind="text:jobSeekerEmail" class="col-sm-1"></td>
+                            <td data-bind="text:jobSeekerSex" class="col-sm-1"></td>
+                            <td data-bind="text:jobSeekerPhone" class="col-sm-1"></td>
+                            <td data-bind="text:jobSeekerWeixin" class="col-sm-1"></td>
+                            <td data-bind="text:graduateSchool" class="col-sm-1"></td>
+                            <td data-bind="text:majorSubjects" class="col-sm-1"></td>
                             <td style="width:45px"><a href="javascript:" data-bind="click:$root.edit"
                             > <i class="glyphicon glyphicon-edit" style="font-size: large"></i></a></td>
                         </tr>

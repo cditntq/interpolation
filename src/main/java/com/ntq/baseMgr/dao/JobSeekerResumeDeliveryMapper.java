@@ -2,6 +2,8 @@ package com.ntq.baseMgr.dao;
 
 import com.ntq.baseMgr.entity.JobSeekerResumeDelivery;
 
+import java.util.List;
+
 public interface JobSeekerResumeDeliveryMapper extends BaseMapper<JobSeekerResumeDelivery,Long> {
 
     /**
@@ -10,4 +12,10 @@ public interface JobSeekerResumeDeliveryMapper extends BaseMapper<JobSeekerResum
      * @return
      */
     JobSeekerResumeDelivery getJobSeekerResumeDeliveryByJobSeekerId(Long jobSeekerId);
+
+    /**
+     * 逻辑删除附件信息 is_valid=2 失效
+     * @param ids
+     */
+    void deleteBatchJobSeekerResumeDeliveryList(List<Long> ids);
 }

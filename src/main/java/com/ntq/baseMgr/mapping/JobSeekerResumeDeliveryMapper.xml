@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ntq.baseMgr.dao.JobSeekerResumeDeliveryMapper" >
+<mapper namespace="com.ntq.baseMgr.mapper.JobSeekerResumeDeliveryMapper" >
   <resultMap id="BaseResultMap" type="com.ntq.baseMgr.entity.JobSeekerResumeDelivery" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="job_seeker_infos_id" property="jobSeekerInfosId" jdbcType="BIGINT" />
@@ -133,4 +133,13 @@
     from job_seeker_resume_delivery
     where job_seeker_infos_id = #{jobSeekerId,jdbcType=BIGINT}
   </select>
+
+
+  <!--根据id批量删除记录-->
+  <update id="deleteBatchJobSeekerResumeDeliveryList" parameterType="java.util.List">
+    UPDATE  job_seeker_resume_delivery SET  is_valid=2 where  job_seeker_infos_id IN
+    <foreach collection="list" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>;
+  </update>
 </mapper>

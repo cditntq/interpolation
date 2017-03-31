@@ -1,9 +1,6 @@
-package com.ntq.baseMgr.vo;
+package com.ntq.baseMgr.entity;
 
-import com.ntq.baseMgr.entity.JobSeekerInfos;
 import lombok.Data;
-
-import java.util.Date;
 
 /**
  * <p>@description:扩展信息用于接收附件的附件信息</p>
@@ -17,6 +14,7 @@ import java.util.Date;
 @Data
 public class JobSeekerInfosVo extends JobSeekerInfos {
 
+
     //职位编码
     private String jobCode;
     //存储路径
@@ -25,5 +23,7 @@ public class JobSeekerInfosVo extends JobSeekerInfos {
     private Integer dealStatus;
     //是否有效
     private Boolean isValid;
+    //附件id
+    private Long ResumeDeliveryId;
 
 }

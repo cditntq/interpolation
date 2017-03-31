@@ -20,6 +20,7 @@ function globalViewModel(params) {
     self.isAdd = false;//是否增加
     self.checkedboxName = params.checkedboxName();//checkbox的指定名称
     self.checkedIds = ko.observable();
+    self.whereCondition = params.whereCondition;//传递过来查询条件
 
 
     //初始化集合操作
@@ -34,7 +35,6 @@ function globalViewModel(params) {
             url: self.totalCountQueryUrl,
             success: function (data) {
                 //获取数据
-                //  var count = data;
                 self.totalCount(data);
                 self.totalPageComput();
             }
@@ -45,12 +45,18 @@ function globalViewModel(params) {
     self.dataQuery = function () {
         $.ajax({
             type: "GET",
+            contentType: 'application/json',
             url: self.entityQueryUrl,
-            data: {page: self.ko2js(self.currentPage), size: self.ko2js(self.pageSize), whereCondition: ""},
-            success: function (data) {
+            data: {
+                page: self.ko2js(self.currentPage),
+                size: self.ko2js(self.pageSize),
+                whereCondition: self.ko2js(self.whereCondition)
+            },
+            success: function (response) {
                 //清空数据重新加载
-                self.EntityValues ([]);
-                $.each(data, function (i, result) {
+                self.EntityValues([]);
+                // data = JSON.parse(data);//解析json数据
+                $.each(response.data, function (i, result) {
                     self.EntityValues.push(self.js2ko(result));
                 });
             }

@@ -1,7 +1,7 @@
-package com.ntq.baseMgr.serivce.impl;
+package com.ntq.baseMgr.service.impl;
 
-import com.ntq.baseMgr.dao.JobSeekerResumeDeliveryMapper;
 import com.ntq.baseMgr.entity.JobSeekerResumeDelivery;
+import com.ntq.baseMgr.dao.JobSeekerResumeDeliveryMapper;
 import com.ntq.baseMgr.service.JobSeekerResumeDeliveryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  * @date: 17-3-19 下午4:37
  */
 @Service
-public class JobSeekerResumeDeliveryServiceImpl extends BaseServiceImpl<JobSeekerResumeDelivery,Long> implements JobSeekerResumeDeliveryService{
+public class JobSeekerResumeDeliveryServiceImpl extends BaseServiceImpl<JobSeekerResumeDelivery,Long> implements JobSeekerResumeDeliveryService {
     @Autowired
     private JobSeekerResumeDeliveryMapper jobSeekerResumeDeliveryMapper;
     @Autowired

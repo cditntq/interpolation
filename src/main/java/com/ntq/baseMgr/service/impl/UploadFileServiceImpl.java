@@ -1,4 +1,11 @@
-package com.ntq.baseMgr.serivce.impl;
+package com.ntq.baseMgr.service.impl;
+
+import com.ntq.baseMgr.service.IUploadFileService;
+import com.ntq.baseMgr.vo.UploadFileVo;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -7,18 +14,11 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.ntq.baseMgr.vo.UploadFileVo;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.ntq.baseMgr.service.IUploadFileService;
-
 @Service
 public class UploadFileServiceImpl implements IUploadFileService {
     protected Logger LOGGER = Logger.getLogger(UploadFileServiceImpl.class);
 
+//    @Value("${resumPath}")
     @Value("#{configProperties['resumPath']}")
     private String resumPath;//简历存放地址
 
