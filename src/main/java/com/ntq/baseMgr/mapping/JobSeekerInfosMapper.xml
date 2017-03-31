@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ntq.baseMgr.dao.JobSeekerInfosMapper">
+    <resultMap id="BaseResultMap" type="com.ntq.baseMgr.entity.JobSeekerInfos">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="job_seeker_name" property="jobSeekerName" jdbcType="VARCHAR"/>
+        <result column="job_seeker_sex" property="jobSeekerSex" jdbcType="BIGINT"/>
+        <result column="job_seeker_phone" property="jobSeekerPhone" jdbcType="BIGINT"/>
+        <result column="job_seeker_email" property="jobSeekerEmail" jdbcType="VARCHAR"/>
+        <result column="job_seeker_weixin" property="jobSeekerWeixin" jdbcType="VARCHAR"/>
+        <result column="graduate_school" property="graduateSchool" jdbcType="VARCHAR"/>
+        <result column="major_subjects" property="majorSubjects" jdbcType="VARCHAR"/>
+        <result column="graduate_date" property="graduateDate" jdbcType="DATE"/>
+        <result column="server_create_date" property="serverCreateDate" jdbcType="TIMESTAMP"/>
+        <result column="server_update_date" property="serverUpdateDate" jdbcType="TIMESTAMP"/>
+        <result column="is_valid" property="isValid" jdbcType="BIT"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, job_seeker_name, job_seeker_sex, job_seeker_phone, job_seeker_email, job_seeker_weixin, 
+    graduate_school, major_subjects, graduate_date, server_create_date, server_update_date, 
+    is_valid
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from job_seeker_infos
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from job_seeker_infos
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.ntq.baseMgr.entity.JobSeekerInfos">
+    insert into job_seeker_infos (id, job_seeker_name, job_seeker_sex, 
+      job_seeker_phone, job_seeker_email, job_seeker_weixin, 
+      graduate_school, major_subjects, graduate_date, 
+      server_create_date, server_update_date, 
+      is_valid)
+    values (#{id,jdbcType=BIGINT}, #{jobSeekerName,jdbcType=VARCHAR}, #{jobSeekerSex,jdbcType=BIGINT}, 
+      #{jobSeekerPhone,jdbcType=BIGINT}, #{jobSeekerEmail,jdbcType=VARCHAR}, #{jobSeekerWeixin,jdbcType=VARCHAR}, 
+      #{graduateSchool,jdbcType=VARCHAR}, #{majorSubjects,jdbcType=VARCHAR}, #{graduateDate,jdbcType=DATE}, 
+      #{serverCreateDate,jdbcType=TIMESTAMP}, #{serverUpdateDate,jdbcType=TIMESTAMP}, 
+      #{isValid,jdbcType=BIT})
+  </insert>
+    <insert id="insertSelective" parameterType="com.ntq.baseMgr.entity.JobSeekerInfos">
+        insert into job_seeker_infos
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="jobSeekerName != null">
+                job_seeker_name,
+            </if>
+            <if test="jobSeekerSex != null">
+                job_seeker_sex,
+            </if>
+            <if test="jobSeekerPhone != null">
+                job_seeker_phone,
+            </if>
+            <if test="jobSeekerEmail != null">
+                job_seeker_email,
+            </if>
+            <if test="jobSeekerWeixin != null">
+                job_seeker_weixin,
+            </if>
+            <if test="graduateSchool != null">
+                graduate_school,
+            </if>
+            <if test="majorSubjects != null">
+                major_subjects,
+            </if>
+            <if test="graduateDate != null">
+                graduate_date,
+            </if>
+            <if test="serverCreateDate != null">
+                server_create_date,
+            </if>
+            <if test="serverUpdateDate != null">
+                server_update_date,
+            </if>
+            <if test="isValid != null">
+                is_valid,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="jobSeekerName != null">
+                #{jobSeekerName,jdbcType=VARCHAR},
+            </if>
+            <if test="jobSeekerSex != null">
+                #{jobSeekerSex,jdbcType=BIGINT},
+            </if>
+            <if test="jobSeekerPhone != null">
+                #{jobSeekerPhone,jdbcType=BIGINT},
+            </if>
+            <if test="jobSeekerEmail != null">
+                #{jobSeekerEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="jobSeekerWeixin != null">
+                #{jobSeekerWeixin,jdbcType=VARCHAR},
+            </if>
+            <if test="graduateSchool != null">
+                #{graduateSchool,jdbcType=VARCHAR},
+            </if>
+            <if test="majorSubjects != null">
+                #{majorSubjects,jdbcType=VARCHAR},
+            </if>
+            <if test="graduateDate != null">
+                #{graduateDate,jdbcType=DATE},
+            </if>
+            <if test="serverCreateDate != null">
+                #{serverCreateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="serverUpdateDate != null">
+                #{serverUpdateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isValid != null">
+                #{isValid,jdbcType=BIT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ntq.baseMgr.entity.JobSeekerInfos">
+        update job_seeker_infos
+        <set>
+            <if test="jobSeekerName != null">
+                job_seeker_name = #{jobSeekerName,jdbcType=VARCHAR},
+            </if>
+            <if test="jobSeekerSex != null">
+                job_seeker_sex = #{jobSeekerSex,jdbcType=BIGINT},
+            </if>
+            <if test="jobSeekerPhone != null">
+                job_seeker_phone = #{jobSeekerPhone,jdbcType=BIGINT},
+            </if>
+            <if test="jobSeekerEmail != null">
+                job_seeker_email = #{jobSeekerEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="jobSeekerWeixin != null">
+                job_seeker_weixin = #{jobSeekerWeixin,jdbcType=VARCHAR},
+            </if>
+            <if test="graduateSchool != null">
+                graduate_school = #{graduateSchool,jdbcType=VARCHAR},
+            </if>
+            <if test="majorSubjects != null">
+                major_subjects = #{majorSubjects,jdbcType=VARCHAR},
+            </if>
+            <if test="graduateDate != null">
+                graduate_date = #{graduateDate,jdbcType=DATE},
+            </if>
+            <if test="serverCreateDate != null">
+                server_create_date = #{serverCreateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="serverUpdateDate != null">
+                server_update_date = #{serverUpdateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isValid != null">
+                is_valid = #{isValid,jdbcType=BIT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ntq.baseMgr.entity.JobSeekerInfos">
+    update job_seeker_infos
+    set job_seeker_name = #{jobSeekerName,jdbcType=VARCHAR},
+      job_seeker_sex = #{jobSeekerSex,jdbcType=BIGINT},
+      job_seeker_phone = #{jobSeekerPhone,jdbcType=BIGINT},
+      job_seeker_email = #{jobSeekerEmail,jdbcType=VARCHAR},
+      job_seeker_weixin = #{jobSeekerWeixin,jdbcType=VARCHAR},
+      graduate_school = #{graduateSchool,jdbcType=VARCHAR},
+      major_subjects = #{majorSubjects,jdbcType=VARCHAR},
+      graduate_date = #{graduateDate,jdbcType=DATE},
+      server_create_date = #{serverCreateDate,jdbcType=TIMESTAMP},
+      server_update_date = #{serverUpdateDate,jdbcType=TIMESTAMP},
+      is_valid = #{isValid,jdbcType=BIT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+    <!--插入并返回当前录入求职者的行数据id-->
+    <insert id="insertAndReturnKey"
+            parameterType="com.ntq.baseMgr.entity.JobSeekerInfos">
+        <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS ID
+        </selectKey>
+        insert into job_seeker_infos (job_seeker_name, job_seeker_sex,
+        job_seeker_phone, job_seeker_email, job_seeker_weixin,
+        graduate_school, major_subjects, graduate_date,
+        server_create_date, server_update_date,
+        is_valid)
+        values ( #{jobSeekerName,jdbcType=VARCHAR}, #{jobSeekerSex,jdbcType=BIGINT},
+        #{jobSeekerPhone,jdbcType=BIGINT}, #{jobSeekerEmail,jdbcType=VARCHAR}, #{jobSeekerWeixin,jdbcType=VARCHAR},
+        #{graduateSchool,jdbcType=VARCHAR}, #{majorSubjects,jdbcType=VARCHAR}, #{graduateDate,jdbcType=DATE},
+        #{serverCreateDate,jdbcType=TIMESTAMP}, #{serverUpdateDate,jdbcType=TIMESTAMP},
+        #{isValid,jdbcType=BIT})
+    </insert>
+    <!--分页查询-->
+    <select id="queryJobSeekerInfosListByCondition" resultMap="BaseResultMap">
+        /*拼装查询条件*/
+        <bind name="condition" value="'%'+whereCondition+'%'"/>
+        SELECT * FROM job_seeker_infos
+        <where>
+            <if test="whereCondition!=null and whereCondition!='' ">
+                username like #{condition}
+            </if>
+        </where>
+        limit #{start},#{end}
+    </select>
+
+<!--通过用户id查询当前求职者的个人信息-->
+    <select id="getJobSeekerInfoById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from job_seeker_infos
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <!--根据id批量删除记录-->
+    <delete id="deleteBatch" parameterType="java.util.List">
+        delete from job_seeker_infos where id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+
+    </delete>
+</mapper>

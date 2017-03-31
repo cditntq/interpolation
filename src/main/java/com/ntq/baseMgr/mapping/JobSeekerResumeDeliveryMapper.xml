@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ntq.baseMgr.dao.JobSeekerResumeDeliveryMapper" >
+  <resultMap id="BaseResultMap" type="com.ntq.baseMgr.entity.JobSeekerResumeDelivery" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="job_seeker_infos_id" property="jobSeekerInfosId" jdbcType="BIGINT" />
+    <result column="job_code" property="jobCode" jdbcType="VARCHAR" />
+    <result column="resume_path" property="resumePath" jdbcType="VARCHAR" />
+    <result column="server_create_date" property="serverCreateDate" jdbcType="TIMESTAMP" />
+    <result column="server_update_date" property="serverUpdateDate" jdbcType="TIMESTAMP" />
+    <result column="deal_status" property="dealStatus" jdbcType="INTEGER" />
+    <result column="is_valid" property="isValid" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, job_seeker_infos_id, job_code, resume_path, server_create_date, server_update_date, 
+    deal_status, is_valid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from job_seeker_resume_delivery
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from job_seeker_resume_delivery
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ntq.baseMgr.entity.JobSeekerResumeDelivery" >
+    insert into job_seeker_resume_delivery (id, job_seeker_infos_id, job_code, 
+      resume_path, server_create_date, server_update_date, 
+      deal_status, is_valid)
+    values (#{id,jdbcType=BIGINT}, #{jobSeekerInfosId,jdbcType=BIGINT}, #{jobCode,jdbcType=VARCHAR}, 
+      #{resumePath,jdbcType=VARCHAR}, #{serverCreateDate,jdbcType=TIMESTAMP}, #{serverUpdateDate,jdbcType=TIMESTAMP}, 
+      #{dealStatus,jdbcType=INTEGER}, #{isValid,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ntq.baseMgr.entity.JobSeekerResumeDelivery" >
+    insert into job_seeker_resume_delivery
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="jobSeekerInfosId != null" >
+        job_seeker_infos_id,
+      </if>
+      <if test="jobCode != null" >
+        job_code,
+      </if>
+      <if test="resumePath != null" >
+        resume_path,
+      </if>
+      <if test="serverCreateDate != null" >
+        server_create_date,
+      </if>
+      <if test="serverUpdateDate != null" >
+        server_update_date,
+      </if>
+      <if test="dealStatus != null" >
+        deal_status,
+      </if>
+      <if test="isValid != null" >
+        is_valid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="jobSeekerInfosId != null" >
+        #{jobSeekerInfosId,jdbcType=BIGINT},
+      </if>
+      <if test="jobCode != null" >
+        #{jobCode,jdbcType=VARCHAR},
+      </if>
+      <if test="resumePath != null" >
+        #{resumePath,jdbcType=VARCHAR},
+      </if>
+      <if test="serverCreateDate != null" >
+        #{serverCreateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="serverUpdateDate != null" >
+        #{serverUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealStatus != null" >
+        #{dealStatus,jdbcType=INTEGER},
+      </if>
+      <if test="isValid != null" >
+        #{isValid,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ntq.baseMgr.entity.JobSeekerResumeDelivery" >
+    update job_seeker_resume_delivery
+    <set >
+      <if test="jobSeekerInfosId != null" >
+        job_seeker_infos_id = #{jobSeekerInfosId,jdbcType=BIGINT},
+      </if>
+      <if test="jobCode != null" >
+        job_code = #{jobCode,jdbcType=VARCHAR},
+      </if>
+      <if test="resumePath != null" >
+        resume_path = #{resumePath,jdbcType=VARCHAR},
+      </if>
+      <if test="serverCreateDate != null" >
+        server_create_date = #{serverCreateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="serverUpdateDate != null" >
+        server_update_date = #{serverUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealStatus != null" >
+        deal_status = #{dealStatus,jdbcType=INTEGER},
+      </if>
+      <if test="isValid != null" >
+        is_valid = #{isValid,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ntq.baseMgr.entity.JobSeekerResumeDelivery" >
+    update job_seeker_resume_delivery
+    set job_seeker_infos_id = #{jobSeekerInfosId,jdbcType=BIGINT},
+      job_code = #{jobCode,jdbcType=VARCHAR},
+      resume_path = #{resumePath,jdbcType=VARCHAR},
+      server_create_date = #{serverCreateDate,jdbcType=TIMESTAMP},
+      server_update_date = #{serverUpdateDate,jdbcType=TIMESTAMP},
+      deal_status = #{dealStatus,jdbcType=INTEGER},
+      is_valid = #{isValid,jdbcType=BIT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="getJobSeekerResumeDeliveryByJobSeekerId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from job_seeker_resume_delivery
+    where job_seeker_infos_id = #{jobSeekerId,jdbcType=BIGINT}
+  </select>
+</mapper>
