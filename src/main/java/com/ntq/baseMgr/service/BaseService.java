@@ -1,6 +1,7 @@
 package com.ntq.baseMgr.service;
 
-import com.ntq.baseMgr.dao.BaseMapper;
+
+import com.ntq.baseMgr.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.io.Serializable;

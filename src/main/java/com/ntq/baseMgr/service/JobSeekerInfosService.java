@@ -1,10 +1,11 @@
 package com.ntq.baseMgr.service;
 
-import com.ntq.baseMgr.entity.JobSeekerInfos;
-import com.ntq.baseMgr.entity.JobSeekerInfosExtDto;
-import com.ntq.baseMgr.entity.JobSeekerInfosVo;
+
+import com.ntq.baseMgr.po.JobSeekerInfosVo;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.vo.UploadFileVo;
+import com.ntq.baseMgr.po.JobSeekerInfos;
+import com.ntq.baseMgr.po.JobSeekerInfosExtDto;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -25,7 +26,7 @@ public interface JobSeekerInfosService extends BaseService<JobSeekerInfos,Long> 
      * @param record
      * @return
      *//*
-     Long insertAndReturnKey(JobSeekerInfos record);
+     Long insertAndGetKey(JobSeekerInfos record);
 */
     /**
      * 录入求职者个人信息以及简历
@@ -59,7 +60,7 @@ public interface JobSeekerInfosService extends BaseService<JobSeekerInfos,Long> 
      * @return
      */
 
-    ResponseResult<String>  deleteBatchJobSeekerInfoList(String ids);
+    ResponseResult<String> deleteBatchJobSeekerInfoList(String ids);
 
     /**
      * 通过求职者信息id查看投递简历相信信息
@@ -67,4 +68,11 @@ public interface JobSeekerInfosService extends BaseService<JobSeekerInfos,Long> 
      * @return
      */
     ResponseResult<JobSeekerInfosVo> getJobSeekerInfoVoById(Long id);
+    /**
+     * 更新简历状态
+     * @param resumeDliveryId 传递简历的id
+     * @param dealStatus 处理状态
+     * @return
+     */
+    ResponseResult<String> updateResumeDeliveryDealStatus(long resumeDliveryId, int dealStatus);
 }

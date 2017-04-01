@@ -1,7 +1,8 @@
 package com.ntq.baseMgr.service.impl;
 
 
-import com.ntq.baseMgr.dao.BaseMapper;
+
+import com.ntq.baseMgr.mapper.BaseMapper;
 import com.ntq.baseMgr.service.BaseService;
 import org.apache.ibatis.annotations.Param;
 
@@ -50,7 +51,7 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
      * @return
      */
     public ID insertAndReturnKey(T record) {
-        return baseMapper.insertAndReturnKey(record);
+        return baseMapper.insertAndGetKey(record);
     }
 
     /**

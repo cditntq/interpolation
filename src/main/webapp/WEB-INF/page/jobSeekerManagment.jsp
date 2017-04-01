@@ -22,7 +22,8 @@
     var model;
     //节点数据
     var originValue = ko.observable({
-        //  id: 0,
+        /*主表id*/
+          id: 0,
         /*姓名*/
         jobSeekerName: '',
         /*性别*/
@@ -33,15 +34,21 @@
         jobSeekerEmail: "",
         /*微信*/
         jobSeekerWeixin: "",
-        /*毕业院校*/
+        /*附件路径*/
+        resumePath:"",
+        /*职位编号*/
+        jobCode:"",
+        /*附件id*/
+        resumeDeliveryId:"",
+    /*    /!*毕业院校*!/
         graduateSchool: "",
-        /*所学专业*/
+        /!*所学专业*!/
         majorSubjects: "",
-        /*毕业时间*/
+        /!*毕业时间*!/
         graduateDate: "",
         isValid: "",
         serverCreateDate: "",
-        serverUpdateDate: "",
+        serverUpdateDate: "",*/
 
 
     });
@@ -90,12 +97,65 @@
         ko.applyBindings(model);
 //        model.getPage = ko.observable(1);
 
+        //拼接查询条件并执行查询计划
         model.getWhereConditionAndQuery = function () {
+            var dealStatus=$("#dealStatusId").val();
             /*拼接查询条件*/
             var tmpWhereCondtion = "jobCode=" + $("#jobCode").val() + "&jobSeekerPhone=" + $("#jobSeekerPhone").val();
+            if (dealStatus!='0'){
+                tmpWhereCondtion=tmpWhereCondtion+"&dealStatus="+dealStatus;
+            }
             model.whereCondition = model.js2ko(tmpWhereCondtion);
-            model.dataQuery();
+             model.dataQuery();
 
+        };
+
+        //viewModel.myValues.push("some value"); // Now visible
+        /**
+         *
+         */
+        model.rejectJobSeekerResume=function (item) {
+            var tmpData=model.ko2js(item);
+             var resumeDeliveryId=tmpData.resumeDeliveryId;
+             var dealStatus=5;//内推圈拒绝
+            var jsonData="resumeDeliveryId="+resumeDeliveryId+"&dealStatus="+dealStatus;
+  //需要一个通用的ajax请求转发器
+            var reqeustUrl="${baseUrl}/jobSeekerInfo/updateResumeDeliveryDealStatus.action";
+            model.commonAjaxGetRequest(reqeustUrl,jsonData);
+            //根据条件插入或者更新
+          /*  var jsonData={
+                resumeDeliveryId:resumeDeliveryId,
+                dealStatus:dealStatus
+            };*/
+    /*
+            $.ajax({
+                type: "GET",
+                url: ,
+                contentType: 'application/json',
+                data: jsonData,
+                dataType: 'json',
+                success: function (data) {
+                /!*    if (data == 1) {
+                        //提示插入成功
+                        //重新排版界面
+
+                    }*!/
+                }
+            })*/
+        }
+
+        /**
+         * 隐藏或者展示按钮
+         * @param item
+         * @returns {boolean}
+         */
+        model.showOrHide=function (item) {
+            var tmpData=model.ko2js(item);
+            var dealStatus=tmpData.dealStatus;
+            if (dealStatus!='5') {
+                return true;
+            }
+            return false
         }
 
     })
@@ -118,19 +178,19 @@
             <div class="page-title">
                 <div class="title_left">
                     <h3>
-                        求职者用户管理12345
+                        求职者用户管理
                     </h3>
                 </div>
-
+<%--
                 <div class="title_right">
                     <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                        <%--  <div class="input-group">
+                        &lt;%&ndash;  <div class="input-group">
                               <input type="text" placeholder="职位编号" class="form-control">
                               <input type="text" placeholder="求职者电话" class="form-control">
                               <span class="input-group-btn">
                               <button type="button" class="btn btn-default"></button>
                           </span>
-                          </div>--%>
+                          </div>&ndash;%&gt;
                         <div class="form-group">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">First Name <span
                                     class="required">*</span>
@@ -141,7 +201,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>--%>
             </div>
             <%--弹窗--%>
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -241,26 +301,40 @@
                   </div>--%>
 
                 <div class="x_title">
-
-
                     <form class="form-horizontal form-label-left" style="margin-top: 1%">
-                        <div class="form-group" style="float: right;width:80%">
-                            <label class="control-label col-md-2 col-sm-3 col-xs-6" for="jobCode"><span
+                                                <div class="form-group" >
+                                                    <label class="control-label col-md-1 col-sm-1 col-xs-1" for="dealStatusId"><span
+                                                            class="required">处理状态</span>
+                                                    </label>
+                                                    <div class="col-md-2 col-sm-3 col-xs-4">
+                                                        <select id="dealStatusId" class="form-control col-md-3 col-xs-6">
+                                                            <option value="0">全部</option>
+                                                            <option value="1">待处理</option>
+                                                            <option value="2">已投递至企业</option>
+                                                            <option value="3">企业筛选未通过</option>
+                                                            <option value="4">企业筛选通过</option>
+                                                            <option value="5">内推圈建立筛选未通过</option>
+                                                            <option value="6">面试未通过</option>
+                                                            <option value="7">面试成功</option>
+                                                        </select>
+                                                    </div>
+
+                            <label class="control-label col-md-1 col-sm-1 col-xs-1" for="jobCode"><span
                                     class="required">职位编号</span>
                             </label>
-                            <div class="col-md-2 col-sm-3 col-xs-6">
+                            <div class="col-md-2 col-sm-3 col-xs-4">
                                 <input type="text" id="jobCode" required="required"
-                                       class="form-control col-md-7 col-xs-12">
+                                       class="form-control col-md-3 col-xs-6">
                             </div>
 
-                            <label class="control-label col-md-2 col-sm-3 col-xs-6" for="jobSeekerPhone"><span
+                            <label class="control-label col-md-1 col-sm-1 col-xs-1" for="jobSeekerPhone"><span
                                     class="required">求职者电话</span>
                             </label>
-                            <div class="col-md-2 col-sm-3 col-xs-6">
+                            <div class="col-md-2 col-sm-3 col-xs-4">
                                 <input type="text" id="jobSeekerPhone" required="required"
-                                       class="form-control col-md-7 col-xs-12">
+                                       class="form-control col-md-3 col-xs-6">
                             </div>
-                            <div class="col-md-2 col-sm-3 col-xs-6">
+                            <div class="col-md-1 col-sm-1 col-xs-1">
                                 <button type="button" class="btn btn-warning"
                                         data-bind="click:$root.getWhereConditionAndQuery">查询
                                 </button>
@@ -286,13 +360,10 @@
                             <th style="width: 15px" id="checkItemId" name="itemCheck"
                                 data-bind="click:$root.selectAll"><input type="checkbox">
                             </th>
-                            <th>求职者姓名</th>
-                            <th>求职者邮箱</th>
-                            <th>性别</th>
-                            <th>电话</th>
-                            <th>微信</th>
-                            <th>毕业院校</th>
-                            <th>所学专业</th>
+                            <th>投递职位编号</th>
+                            <th>求职者电话</th>
+                            <th>求职者微信</th>
+                            <th>简历附件</th>
                             <th>操作</th>
                         </tr>
                         </thead>
@@ -301,15 +372,19 @@
                         <tr>
                             <th <%--style="width: 15px"--%>><input type="checkbox" name="itemCheck"
                                                                    data-bind="value:id,attr:{id:id}"></th>
-                            <td data-bind="text:jobSeekerName"></td>
-                            <td data-bind="text:jobSeekerEmail"></td>
-                            <td data-bind="text:jobSeekerSex"></td>
+                            <td data-bind="text:jobCode"></td>
                             <td data-bind="text:jobSeekerPhone"></td>
                             <td data-bind="text:jobSeekerWeixin"></td>
-                            <td data-bind="text:graduateSchool"></td>
-                            <td data-bind="text:majorSubjects"></td>
-                            <td style="width:45px"><a href="javascript:" data-bind="click:$root.edit"
-                            > <i class="glyphicon glyphicon-edit" style="font-size: large"></i></a></td>
+                            <td data-bind="text:resumePath"></td>
+                            <td>
+
+
+
+                                <button class="btn btn-primary" type="button">投递</button>
+                                <button class="btn btn-primary" type="reset" id="rejectBtn" data-bind="visible:$root.showOrHide({dealStatus:dealStatus}),click:$root.rejectJobSeekerResume.bind({resumeDeliveryId:resumeDeliveryId})">拒绝</button>
+                                <button type="submit" class="btn btn-success">反馈</button>
+                            <%--    <a href="javascript:" data-bind="click:$root.edit"
+                            > <i class="glyphicon glyphicon-edit" style="font-size: large"></i></a>--%></td>
                         </tr>
                         </tbody>
                     </table>

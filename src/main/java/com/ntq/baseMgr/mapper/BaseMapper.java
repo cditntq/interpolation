@@ -1,4 +1,4 @@
-package com.ntq.baseMgr.dao;
+package com.ntq.baseMgr.mapper;
 
 
 import org.apache.ibatis.annotations.Param;
@@ -33,7 +33,7 @@ public interface BaseMapper<T, ID extends Serializable> {
      * @param record
      * @return
      */
-    ID insertAndReturnKey(T record);
+    ID insertAndGetKey(T record);
 
     /**
      * 插入一条数据,只插入不为null的字段,不会影响有默认值的字段
@@ -120,8 +120,8 @@ public interface BaseMapper<T, ID extends Serializable> {
     List<T> selectByCondition(@Param(value = "start") int start, @Param(value = "end") int end, @Param(value = "whereCondition") String whereCondition);
 
 
-
-    List<T> selectEntiesByCondition(@Param(value = "startPos") int startPos, @Param(value = "pageSize") int pageSize);
+/*
+    List<T> selectEntiesByCondition(@Param(value = "startPos") int startPos, @Param(value = "pageSize") int pageSize);*/
 
 
 }

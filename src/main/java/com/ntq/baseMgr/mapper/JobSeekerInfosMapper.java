@@ -1,10 +1,11 @@
-package com.ntq.baseMgr.dao;
+package com.ntq.baseMgr.mapper;
 
-import com.ntq.baseMgr.entity.JobSeekerInfos;
-import com.ntq.baseMgr.entity.JobSeekerInfosExtDto;
+import com.ntq.baseMgr.po.JobSeekerInfos;
+import com.ntq.baseMgr.po.JobSeekerInfosExtDto;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -15,16 +16,16 @@ public interface JobSeekerInfosMapper extends BaseMapper<JobSeekerInfos,Long> {
      * @param record
      * @return
      */
-    Long insertAndReturnKey(JobSeekerInfos record);
+    Long insertAndGetKey(JobSeekerInfos record);
 
     /**
      * 分页查询求职者信息
      * @param start 起始行下表
      * @param end 最终
-     * @param params 查询条件 , @Param("params") Map<String, Object> params
+     * @param params 查询条件
      * @return
      */
-    List<JobSeekerInfosExtDto> queryJobSeekerInfosListByCondition(@Param(value = "start") int start, @Param(value = "end") int end);
+    List<JobSeekerInfosExtDto> queryJobSeekerInfosListByCondition(@Param(value = "start") int start, @Param(value = "end") int end, @Param("params") Map<String, Object> params);
 
     /**
      * 通过求职者信息id查看投递简这的个人信息

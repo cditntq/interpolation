@@ -1,7 +1,7 @@
 package com.ntq.baseMgr.service.impl;
 
-import com.ntq.baseMgr.entity.JobSeekerResumeDelivery;
-import com.ntq.baseMgr.dao.JobSeekerResumeDeliveryMapper;
+import com.ntq.baseMgr.mapper.JobSeekerResumeDeliveryMapper;
+import com.ntq.baseMgr.po.JobSeekerResumeDelivery;
 import com.ntq.baseMgr.service.JobSeekerResumeDeliveryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

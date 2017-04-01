@@ -201,4 +201,23 @@ function globalViewModel(params) {
         return ko.mapping.fromJS(data);
     }
 
+    /**
+     * 常规的Get请求
+     * @param requestUrl
+     * @param jsonData
+     */
+    self.commonAjaxGetRequest=function (requestUrl, jsonData) {
+        var resultData;
+        $.ajax({
+            type: "GET",
+            url: requestUrl,
+            contentType: 'application/json',
+            data: jsonData,
+            dataType: 'json',
+            success: function (data) {
+                resultData=data;
+            }
+        });
+        return resultData;
+    }
 }

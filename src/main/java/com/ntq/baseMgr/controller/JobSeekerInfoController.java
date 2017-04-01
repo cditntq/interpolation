@@ -1,7 +1,8 @@
 package com.ntq.baseMgr.controller;
 
-import com.ntq.baseMgr.entity.JobSeekerInfosExtDto;
-import com.ntq.baseMgr.entity.JobSeekerInfosVo;
+
+import com.ntq.baseMgr.po.JobSeekerInfosExtDto;
+import com.ntq.baseMgr.po.JobSeekerInfosVo;
 import com.ntq.baseMgr.service.JobSeekerInfosService;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.vo.UploadFileVo;
@@ -82,8 +83,7 @@ public class JobSeekerInfoController {
     @RequestMapping(value = "/queryJobSeekerInfoListByCondition")
     @ResponseBody
     public ResponseResult<List<JobSeekerInfosExtDto>> queryJobSeekerInfosListByCondition(int page, int size, String whereCondition) {
-//        List<JobSeekerInfos> jobSeekerInfosList = jobSeekerInfosService.queryJobSeekerInfosListByCondition(page, size, whereCondition);
-        return jobSeekerInfosService.queryJobSeekerInfosListByCondition(page, size, whereCondition);
+         return jobSeekerInfosService.queryJobSeekerInfosListByCondition(page, size, whereCondition);
     }
 
     /**
@@ -97,6 +97,18 @@ public class JobSeekerInfoController {
     @ResponseBody
     public ResponseResult<String> deleteJobSeekerInfoListByIds(String ids) {
         return jobSeekerInfosService.deleteBatchJobSeekerInfoList(ids);
+    }
+
+    /**
+     * 更新简历状态
+     * @param resumeDeliveryId 传递简历的id
+     * @param dealStatus 处理状态
+     * @return
+     */
+    @RequestMapping(value = "/updateResumeDeliveryDealStatus")
+    @ResponseBody
+    public ResponseResult<String> updateResumeDeliveryDealStatus(long resumeDeliveryId, int dealStatus){
+        return  jobSeekerInfosService.updateResumeDeliveryDealStatus(resumeDeliveryId,dealStatus);
     }
 
 }

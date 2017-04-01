@@ -1,4 +1,4 @@
-package com.ntq.baseMgr.entity;
+package com.ntq.baseMgr.po;
 
 import java.util.Date;
 

@@ -1,6 +1,7 @@
 package com.ntq.baseMgr.service;
 
-import com.ntq.baseMgr.entity.JobSeekerResumeDelivery;
+
+import com.ntq.baseMgr.po.JobSeekerResumeDelivery;
 
 /**
  * <p>@description: 求职者求职简历相关信息</p>

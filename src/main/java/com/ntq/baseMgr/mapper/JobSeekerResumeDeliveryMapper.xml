@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ntq.baseMgr.mapper.JobSeekerResumeDeliveryMapper" >
+  <resultMap id="BaseResultMap" type="com.ntq.baseMgr.po.JobSeekerResumeDelivery" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="job_seeker_infos_id" property="jobSeekerInfosId" jdbcType="BIGINT" />
+    <result column="job_code" property="jobCode" jdbcType="VARCHAR" />
+    <result column="resume_path" property="resumePath" jdbcType="VARCHAR" />
+    <result column="server_create_date" property="serverCreateDate" jdbcType="TIMESTAMP" />
+    <result column="server_update_date" property="serverUpdateDate" jdbcType="TIMESTAMP" />
+    <result column="deal_status" property="dealStatus" jdbcType="INTEGER" />
+    <result column="is_valid" property="isValid" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, job_seeker_infos_id, job_code, resume_path, server_create_date, server_update_date, 
+    deal_status, is_valid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from job_seeker_resume_delivery
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from job_seeker_resume_delivery
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+
+  <select id="getJobSeekerResumeDeliveryByJobSeekerId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from job_seeker_resume_delivery
+    where job_seeker_infos_id = #{jobSeekerId,jdbcType=BIGINT}
+  </select>
+
+
+  <!--根据id批量删除记录-->
+  <update id="deleteBatchJobSeekerResumeDeliveryList" parameterType="java.util.List">
+    UPDATE  job_seeker_resume_delivery SET  is_valid=2 where  job_seeker_infos_id IN
+    <foreach collection="list" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>;
+  </update>
+  <update id="updateResumeDeliveryDealStatus">
+     UPDATE  job_seeker_resume_delivery SET  deal_status=#{dealStatus,jdbcType=INTEGER} where  id=#{resumeDeliveryId,jdbcType=BIGINT}
+  </update>
+</mapper>

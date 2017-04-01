@@ -1,14 +1,14 @@
 package com.ntq.baseMgr.service.impl;
 
-import com.ntq.baseMgr.entity.JobSeekerInfos;
-import com.ntq.baseMgr.entity.JobSeekerInfosExtDto;
-import com.ntq.baseMgr.entity.JobSeekerInfosVo;
-import com.ntq.baseMgr.entity.JobSeekerResumeDelivery;
-import com.ntq.baseMgr.dao.JobSeekerInfosMapper;
-import com.ntq.baseMgr.dao.JobSeekerResumeDeliveryMapper;
+import com.ntq.baseMgr.mapper.JobSeekerInfosMapper;
+import com.ntq.baseMgr.po.JobSeekerInfosExtDto;
+import com.ntq.baseMgr.po.JobSeekerResumeDelivery;
 import com.ntq.baseMgr.service.IUploadFileService;
-import com.ntq.baseMgr.service.JobSeekerInfosService;
 import com.ntq.baseMgr.service.JobSeekerResumeDeliveryService;
+import com.ntq.baseMgr.mapper.JobSeekerResumeDeliveryMapper;
+import com.ntq.baseMgr.po.JobSeekerInfos;
+import com.ntq.baseMgr.po.JobSeekerInfosVo;
+import com.ntq.baseMgr.service.JobSeekerInfosService;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.util.StatusCode;
 import com.ntq.baseMgr.vo.UploadFileVo;
@@ -56,7 +56,7 @@ public class JobSeekerInfosServiceImpl extends BaseServiceImpl<JobSeekerInfos, L
         //2.上传附件处理并返回存储路径
         String storePath = uploadFileService.uploadForm(vo);
         //3.插入用户信息并返回id
-       // insertAndReturnKey(jobSeekerInfosVo);
+        // insertAndGetKey(jobSeekerInfosVo);
         Long insertKey = jobSeekerInfosVo.getId();
         //4.存储附件相关信息
         JobSeekerResumeDelivery delivery = new JobSeekerResumeDelivery();
@@ -89,13 +89,16 @@ public class JobSeekerInfosServiceImpl extends BaseServiceImpl<JobSeekerInfos, L
                         case "jobSeekerPhone":
                             map.put("job_seeker_phone", keyAndValue[1]);
                             break;
+                        case "dealStatus":
+                            map.put("deal_status",keyAndValue[1]);
+                            break;
                         default:
                             break;
                     }
 
                 }
             }
-            List<JobSeekerInfosExtDto> jobSeekerInfosExtDtos = jobSeekerInfosMapper.queryJobSeekerInfosListByCondition((page - 1) * size, page * size);
+            List<JobSeekerInfosExtDto> jobSeekerInfosExtDtos = jobSeekerInfosMapper.queryJobSeekerInfosListByCondition((page - 1) * size, page * size, map);
             responseResult.setData(jobSeekerInfosExtDtos);
             responseResult.setCode(StatusCode.OK.getCode());
             responseResult.setMessage(StatusCode.OK.getMessage());
@@ -140,7 +143,7 @@ public class JobSeekerInfosServiceImpl extends BaseServiceImpl<JobSeekerInfos, L
         record.setServerCreateDate(new Date());
         record.setServerUpdateDate(new Date());
         record.setIsValid(true);//默认设置信息有效
-        return jobSeekerInfosMapper.insertAndReturnKey(record);
+        return jobSeekerInfosMapper.insertAndGetKey(record);
     }
 
 
@@ -191,5 +194,24 @@ public class JobSeekerInfosServiceImpl extends BaseServiceImpl<JobSeekerInfos, L
             responseResult.setFailureMessage(StatusCode.Fail.getMessage());
         }
         return responseResult;
+    }
+    /**
+     * 更新简历状态
+     * @param resumeDeliveryId 传递简历的id
+     * @param dealStatus 处理状态
+     * @return
+     */
+    @Override
+    public ResponseResult<String> updateResumeDeliveryDealStatus(long resumeDeliveryId, int dealStatus) {
+        ResponseResult<String>  rep=new ResponseResult<>();
+        try {
+            jobSeekerResumeDeliveryMapper.updateResumeDeliveryDealStatus(resumeDeliveryId,dealStatus);
+            rep.setCode(StatusCode.OK.getCode());
+            rep.setMessage(StatusCode.OK.getMessage());
+        }catch (Exception e){
+            rep.setCode(StatusCode.Fail.getCode());
+            rep.setFailureMessage(StatusCode.Fail.getMessage());
+        }
+        return rep;
     }
 }

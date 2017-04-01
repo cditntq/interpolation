@@ -1,10 +1,10 @@
 package com.ntq.baseMgr.controller;
 
-import com.ntq.baseMgr.entity.JobSeekerInfos;
-import com.ntq.baseMgr.entity.UserInfo;
+import com.ntq.baseMgr.po.UserInfo;
 import com.ntq.baseMgr.service.IUploadFileService;
 import com.ntq.baseMgr.service.IUserService;
 import com.ntq.baseMgr.vo.UploadFileVo;
+import com.ntq.baseMgr.po.JobSeekerInfos;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,7 +53,7 @@ public class UserController {
      * @return
      * @throws Exception
      *//*
-	@RequestMapping(value = "/uploadFile",method= RequestMethod.POST)
+    @RequestMapping(value = "/uploadFile",method= RequestMethod.POST)
 	public String uploadFile(HttpServletRequest request, UploadFileVo vo) throws Exception {
 		uploadDemoService.uploadForm(vo);
 		String userId = request.getParameter("fileName");

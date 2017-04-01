@@ -1,6 +1,7 @@
-package com.ntq.baseMgr.dao;
+package com.ntq.baseMgr.mapper;
 
-import com.ntq.baseMgr.entity.UserInfo;
+
+import com.ntq.baseMgr.po.UserInfo;
 
 public interface UserInfoMapper {
     int deleteByPrimaryKey(Integer id);
