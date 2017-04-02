@@ -34,7 +34,7 @@ public class MailSenderUtil {
 
         mailBean.setFrom("l247677858my@126.com");
         mailBean.setFromName("XXX");
-        mailBean.setSubject("你好");
+        mailBean.setSubject("你好测试信息");
         mailBean.setToEmails(new String[]{"247677858@qq.com"});
         mailBean.setContext("这是发送主题");
         mailSenderService.sendMail(mailBean);

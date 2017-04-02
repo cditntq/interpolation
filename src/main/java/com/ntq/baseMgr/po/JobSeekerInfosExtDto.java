@@ -6,7 +6,7 @@ import lombok.Data;
  * <p>@description: </p>
  *
  * @projectName: interpolation
- * @packageName: com.ntq.baseMgr.entity
+ * @packageName: com.ntq.baseMgr.po
  * @className:
  * @author: shuangyang
  * @date: 17-3-30 下午10:17
