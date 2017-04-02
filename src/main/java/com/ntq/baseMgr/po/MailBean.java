@@ -1,7 +1,6 @@
 package com.ntq.baseMgr.po;
 
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
 
 /**
  * <p>@description:邮件发送实体 </p>
@@ -14,8 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
  */
 @Data
 public class MailBean {
-    /*发送方邮件*/
-    @Value("#{configProperties['mail_from']}")
+
     private String from;
     /*发送方名称*/
     private String fromName;
@@ -25,4 +23,6 @@ public class MailBean {
     private String subject;
     /*邮件内容*/
     private String context;
+
+
 }

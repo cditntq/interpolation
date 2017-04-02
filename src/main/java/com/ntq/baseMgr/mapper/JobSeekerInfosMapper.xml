@@ -23,7 +23,7 @@
         <result column="job_seeker_weixin" property="jobSeekerWeixin" jdbcType="VARCHAR"/>
         <result column="resume_path" property="resumePath" jdbcType="VARCHAR"/>
         <result column="resumeDeliveryId" property="resumeDeliveryId" jdbcType="BIGINT"/>
-        <result column="deal_status" property="dealStatus" jdbcType="INTEGER" />
+        <result column="deal_status" property="dealStatus" jdbcType="INTEGER"/>
     </resultMap>
     <sql id="Base_Column_List">
     id, job_seeker_name, job_seeker_sex, job_seeker_phone, job_seeker_email, job_seeker_weixin, 
@@ -74,17 +74,37 @@
         #{isValid,jdbcType=BIT})
     </insert>
     <!--分页查询-->
-    <select id="queryJobSeekerInfosListByCondition" resultMap="BaseResultVoMap">
+    <!--<select id="queryJobSeekerInfosListByCondition" resultMap="BaseResultVoMap">
+            SELECT
+            t1.id as id ,deal_status,job_code,job_seeker_name,job_seeker_phone,job_seeker_weixin,resume_path,t2.id as resumeDeliveryId
+            FROM itntqdb.job_seeker_infos t1, itntqdb.job_seeker_resume_delivery t2
+            WHERE t1.is_valid = 1
+            AND t1.id=t2.job_seeker_infos_id
+            <foreach collection="params.keys" item="key">
+                AND ${key} like CONCAT('%',#{params[${key}]},'%')
+            </foreach>
+            AND t2.is_valid=1
+            limit #{start},#{end}
+        </select>-->
+    <select id="queryJobSeekerInfosListByCondition" resultMap="BaseResultVoMap"
+            parameterType="com.ntq.baseMgr.page.Page">
         SELECT
-        t1.id as id ,deal_status,job_code,job_seeker_name,job_seeker_phone,job_seeker_weixin,resume_path,t2.id as resumeDeliveryId
+        t1.id as id ,deal_status,job_code,job_seeker_name,job_seeker_phone,job_seeker_weixin,resume_path,t2.id as
+        resumeDeliveryId
         FROM itntqdb.job_seeker_infos t1, itntqdb.job_seeker_resume_delivery t2
         WHERE t1.is_valid = 1
         AND t1.id=t2.job_seeker_infos_id
-        <foreach collection="params.keys" item="key">
-            AND ${key} like CONCAT('%',#{params[${key}]},'%')
-        </foreach>
+        <if test="params['job_code'] != '' and params['job_code'] != null">
+            AND job_code like #{params.job_code}
+        </if>
+        <if test="params['job_seeker_phone'] != '' and params['job_seeker_phone'] != null">
+            AND job_seeker_phone like #{params.job_seeker_phone}
+        </if>
+        <if test="params['deal_status'] != '' and params['deal_status'] != null">
+            AND deal_status = #{params.deal_status}
+        </if>
         AND t2.is_valid=1
-        limit #{start},#{end}
+
     </select>
 
     <!--通过用户id查询当前求职者的个人信息-->
@@ -105,4 +125,5 @@
                #{item}
            </foreach>;-->
     </update>
+
 </mapper>

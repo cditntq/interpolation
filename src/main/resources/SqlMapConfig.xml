@@ -2,4 +2,10 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+    <plugins>
+        <plugin interceptor="com.ntq.baseMgr.page.PageInterceptor">
+            <!--配置数据库类型-->
+            <property name="databaseType" value="MySQL"/>
+        </plugin>
+    </plugins>
 </configuration>

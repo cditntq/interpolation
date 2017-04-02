@@ -1,13 +1,11 @@
 package com.ntq.baseMgr.service.impl;
 
 import com.ntq.baseMgr.mapper.JobSeekerInfosMapper;
-import com.ntq.baseMgr.po.JobSeekerInfosExtDto;
-import com.ntq.baseMgr.po.JobSeekerResumeDelivery;
+import com.ntq.baseMgr.page.Page;
+import com.ntq.baseMgr.po.*;
 import com.ntq.baseMgr.service.IUploadFileService;
 import com.ntq.baseMgr.service.JobSeekerResumeDeliveryService;
 import com.ntq.baseMgr.mapper.JobSeekerResumeDeliveryMapper;
-import com.ntq.baseMgr.po.JobSeekerInfos;
-import com.ntq.baseMgr.po.JobSeekerInfosVo;
 import com.ntq.baseMgr.service.JobSeekerInfosService;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.util.StatusCode;
@@ -15,11 +13,15 @@ import com.ntq.baseMgr.vo.UploadFileVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * <p>@description: 求职者信息处理Service</p>
@@ -33,6 +35,8 @@ import java.util.stream.Collectors;
 @Service
 public class JobSeekerInfosServiceImpl extends BaseServiceImpl<JobSeekerInfos, Long> implements JobSeekerInfosService {
 
+    @Value("#{configProperties['mail_from']}")
+    private String resumPath;//简历存放地址
     private static Logger logger = LoggerFactory.getLogger(JobSeekerInfosServiceImpl.class);
     @Autowired
     private JobSeekerInfosMapper jobSeekerInfosMapper;
@@ -42,6 +46,8 @@ public class JobSeekerInfosServiceImpl extends BaseServiceImpl<JobSeekerInfos, L
     private IUploadFileService uploadFileService;//上传文件的service
     @Autowired
     private JobSeekerResumeDeliveryService jobSeekerResumeDeliveryService;//处理上传附件相关信息
+    @Autowired
+    private MailSenderServiceImpl mailSenderServiceImpl;//邮件发送服务
 
     @Autowired
     public void setBaseMapper() throws Exception {
@@ -71,7 +77,7 @@ public class JobSeekerInfosServiceImpl extends BaseServiceImpl<JobSeekerInfos, L
     }
 
     @Override
-    public ResponseResult<List<JobSeekerInfosExtDto>> queryJobSeekerInfosListByCondition(int page, int size, String whereCondition) {
+    public ResponseResult<List<JobSeekerInfosExtDto>> queryJobSeekerInfosListByCondition(int pageNo, int size, String whereCondition) {
         ResponseResult<List<JobSeekerInfosExtDto>> responseResult = new ResponseResult<>();
         try {
 
@@ -79,6 +85,8 @@ public class JobSeekerInfosServiceImpl extends BaseServiceImpl<JobSeekerInfos, L
             Map<String, Object> map = new HashMap();
             //1.1 拼接
             String[] split = whereCondition.split("&");
+
+//            Stream.of(whereCondition.split("\\&")).
             for (String s : split) {
                 String[] keyAndValue = s.split("=");
                 if (keyAndValue.length > 1) {
@@ -90,7 +98,7 @@ public class JobSeekerInfosServiceImpl extends BaseServiceImpl<JobSeekerInfos, L
                             map.put("job_seeker_phone", keyAndValue[1]);
                             break;
                         case "dealStatus":
-                            map.put("deal_status",keyAndValue[1]);
+                            map.put("deal_status", keyAndValue[1]);
                             break;
                         default:
                             break;
@@ -98,7 +106,14 @@ public class JobSeekerInfosServiceImpl extends BaseServiceImpl<JobSeekerInfos, L
 
                 }
             }
-            List<JobSeekerInfosExtDto> jobSeekerInfosExtDtos = jobSeekerInfosMapper.queryJobSeekerInfosListByCondition((page - 1) * size, page * size, map);
+            Page<JobSeekerInfosExtDto> page = new Page<>();
+            page.setPageNo(pageNo);
+            page.setPageSize(size);
+            page.setParams(map);
+            List<JobSeekerInfosExtDto> jobSeekerInfosExtDtos = jobSeekerInfosMapper.queryJobSeekerInfosListByCondition(page);
+//             List<JobSeekerInfosExtDto> jobSeekerInfosExtDtos = jobSeekerInfosMapper.queryJobSeekerInfosListByCondition((pageNo - 1) * size, pageNo * size, map);
+            //
+            page.setResults(jobSeekerInfosExtDtos);
             responseResult.setData(jobSeekerInfosExtDtos);
             responseResult.setCode(StatusCode.OK.getCode());
             responseResult.setMessage(StatusCode.OK.getMessage());
@@ -195,23 +210,52 @@ public class JobSeekerInfosServiceImpl extends BaseServiceImpl<JobSeekerInfos, L
         }
         return responseResult;
     }
+
     /**
      * 更新简历状态
+     *
      * @param resumeDeliveryId 传递简历的id
-     * @param dealStatus 处理状态
+     * @param dealStatus       处理状态
      * @return
      */
     @Override
     public ResponseResult<String> updateResumeDeliveryDealStatus(long resumeDeliveryId, int dealStatus) {
-        ResponseResult<String>  rep=new ResponseResult<>();
+        ResponseResult<String> rep = new ResponseResult<>();
         try {
-            jobSeekerResumeDeliveryMapper.updateResumeDeliveryDealStatus(resumeDeliveryId,dealStatus);
+            jobSeekerResumeDeliveryMapper.updateResumeDeliveryDealStatus(resumeDeliveryId, dealStatus);
             rep.setCode(StatusCode.OK.getCode());
             rep.setMessage(StatusCode.OK.getMessage());
-        }catch (Exception e){
+
+        } catch (Exception e) {
             rep.setCode(StatusCode.Fail.getCode());
             rep.setFailureMessage(StatusCode.Fail.getMessage());
         }
         return rep;
+    }
+
+    /**
+     * 简历相关意见反馈
+     *
+     * @param jobSeekerEmail  求职者邮箱
+     * @param feedBackMessage 反馈信息
+     * @return
+     */
+    @Override
+    public ResponseResult<String> resumeFeedBack(String jobSeekerEmail, String feedBackMessage) {
+        ResponseResult<String> responseResult = new ResponseResult<>();
+        try {
+            System.out.println(resumPath);
+            MailBean mailBean = new MailBean();
+            mailBean.setToEmails(new String[]{jobSeekerEmail});
+            mailBean.setSubject("简历修改");
+            mailBean.setContext(feedBackMessage);
+            mailSenderServiceImpl.sendMail(mailBean);
+            responseResult.setCode(StatusCode.MAIL_SENDER_SUCCESS.getCode());
+            responseResult.setMessage(StatusCode.MAIL_SENDER_SUCCESS.getMessage());
+        } catch (Exception e) {
+            responseResult.setCode(StatusCode.MAIL_SENDER_FAIL.getCode());
+            responseResult.setMessage(StatusCode.MAIL_SENDER_FAIL.getMessage());
+        }
+        return responseResult;
     }
 }

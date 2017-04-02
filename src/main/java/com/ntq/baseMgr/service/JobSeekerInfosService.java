@@ -75,4 +75,12 @@ public interface JobSeekerInfosService extends BaseService<JobSeekerInfos,Long> 
      * @return
      */
     ResponseResult<String> updateResumeDeliveryDealStatus(long resumeDliveryId, int dealStatus);
+
+    /**
+     * 简历相关意见反馈
+     * @param jobSeekerEmail 求职者邮箱
+     * @param feedBackMessage 反馈信息
+     * @return
+     */
+    ResponseResult<String> resumeFeedBack(String jobSeekerEmail, String feedBackMessage);
 }

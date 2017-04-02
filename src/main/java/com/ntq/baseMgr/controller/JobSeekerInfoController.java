@@ -71,7 +71,6 @@ public class JobSeekerInfoController {
     public ResponseResult<JobSeekerInfosVo> getJobSeekerInfoVoById(Long id) {
         return jobSeekerInfosService.getJobSeekerInfoVoById(id);
     }
-
     /**
      * 分页查询求职者信息
      *
@@ -96,6 +95,7 @@ public class JobSeekerInfoController {
     @RequestMapping(value = "/deleteJobSeekerInfoListByIds")
     @ResponseBody
     public ResponseResult<String> deleteJobSeekerInfoListByIds(String ids) {
+//        return   jobSeekerInfosService.resumeFeedBack("247677858@qq.com","简历可能有问题——测试");
         return jobSeekerInfosService.deleteBatchJobSeekerInfoList(ids);
     }
 
@@ -109,6 +109,16 @@ public class JobSeekerInfoController {
     @ResponseBody
     public ResponseResult<String> updateResumeDeliveryDealStatus(long resumeDeliveryId, int dealStatus){
         return  jobSeekerInfosService.updateResumeDeliveryDealStatus(resumeDeliveryId,dealStatus);
+    }
+
+    /**
+     * 简历相关意见反馈
+     * @param jobSeekerEmail 求职者邮箱
+     * @param feedBackMessage 反馈信息
+     * @return
+     */
+    public ResponseResult<String> resumeFeedBack(String jobSeekerEmail,String feedBackMessage){
+        return jobSeekerInfosService.resumeFeedBack(jobSeekerEmail,feedBackMessage);
     }
 
 }

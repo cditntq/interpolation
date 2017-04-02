@@ -18,7 +18,10 @@ public enum StatusCode {
     Fail(1001, "操作失败"),
     QUERY_NULL_COMMERCIAL(20001, "该商户不存在"),
     QUERY_NULL_RESULT(20099, "该记录不存在, 请检查请求参数"),
-    PARAM_NULL(20100, "参数为空");
+    PARAM_NULL(20100, "参数为空"),
+    /*邮件操作*/
+    MAIL_SENDER_SUCCESS(3000, "邮件发送成功"),
+    MAIL_SENDER_FAIL(3001, "邮件发送失败");
 
 
     /**

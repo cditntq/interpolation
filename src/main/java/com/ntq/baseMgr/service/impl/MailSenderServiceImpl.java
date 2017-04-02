@@ -2,6 +2,7 @@ package com.ntq.baseMgr.service.impl;
 
 import com.ntq.baseMgr.po.MailBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,12 @@ import java.io.UnsupportedEncodingException;
 public class MailSenderServiceImpl {
     @Autowired
     private JavaMailSenderImpl javaMailSenderImpl;
-
+    /*发送方邮件*/
+    @Value("#{configProperties['mail_from']}")
+    private String senderMail;
+    /*发送方邮件*/
+    @Value("#{configProperties['mail_username']}")
+    private String senderName;
     /**
      * 创建MimeMessage
      * @param mailBean
@@ -34,7 +40,7 @@ public class MailSenderServiceImpl {
     public MimeMessage createMimeMessage(MailBean mailBean) throws MessagingException, UnsupportedEncodingException{
         MimeMessage mimeMessage = javaMailSenderImpl.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-        messageHelper.setFrom(mailBean.getFrom(), mailBean.getFromName());
+        messageHelper.setFrom(senderMail, senderName);
         messageHelper.setSubject(mailBean.getSubject());
         messageHelper.setTo(mailBean.getToEmails());
         messageHelper.setText(mailBean.getContext(), true); // html: true
