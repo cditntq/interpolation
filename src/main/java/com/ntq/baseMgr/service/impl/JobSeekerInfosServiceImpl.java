@@ -1,12 +1,12 @@
 package com.ntq.baseMgr.service.impl;
 
 import com.ntq.baseMgr.mapper.JobSeekerInfosMapper;
+import com.ntq.baseMgr.mapper.JobSeekerResumeDeliveryMapper;
 import com.ntq.baseMgr.page.Page;
 import com.ntq.baseMgr.po.*;
 import com.ntq.baseMgr.service.IUploadFileService;
-import com.ntq.baseMgr.service.JobSeekerResumeDeliveryService;
-import com.ntq.baseMgr.mapper.JobSeekerResumeDeliveryMapper;
 import com.ntq.baseMgr.service.JobSeekerInfosService;
+import com.ntq.baseMgr.service.JobSeekerResumeDeliveryService;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.util.StatusCode;
 import com.ntq.baseMgr.vo.UploadFileVo;
@@ -16,12 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * <p>@description: 求职者信息处理Service</p>

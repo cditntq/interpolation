@@ -2,7 +2,6 @@ package com.ntq.baseMgr.service.impl;
 
 import com.ntq.baseMgr.service.IUploadFileService;
 import com.ntq.baseMgr.vo.UploadFileVo;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,7 +15,6 @@ import java.util.Date;
 
 @Service
 public class UploadFileServiceImpl implements IUploadFileService {
-    protected Logger LOGGER = Logger.getLogger(UploadFileServiceImpl.class);
 
 //    @Value("${resumPath}")
     @Value("#{configProperties['resumPath']}")
@@ -30,7 +28,6 @@ public class UploadFileServiceImpl implements IUploadFileService {
 
     public String uploadFile(String destinationDir, MultipartFile file, String filename) throws Exception {
 
-        LOGGER.info("fileSize : " + file.getSize());
         //获取当前日期
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
         String str = sdf.format(new Date());

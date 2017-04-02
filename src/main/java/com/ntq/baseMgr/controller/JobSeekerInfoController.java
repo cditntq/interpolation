@@ -8,6 +8,8 @@ import com.ntq.baseMgr.service.JobSeekerInfosService;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.util.StatusCode;
 import com.ntq.baseMgr.vo.UploadFileVo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +35,7 @@ public class JobSeekerInfoController {
     @Autowired
     private JobSeekerInfosService jobSeekerInfosService;//求职者service
 
+    private final Logger logger = LoggerFactory.getLogger(JobSeekerInfoController.class);
 
     /**
      * 求职者页面管理,暂时不清楚为什么被请求了两次
