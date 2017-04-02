@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * @Date: 14-10-8
- * 1. 一切正常的响应状态以 0 返回
+ * 1. 一切正常的响应状态以 0 返回 1返回的为失败
  * 2. 查询结果异常状态码区间 20000~20099
  * 3. 参数缺失异常状态码区间 20100~20199
  * 4. ERP内部异常状态码区间 20900~20999
@@ -21,9 +21,14 @@ public enum StatusCode {
     PARAM_NULL(20100, "参数为空"),
     /*邮件操作*/
     MAIL_SENDER_SUCCESS(3000, "邮件发送成功"),
-    MAIL_SENDER_FAIL(3001, "邮件发送失败");
-
-
+    MAIL_SENDER_FAIL(3001, "邮件发送失败"),
+    /*增删查改*/
+    INSERT_SUCCESS(4000, "插入成功"),
+    INSERT_FAIL(40001, "插入失败"),
+    UPDATE_SUCCESS(5000, "更新成功"),
+    UPDATE_FAIL(50001, "更新失败"),
+    DELETE_SUCCESS(5000, "删除成功"),
+    DELETE_FAIL(50001, "删除失败");
     /**
      * 品牌相关
      *//*
@@ -92,7 +97,8 @@ public enum StatusCode {
     JSON_SERIALIZE_EXCEPTION(90001, "JSON序列化出错"),
     JSON_DESERIALIZE_EXCEPTION(90002, "JSON反序列化出错"),
 
-    *//**
+    */
+    /**
      * 商品库相关
      *//*
     MERCHANDISE_NOT_EXIST(20090, "该条形码对应的商品信息不存在");*/

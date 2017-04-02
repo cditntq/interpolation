@@ -99,13 +99,18 @@
 
         //拼接查询条件并执行查询计划
         model.getWhereConditionAndQuery = function () {
-            var dealStatus=$("#dealStatusId").val();
-            /*拼接查询条件*/
-            var tmpWhereCondtion = "jobCode=" + $("#jobCode").val() + "&jobSeekerPhone=" + $("#jobSeekerPhone").val();
-            if (dealStatus!='0'){
-                tmpWhereCondtion=tmpWhereCondtion+"&dealStatus="+dealStatus;
+            var map={
+                "jobCode":$("#jobCode").val(),
+                "jobSeekerPhone":$("#jobSeekerPhone").val()
             }
-            model.whereCondition = model.js2ko(tmpWhereCondtion);
+            /*var map = new Map(['jobCode', $("#jobCode").val()], ['jobSeekerPhone', $("#jobSeekerPhone").val()]);*/
+           // var dealStatus=$("#dealStatusId").val();
+            /*拼接查询条件*/
+            //var tmpWhereCondtion = "jobCode=" + $("#jobCode").val() + "&jobSeekerPhone=" + $("#jobSeekerPhone").val();
+         /*   if (dealStatus!='0'){
+                tmpWhereCondtion=tmpWhereCondtion+"&dealStatus="+dealStatus;
+            }*/
+            model.whereCondition = model.js2ko(map);
              model.dataQuery();
 
         };
@@ -375,7 +380,11 @@
                             <td data-bind="text:jobCode"></td>
                             <td data-bind="text:jobSeekerPhone"></td>
                             <td data-bind="text:jobSeekerWeixin"></td>
-                            <td data-bind="text:resumePath"></td>
+                            <td>
+                            <a data-bind="attr: { href: resumePath }">
+                             我的简历
+                            </a>
+                            </td>
                             <td>
 
 

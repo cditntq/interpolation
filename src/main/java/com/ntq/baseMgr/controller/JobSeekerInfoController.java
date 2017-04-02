@@ -1,10 +1,12 @@
 package com.ntq.baseMgr.controller;
 
 
+import com.ntq.baseMgr.page.Page;
 import com.ntq.baseMgr.po.JobSeekerInfosExtDto;
 import com.ntq.baseMgr.po.JobSeekerInfosVo;
 import com.ntq.baseMgr.service.JobSeekerInfosService;
 import com.ntq.baseMgr.util.ResponseResult;
+import com.ntq.baseMgr.util.StatusCode;
 import com.ntq.baseMgr.vo.UploadFileVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 /**
  * <p>@description:求职者相关信息控制器 </p>
@@ -74,15 +75,18 @@ public class JobSeekerInfoController {
     /**
      * 分页查询求职者信息
      *
-     * @param page           页码
-     * @param size           分页大小
-     * @param whereCondition 查询条件
+     * @param page 分页对象
      * @return
      */
     @RequestMapping(value = "/queryJobSeekerInfoListByCondition")
     @ResponseBody
-    public ResponseResult<List<JobSeekerInfosExtDto>> queryJobSeekerInfosListByCondition(int page, int size, String whereCondition) {
-         return jobSeekerInfosService.queryJobSeekerInfosListByCondition(page, size, whereCondition);
+    public Page<JobSeekerInfosExtDto> queryJobSeekerInfosListByCondition(Page<JobSeekerInfosExtDto> page) {
+        try {
+            return jobSeekerInfosService.queryJobSeekerInfosListByCondition(page);
+        } catch (Exception e) {
+          page.setSuccess(false);
+        }
+        return page;
     }
 
     /**
@@ -94,31 +98,57 @@ public class JobSeekerInfoController {
      */
     @RequestMapping(value = "/deleteJobSeekerInfoListByIds")
     @ResponseBody
-    public ResponseResult<String> deleteJobSeekerInfoListByIds(String ids) {
-//        return   jobSeekerInfosService.resumeFeedBack("247677858@qq.com","简历可能有问题——测试");
-        return jobSeekerInfosService.deleteBatchJobSeekerInfoList(ids);
+    public ResponseResult<Void> deleteJobSeekerInfoListByIds(String ids) {
+        ResponseResult<Void> result=new ResponseResult<>();
+        try {
+            return jobSeekerInfosService.deleteBatchJobSeekerInfoList(ids);
+        } catch (Exception e) {
+            result.setCode(StatusCode.DELETE_FAIL.getCode());
+            result.setMessage(StatusCode.DELETE_FAIL.getMessage());
+
+        }
+        return result;
     }
 
     /**
      * 更新简历状态
+     *
      * @param resumeDeliveryId 传递简历的id
-     * @param dealStatus 处理状态
+     * @param dealStatus       处理状态
      * @return
      */
     @RequestMapping(value = "/updateResumeDeliveryDealStatus")
     @ResponseBody
-    public ResponseResult<String> updateResumeDeliveryDealStatus(long resumeDeliveryId, int dealStatus){
-        return  jobSeekerInfosService.updateResumeDeliveryDealStatus(resumeDeliveryId,dealStatus);
+    public ResponseResult<Void> updateResumeDeliveryDealStatus(long resumeDeliveryId, int dealStatus) {
+        ResponseResult<Void> responseResult=new ResponseResult<>();
+        try {
+            responseResult= jobSeekerInfosService.updateResumeDeliveryDealStatus(resumeDeliveryId, dealStatus);
+        } catch (Exception e) {
+            responseResult.setCode(StatusCode.UPDATE_FAIL.getCode());
+            responseResult.setFailureMessage(StatusCode.UPDATE_FAIL.getMessage());
+
+        }
+        return responseResult;
     }
 
     /**
      * 简历相关意见反馈
-     * @param jobSeekerEmail 求职者邮箱
+     *
+     * @param jobSeekerEmail  求职者邮箱
      * @param feedBackMessage 反馈信息
      * @return
      */
-    public ResponseResult<String> resumeFeedBack(String jobSeekerEmail,String feedBackMessage){
-        return jobSeekerInfosService.resumeFeedBack(jobSeekerEmail,feedBackMessage);
+    @RequestMapping(value = "/resumeFeedBack")
+    @ResponseBody
+    public ResponseResult<String> resumeFeedBack(String jobSeekerEmail, String feedBackMessage) {
+        ResponseResult<String> responseResult = new ResponseResult<>();
+        try {
+            responseResult = jobSeekerInfosService.resumeFeedBack(jobSeekerEmail, feedBackMessage);
+        } catch (Exception e) {
+            responseResult.setCode(StatusCode.Fail.getCode());
+            responseResult.setFailureMessage(StatusCode.Fail.getMessage());
+        }
+        return responseResult;
     }
 
 }

@@ -44,7 +44,7 @@ public class MailSenderUtil {
     }
     @Test
     public void testSendMail(){
-       jobSeekerInfosService.resumeFeedBack("247677858@qq.com","简历可能有问题——测试");
+      /* jobSeekerInfosService.resumeFeedBack("247677858@qq.com","简历可能有问题——测试");*/
     }
 
 }

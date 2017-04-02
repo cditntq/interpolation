@@ -77,73 +77,26 @@ public class JobSeekerInfosServiceImpl extends BaseServiceImpl<JobSeekerInfos, L
     }
 
     @Override
-    public ResponseResult<List<JobSeekerInfosExtDto>> queryJobSeekerInfosListByCondition(int pageNo, int size, String whereCondition) {
-        ResponseResult<List<JobSeekerInfosExtDto>> responseResult = new ResponseResult<>();
-        try {
-
-            //1剪切拼接查询条件
-            Map<String, Object> map = new HashMap();
-            //1.1 拼接
-            String[] split = whereCondition.split("&");
-
-//            Stream.of(whereCondition.split("\\&")).
-            for (String s : split) {
-                String[] keyAndValue = s.split("=");
-                if (keyAndValue.length > 1) {
-                    switch (keyAndValue[0]) {
-                        case "jobCode":
-                            map.put("job_code", keyAndValue[1]);
-                            break;
-                        case "jobSeekerPhone":
-                            map.put("job_seeker_phone", keyAndValue[1]);
-                            break;
-                        case "dealStatus":
-                            map.put("deal_status", keyAndValue[1]);
-                            break;
-                        default:
-                            break;
-                    }
-
-                }
-            }
-            Page<JobSeekerInfosExtDto> page = new Page<>();
-            page.setPageNo(pageNo);
-            page.setPageSize(size);
-            page.setParams(map);
-            List<JobSeekerInfosExtDto> jobSeekerInfosExtDtos = jobSeekerInfosMapper.queryJobSeekerInfosListByCondition(page);
-//             List<JobSeekerInfosExtDto> jobSeekerInfosExtDtos = jobSeekerInfosMapper.queryJobSeekerInfosListByCondition((pageNo - 1) * size, pageNo * size, map);
-            //
-            page.setResults(jobSeekerInfosExtDtos);
-            responseResult.setData(jobSeekerInfosExtDtos);
-            responseResult.setCode(StatusCode.OK.getCode());
-            responseResult.setMessage(StatusCode.OK.getMessage());
-        } catch (Exception e) {
-            responseResult.setCode(StatusCode.Fail.getCode());
-            responseResult.setFailureMessage(StatusCode.Fail.getMessage());
-        }
-        return responseResult;
+    public Page<JobSeekerInfosExtDto> queryJobSeekerInfosListByCondition(Page<JobSeekerInfosExtDto> page) throws Exception {
+          /*  Page<JobSeekerInfosExtDto> pageResult=new Page<>();*/
+        List<JobSeekerInfosExtDto> jobSeekerInfosExtDtos = jobSeekerInfosMapper.queryJobSeekerInfosListByCondition(page);
+        page.setResults(jobSeekerInfosExtDtos);
+        page.setSuccess(true);
+        return page;
     }
 
     @Override
-    public ResponseResult<String> deleteBatchJobSeekerInfoList(String ids) {
-        ResponseResult<String> responseResult = new ResponseResult<>();
+    public ResponseResult<Void> deleteBatchJobSeekerInfoList(String ids) throws Exception{
+        ResponseResult<Void> responseResult = new ResponseResult<>();
         //解析字符串
         List<Long> idList = Arrays.asList(ids.split(",")).stream().map(s -> Long.parseLong(s.trim())).collect(Collectors.toList());
-        try {
-            //逻辑删除用户主表以及附表信息 todo 目前没有实现在同一个mybatis里面两个更新语句
-            //1.删除主表信息
-            jobSeekerInfosMapper.deleteBatchJobSeekerInfoListAndResumeDelivery(idList);
-            //2.删除附件信息
-            jobSeekerResumeDeliveryMapper.deleteBatchJobSeekerResumeDeliveryList(idList);
-            responseResult.setData(Boolean.TRUE.toString());
-            responseResult.setCode(StatusCode.OK.getCode());
-            responseResult.setMessage(StatusCode.OK.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            responseResult.setData(Boolean.FALSE.toString());
-            responseResult.setCode(StatusCode.Fail.getCode());
-            responseResult.setFailureMessage(StatusCode.Fail.getMessage());
-        }
+        //逻辑删除用户主表以及附表信息 todo 目前没有实现在同一个mybatis里面两个更新语句
+        //1.删除主表信息
+        jobSeekerInfosMapper.deleteBatchJobSeekerInfoListAndResumeDelivery(idList);
+        //2.删除附件信息
+        jobSeekerResumeDeliveryMapper.deleteBatchJobSeekerResumeDeliveryList(idList);
+        responseResult.setCode(StatusCode.DELETE_SUCCESS.getCode());
+        responseResult.setMessage(StatusCode.DELETE_SUCCESS.getMessage());
         return responseResult;
     }
 
@@ -162,22 +115,7 @@ public class JobSeekerInfosServiceImpl extends BaseServiceImpl<JobSeekerInfos, L
     }
 
 
-/*
-    */
-/**
- * 分页查询求职者信息
- *
- * @param page           页码
- * @param size           分页大小
- * @param whereCondition 查询条件
- * @return
- *//*
 
-    @Override
-    public List<JobSeekerInfos> queryJobSeekerInfosListByCondition(int page, int size, String whereCondition) {
-        return jobSeekerInfosMapper.queryJobSeekerInfosListByCondition((page - 1) * size, page * size, whereCondition);
-    }
-*/
 
     /**
      * 通过求职者信息id查看投递简历相信信息
@@ -219,17 +157,11 @@ public class JobSeekerInfosServiceImpl extends BaseServiceImpl<JobSeekerInfos, L
      * @return
      */
     @Override
-    public ResponseResult<String> updateResumeDeliveryDealStatus(long resumeDeliveryId, int dealStatus) {
-        ResponseResult<String> rep = new ResponseResult<>();
-        try {
+    public ResponseResult<Void> updateResumeDeliveryDealStatus(long resumeDeliveryId, int dealStatus) throws Exception{
+            ResponseResult<Void> rep = new ResponseResult<>();
             jobSeekerResumeDeliveryMapper.updateResumeDeliveryDealStatus(resumeDeliveryId, dealStatus);
-            rep.setCode(StatusCode.OK.getCode());
-            rep.setMessage(StatusCode.OK.getMessage());
-
-        } catch (Exception e) {
-            rep.setCode(StatusCode.Fail.getCode());
-            rep.setFailureMessage(StatusCode.Fail.getMessage());
-        }
+            rep.setCode(StatusCode.UPDATE_SUCCESS.getCode());
+            rep.setMessage(StatusCode.UPDATE_SUCCESS.getMessage());
         return rep;
     }
 
@@ -241,21 +173,16 @@ public class JobSeekerInfosServiceImpl extends BaseServiceImpl<JobSeekerInfos, L
      * @return
      */
     @Override
-    public ResponseResult<String> resumeFeedBack(String jobSeekerEmail, String feedBackMessage) {
+    public ResponseResult<String> resumeFeedBack(String jobSeekerEmail, String feedBackMessage) throws Exception {
         ResponseResult<String> responseResult = new ResponseResult<>();
-        try {
-            System.out.println(resumPath);
-            MailBean mailBean = new MailBean();
-            mailBean.setToEmails(new String[]{jobSeekerEmail});
-            mailBean.setSubject("简历修改");
-            mailBean.setContext(feedBackMessage);
-            mailSenderServiceImpl.sendMail(mailBean);
-            responseResult.setCode(StatusCode.MAIL_SENDER_SUCCESS.getCode());
-            responseResult.setMessage(StatusCode.MAIL_SENDER_SUCCESS.getMessage());
-        } catch (Exception e) {
-            responseResult.setCode(StatusCode.MAIL_SENDER_FAIL.getCode());
-            responseResult.setMessage(StatusCode.MAIL_SENDER_FAIL.getMessage());
-        }
+        System.out.println(resumPath);
+        MailBean mailBean = new MailBean();
+        mailBean.setToEmails(new String[]{jobSeekerEmail});
+        mailBean.setSubject("简历修改");
+        mailBean.setContext(feedBackMessage);
+        mailSenderServiceImpl.sendMail(mailBean);
+        responseResult.setCode(StatusCode.MAIL_SENDER_SUCCESS.getCode());
+        responseResult.setMessage(StatusCode.MAIL_SENDER_SUCCESS.getMessage());
         return responseResult;
     }
 }
