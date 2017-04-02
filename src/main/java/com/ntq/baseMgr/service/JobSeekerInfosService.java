@@ -1,13 +1,16 @@
 package com.ntq.baseMgr.service;
 
 
+import com.ntq.baseMgr.page.Page;
 import com.ntq.baseMgr.po.JobSeekerInfosVo;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.vo.UploadFileVo;
 import com.ntq.baseMgr.po.JobSeekerInfos;
 import com.ntq.baseMgr.po.JobSeekerInfosExtDto;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -39,20 +42,10 @@ public interface JobSeekerInfosService extends BaseService<JobSeekerInfos,Long> 
     /**
      * 分页查询求职者信息
      * @param page 页码
-     * @param size  分页大小
-     * @param whereCondition 查询条件
      * @return
      */
-   /* List<JobSeekerInfos> queryJobSeekerInfosListByCondition(int page, int size, String whereCondition);*/
+    Page<JobSeekerInfosExtDto> queryJobSeekerInfosListByCondition( Page<JobSeekerInfosExtDto> page) throws Exception;
 
-    ResponseResult<List<JobSeekerInfosExtDto>> queryJobSeekerInfosListByCondition(int page, int size, String whereCondition);
-
-/*    *//**
-     * 通过求职者信息id查看投递简历相信信息
-     * @param id
-     * @return
-     *//*
-    ResponseResult<JobSeekerInfosVo> getJobSeekerInfoVoById(Long id);*/
 
     /**
      * 批量删除求职者个人信息以及附件信息
@@ -60,7 +53,7 @@ public interface JobSeekerInfosService extends BaseService<JobSeekerInfos,Long> 
      * @return
      */
 
-    ResponseResult<String> deleteBatchJobSeekerInfoList(String ids);
+    ResponseResult<Void> deleteBatchJobSeekerInfoList(String ids) throws Exception;
 
     /**
      * 通过求职者信息id查看投递简历相信信息
@@ -70,11 +63,11 @@ public interface JobSeekerInfosService extends BaseService<JobSeekerInfos,Long> 
     ResponseResult<JobSeekerInfosVo> getJobSeekerInfoVoById(Long id);
     /**
      * 更新简历状态
-     * @param resumeDliveryId 传递简历的id
+     * @param resumeDeliveryId 传递简历的id
      * @param dealStatus 处理状态
      * @return
      */
-    ResponseResult<String> updateResumeDeliveryDealStatus(long resumeDliveryId, int dealStatus);
+    ResponseResult<Void> updateResumeDeliveryDealStatus(long resumeDeliveryId, int dealStatus) throws Exception;
 
     /**
      * 简历相关意见反馈
@@ -82,5 +75,5 @@ public interface JobSeekerInfosService extends BaseService<JobSeekerInfos,Long> 
      * @param feedBackMessage 反馈信息
      * @return
      */
-    ResponseResult<String> resumeFeedBack(String jobSeekerEmail, String feedBackMessage);
+    ResponseResult<String> resumeFeedBack(String jobSeekerEmail, String feedBackMessage) throws Exception;
 }

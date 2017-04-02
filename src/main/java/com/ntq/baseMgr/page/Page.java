@@ -23,7 +23,7 @@ public class Page<T> {
     private int totalPage;//总页数
     private List<T> results;//对应的当前页记录
     private Map<String, Object> params = new HashMap<>();//其他的参数我们把它分装成一个Map对象
-
+    private boolean success;//成功或者状态
 
 
     public void setTotalRecord(int totalRecord) {

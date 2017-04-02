@@ -43,20 +43,23 @@ function globalViewModel(params) {
     };
     //获取查询的数据 int page, int size, String whereCondition
     self.dataQuery = function () {
+        var page={
+            pageNo: self.ko2js(self.currentPage),
+            pageSize: self.ko2js(self.pageSize),
+            params: self.ko2js(self.whereCondition)
+        };
         $.ajax({
             type: "GET",
             contentType: 'application/json',
             url: self.entityQueryUrl,
             data: {
-                page: self.ko2js(self.currentPage),
-                size: self.ko2js(self.pageSize),
-                whereCondition: self.ko2js(self.whereCondition)
+                page:page
             },
             success: function (response) {
                 //清空数据重新加载
                 self.EntityValues([]);
-                // data = JSON.parse(data);//解析json数据
-                $.each(response.data, function (i, result) {
+
+                $.each(response.results, function (i, result) {
                     self.EntityValues.push(self.js2ko(result));
                 });
             }
