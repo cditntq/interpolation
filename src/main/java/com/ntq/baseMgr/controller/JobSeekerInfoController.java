@@ -44,7 +44,7 @@ public class JobSeekerInfoController {
      * @throws Exception
      */
     @RequestMapping(value = "/jobSeekerManagment")
-    public String index(HttpSession httpSession) throws Exception {
+    public String index(HttpSession httpSession) {
         return "jobSeekerManagment";
     }
 

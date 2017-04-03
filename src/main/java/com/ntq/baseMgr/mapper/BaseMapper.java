@@ -30,6 +30,7 @@ public interface BaseMapper<T, ID extends Serializable> {
 
     /**
      * 插入并返回主键
+     *
      * @param record
      * @return
      */
@@ -85,31 +86,6 @@ public interface BaseMapper<T, ID extends Serializable> {
 
     /**************************************扩展的方法后面继续添加*********************************************/
     /**
-     * 查询所有记录
-     *
-     * @return
-     */
-    List<T> selectAll();
-
-    /**
-     * 根据参数查询记录
-     *
-     * @param params
-     * @return
-     * @throws Exception
-     */
-    List<T> selectByPro(@Param("params") Map<String, Object> params);
-
-
-    /**
-     * 查询总记录条数
-     *
-     * @return
-     * @throws Exception
-     */
-    int totalCount() throws Exception;
-
-    /**
      * 分页查询
      *
      * @param start          起始页码
@@ -118,10 +94,6 @@ public interface BaseMapper<T, ID extends Serializable> {
      * @return
      */
     List<T> selectByCondition(@Param(value = "start") int start, @Param(value = "end") int end, @Param(value = "whereCondition") String whereCondition);
-
-
-/*
-    List<T> selectEntiesByCondition(@Param(value = "startPos") int startPos, @Param(value = "pageSize") int pageSize);*/
 
 
 }

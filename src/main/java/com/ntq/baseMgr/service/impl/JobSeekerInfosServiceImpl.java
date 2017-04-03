@@ -107,7 +107,7 @@ public class JobSeekerInfosServiceImpl extends BaseServiceImpl<JobSeekerInfos, L
     public Long insertAndReturnKey(JobSeekerInfos record) {
         record.setServerCreateDate(new Date());
         record.setServerUpdateDate(new Date());
-        record.setIsValid(true);//默认设置信息有效
+        record.setIsValid(true);//默认设置信息有效d
         return jobSeekerInfosMapper.insertAndGetKey(record);
     }
 

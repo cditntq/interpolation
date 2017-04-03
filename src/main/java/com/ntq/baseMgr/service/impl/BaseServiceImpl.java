@@ -130,49 +130,6 @@ public class BaseServiceImpl<T, ID extends Serializable> implements BaseService<
     }
 
 
-    /********************************扩展方法****************************************/
-    /**
-     * 查询总记录条数
-     *
-     * @return
-     * @throws Exception
-     */
-    public int totalCount() throws Exception {
-        return baseMapper.totalCount();
-    }
 
-    /**
-     * 查询所有记录
-     *
-     * @return
-     */
-    public List<T> selectAll() throws Exception {
-        return baseMapper.selectAll();
-    }
 
-    /**
-     * 根据参数查询记录
-     *
-     * @param params
-     * @return
-     * @throws Exception
-     */
-    public List<T> selectByPro(@Param("params") Map<String, Object> params) throws Exception {
-        return baseMapper.selectByPro(params);
-    }
-
-    /**
-     * 分页查询数据
-     *
-     * @param page           当前页码
-     * @param size           每页条数
-     * @param whereCondition 查询条件
-     * @return
-     * @throws Exception
-     */
-    public List<T> selectByCondition(int page, int size, String whereCondition) throws Exception {
-
-        //return baseMapper.selectEntiesByCondition((page - 1) * size, page * size);
-      return baseMapper.selectByCondition((page - 1) * size, page * size, whereCondition);
-    }
 }

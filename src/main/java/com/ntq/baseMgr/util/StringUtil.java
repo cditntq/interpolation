@@ -1,5 +1,9 @@
 package com.ntq.baseMgr.util;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * <p>@description: </p>
  *
@@ -11,5 +15,12 @@ package com.ntq.baseMgr.util;
  */
 public class StringUtil {
 
+    private StringUtil(){}
+
 //    public
+
+    public static List<Long> idsStr2List(String ids){
+        List<Long> idList = Arrays.asList(ids.split(",")).stream().map(s -> Long.parseLong(s.trim())).collect(Collectors.toList());
+        return idList;
+    }
 }

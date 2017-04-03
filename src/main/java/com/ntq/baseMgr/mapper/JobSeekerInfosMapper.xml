@@ -74,18 +74,7 @@
         #{isValid,jdbcType=BIT})
     </insert>
     <!--分页查询-->
-    <!--<select id="queryJobSeekerInfosListByCondition" resultMap="BaseResultVoMap">
-            SELECT
-            t1.id as id ,deal_status,job_code,job_seeker_name,job_seeker_phone,job_seeker_weixin,resume_path,t2.id as resumeDeliveryId
-            FROM itntqdb.job_seeker_infos t1, itntqdb.job_seeker_resume_delivery t2
-            WHERE t1.is_valid = 1
-            AND t1.id=t2.job_seeker_infos_id
-            <foreach collection="params.keys" item="key">
-                AND ${key} like CONCAT('%',#{params[${key}]},'%')
-            </foreach>
-            AND t2.is_valid=1
-            limit #{start},#{end}
-        </select>-->
+
     <select id="queryJobSeekerInfosListByCondition" resultMap="BaseResultVoMap"
             parameterType="com.ntq.baseMgr.page.Page">
         SELECT
@@ -104,7 +93,6 @@
             AND deal_status = #{params.deal_status}
         </if>
         AND t2.is_valid=1
-
     </select>
 
     <!--通过用户id查询当前求职者的个人信息-->
@@ -120,10 +108,6 @@
         <foreach collection="list" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>;
-        <!--   UPDATE  job_seeker_resume_delivery SET  is_valid=2 where  job_seeker_infos_id IN
-           <foreach collection="list" item="item" open="(" separator="," close=")">
-               #{item}
-           </foreach>;-->
     </update>
 
 </mapper>

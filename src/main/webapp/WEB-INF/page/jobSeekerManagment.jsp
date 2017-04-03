@@ -147,7 +147,7 @@
                     }*!/
                 }
             })*/
-        }
+        };
 
         /**
          * 隐藏或者展示按钮
@@ -186,27 +186,7 @@
                         求职者用户管理
                     </h3>
                 </div>
-<%--
-                <div class="title_right">
-                    <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                        &lt;%&ndash;  <div class="input-group">
-                              <input type="text" placeholder="职位编号" class="form-control">
-                              <input type="text" placeholder="求职者电话" class="form-control">
-                              <span class="input-group-btn">
-                              <button type="button" class="btn btn-default"></button>
-                          </span>
-                          </div>&ndash;%&gt;
-                        <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">First Name <span
-                                    class="required">*</span>
-                            </label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input type="text" id="first-name" required="required"
-                                       class="form-control col-md-7 col-xs-12">
-                            </div>
-                        </div>
-                    </div>
-                </div>--%>
+
             </div>
             <%--弹窗--%>
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"

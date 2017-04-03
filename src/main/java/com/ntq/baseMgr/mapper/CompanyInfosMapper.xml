@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ntq.baseMgr.mapper.CompanyInfosMapper">
+    <resultMap id="BaseResultMap" type="com.ntq.baseMgr.po.CompanyInfos">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="company_name" property="companyName" jdbcType="VARCHAR"/>
+        <result column="company_phone" property="companyPhone" jdbcType="BIGINT"/>
+        <result column="resume_mail" property="resumeMail" jdbcType="VARCHAR"/>
+        <result column="contact_weixin_id" property="contactWeixinId" jdbcType="VARCHAR"/>
+        <result column="recruit_type" property="recruitType" jdbcType="INTEGER"/>
+        <result column="company_type" property="companyType" jdbcType="INTEGER"/>
+        <result column="server_create_date" property="serverCreateDate" jdbcType="TIMESTAMP"/>
+        <result column="server_update_date" property="serverUpdateDate" jdbcType="TIMESTAMP"/>
+        <result column="is_valid" property="isValid" jdbcType="INTEGER"/>
+        <result column="recruiter_name" property="recruiterName" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.ntq.baseMgr.po.CompanyInfos" extends="BaseResultMap">
+        <result column="company_synopsis" property="companySynopsis" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, company_name, company_phone, resume_mail, contact_weixin_id, recruit_type, company_type, 
+    server_create_date, server_update_date, is_valid, recruiter_name
+  </sql>
+    <sql id="Blob_Column_List">
+    company_synopsis
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from company_infos
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <!--新增公司信息录入-->
+    <insert id="addCompanyInfos" parameterType="com.ntq.baseMgr.po.CompanyInfos">
+    insert into company_infos (company_name, company_phone,
+    resume_mail, contact_weixin_id, recruit_type,
+    company_type, server_create_date, server_update_date,
+    is_valid, recruiter_name, company_synopsis
+    )
+    values (#{companyName,jdbcType=VARCHAR}, #{companyPhone,jdbcType=BIGINT},
+    #{resumeMail,jdbcType=VARCHAR}, #{contactWeixinId,jdbcType=VARCHAR}, #{recruitType,jdbcType=BIT},
+    #{companyType,jdbcType=BIT}, #{serverCreateDate,jdbcType=TIMESTAMP}, #{serverUpdateDate,jdbcType=TIMESTAMP},
+    #{isValid,jdbcType=BIT}, #{recruiterName,jdbcType=VARCHAR}, #{companySynopsis,jdbcType=LONGVARCHAR}
+    )
+  </insert>
+    <!--通过id查询当前求公司信息-->
+    <select id="getJobSeekerInfoVoById" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>,
+        <include refid="Blob_Column_List"/>
+        from company_infos
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <!--分页查询 TODO 其他的查询条件-->
+    <select id="queryCompanyInfoListByCondition" resultMap="BaseResultMap"
+            parameterType="com.ntq.baseMgr.page.Page">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM company_infos
+        WHERE is_valid=1
+    </select>
+    <!--根据id批量删除记录-->
+    <update id="deleteCompanyInfoListByIds" parameterType="java.util.List">
+        UPDATE company_infos SET is_valid=2 WHERE id IN
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>;
+    </update>
+    <!--公司信息更新-->
+    <update id="updateCompanyInfos" parameterType="com.ntq.baseMgr.po.CompanyInfos">
+        update company_infos
+        set company_name = #{companyName,jdbcType=VARCHAR},
+        company_phone = #{companyPhone,jdbcType=BIGINT},
+        resume_mail = #{resumeMail,jdbcType=VARCHAR},
+        contact_weixin_id = #{contactWeixinId,jdbcType=VARCHAR},
+        recruit_type = #{recruitType,jdbcType=INTEGER},
+        company_type = #{companyType,jdbcType=INTEGER},
+        server_update_date = #{serverUpdateDate,jdbcType=TIMESTAMP},
+        is_valid = #{isValid,jdbcType=INTEGER},
+        recruiter_name = #{recruiterName,jdbcType=VARCHAR},
+        company_synopsis = #{companySynopsis,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+
+</mapper>

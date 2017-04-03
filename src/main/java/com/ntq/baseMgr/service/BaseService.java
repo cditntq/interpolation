@@ -84,39 +84,4 @@ public interface BaseService<T, ID extends Serializable> {
     int updateByPrimaryKey(T record) throws Exception;
 
 
-    /**************************************扩展的方法后面继续添加*********************************************/
-    /**
-     * 查询总记录条数
-     *
-     * @return
-     * @throws Exception
-     */
-    int totalCount() throws Exception;
-
-    /**
-     * 查询所有记录
-     *
-     * @return
-     */
-    List<T> selectAll() throws Exception;
-
-    /**
-     * 根据参数查询记录
-     *
-     * @param params
-     * @return
-     * @throws Exception
-     */
-    List<T> selectByPro(@Param("params") Map<String, Object> params) throws Exception;
-
-    /**
-     * 分页查询数据
-     *
-     * @param page
-     * @param size
-     * @param whereCondition
-     * @return
-     * @throws Exception
-     */
-    List<T> selectByCondition(int page, int size, String whereCondition) throws Exception;
 }

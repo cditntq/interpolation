@@ -11,9 +11,10 @@ import java.util.Map;
 /**
  *
  */
-public interface JobSeekerInfosMapper extends BaseMapper<JobSeekerInfos,Long> {
+public interface JobSeekerInfosMapper extends BaseMapper<JobSeekerInfos, Long> {
     /**
      * 插入求职者个人信息并返回key
+     *
      * @param record
      * @return
      */
@@ -21,16 +22,15 @@ public interface JobSeekerInfosMapper extends BaseMapper<JobSeekerInfos,Long> {
 
     /**
      * 分页查询求职者信息
-     * @param start 起始行下表
-     * @param end 最终
-     * @param params 查询条件
+     *
+     * @param page 起始行下表
      * @return
      */
-//    List<JobSeekerInfosExtDto> queryJobSeekerInfosListByCondition(@Param(value = "start") int start, @Param(value = "end") int end, @Param("params") Map<String, Object> params);
     List<JobSeekerInfosExtDto> queryJobSeekerInfosListByCondition(Page<JobSeekerInfosExtDto> page);
 
     /**
      * 通过求职者信息id查看投递简这的个人信息
+     *
      * @param id
      * @return
      */
@@ -38,6 +38,7 @@ public interface JobSeekerInfosMapper extends BaseMapper<JobSeekerInfos,Long> {
 
     /**
      * 逻辑删除用户以及其对应的简历附件
+     *
      * @param ids
      */
 
