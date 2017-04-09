@@ -178,3 +178,12 @@ CREATE TABLE `sys_user_role` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+CREATE TABLE `message_validate_record` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `phone_num` varchar(11) DEFAULT NULL COMMENT '发送短信的手机号码' ,
+  `token` varchar(10) DEFAULT NULL COMMENT '验证码',
+  `valide_time` timestamp NULL DEFAULT NULL COMMENT '发送时间',
+  `send_success` tinyint(2) DEFAULT NULL COMMENT '1:成功,2:失败',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8
