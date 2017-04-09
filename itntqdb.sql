@@ -59,7 +59,7 @@ CREATE TABLE `company_position_infos` (
   `server_update_date` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '服务器更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT ="职位信息表";
 
 -- ----------------------------
 --  Table structure for `job_seeker_infos`

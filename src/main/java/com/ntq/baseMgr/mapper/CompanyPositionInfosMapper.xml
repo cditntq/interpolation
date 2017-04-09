@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ntq.baseMgr.mapper.CompanyPositionInfosMapper" >
+  <resultMap id="BaseResultMap" type="com.ntq.baseMgr.po.CompanyPositionInfos" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="company_infos_id" property="companyInfosId" jdbcType="BIGINT" />
+    <result column="position_no" property="positionNo" jdbcType="BIGINT" />
+    <result column="position_name" property="positionName" jdbcType="VARCHAR" />
+    <result column="high_salary" property="highSalary" jdbcType="DECIMAL" />
+    <result column="low_salary" property="lowSalary" jdbcType="DECIMAL" />
+    <result column="position_type" property="positionType" jdbcType="INTEGER" />
+    <result column="qualifications_type" property="qualificationsType" jdbcType="INTEGER" />
+    <result column="low_working_life" property="lowWorkingLife" jdbcType="INTEGER" />
+    <result column="high_working_life" property="highWorkingLife" jdbcType="INTEGER" />
+    <result column="work_address" property="workAddress" jdbcType="VARCHAR" />
+    <result column="is_valid" property="isValid" jdbcType="INTEGER" />
+    <result column="server_create_date" property="serverCreateDate" jdbcType="TIMESTAMP" />
+    <result column="server_update_date" property="serverUpdateDate" jdbcType="TIMESTAMP" />
+    <result column="deadline" property="deadline" jdbcType="TIMESTAMP" />
+    <result column="is_discuss_personally" property="isDiscussPersonally" jdbcType="TINYINT" />
+    <result column="postion_status" property="postionStatus" jdbcType="BIGINT" />
+    <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.ntq.baseMgr.po.CompanyPositionInfosWithBLOBs" extends="BaseResultMap" >
+    <result column="position_desc" property="positionDesc" jdbcType="LONGVARCHAR" />
+    <result column="position_requirements" property="positionRequirements" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, company_infos_id, position_no, position_name, high_salary, low_salary, position_type,
+    qualifications_type, low_working_life, high_working_life, work_address, is_valid,
+    server_create_date, server_update_date, deadline, is_discuss_personally, postion_status,
+    publish_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    position_desc, position_requirements
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from company_position_infos
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from company_position_infos
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ntq.baseMgr.po.CompanyPositionInfosWithBLOBs" >
+    update company_position_infos
+    set company_infos_id = #{companyInfosId,jdbcType=BIGINT},
+      position_no = #{positionNo,jdbcType=BIGINT},
+      position_name = #{positionName,jdbcType=VARCHAR},
+      high_salary = #{highSalary,jdbcType=DECIMAL},
+      low_salary = #{lowSalary,jdbcType=DECIMAL},
+      position_type = #{positionType,jdbcType=INTEGER},
+      qualifications_type = #{qualificationsType,jdbcType=INTEGER},
+      low_working_life = #{lowWorkingLife,jdbcType=INTEGER},
+      high_working_life = #{highWorkingLife,jdbcType=INTEGER},
+      work_address = #{workAddress,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=INTEGER},
+      server_create_date = #{serverCreateDate,jdbcType=TIMESTAMP},
+      server_update_date = #{serverUpdateDate,jdbcType=TIMESTAMP},
+      position_desc = #{positionDesc,jdbcType=LONGVARCHAR},
+      position_requirements = #{positionRequirements,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ntq.baseMgr.po.CompanyPositionInfos" >
+    update company_position_infos
+    set company_infos_id = #{companyInfosId,jdbcType=BIGINT},
+      position_no = #{positionNo,jdbcType=BIGINT},
+      position_name = #{positionName,jdbcType=VARCHAR},
+      high_salary = #{highSalary,jdbcType=DECIMAL},
+      low_salary = #{lowSalary,jdbcType=DECIMAL},
+      position_type = #{positionType,jdbcType=INTEGER},
+      qualifications_type = #{qualificationsType,jdbcType=INTEGER},
+      low_working_life = #{lowWorkingLife,jdbcType=INTEGER},
+      high_working_life = #{highWorkingLife,jdbcType=INTEGER},
+      work_address = #{workAddress,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=INTEGER},
+      server_create_date = #{serverCreateDate,jdbcType=TIMESTAMP},
+      server_update_date = #{serverUpdateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <!--批量插入-->
+  <insert id="insertByBatch" parameterType="java.util.List">
+      insert into company_position_infos ( company_infos_id, position_no,
+      position_name, high_salary, low_salary,
+      position_type, qualifications_type, low_working_life,
+      high_working_life, work_address, is_valid,
+      server_create_date, server_update_date,
+      deadline, is_discuss_personally, postion_status,
+      publish_time, position_desc, position_requirements
+      )
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      ( #{companyInfosId,jdbcType=BIGINT}, #{positionNo,jdbcType=BIGINT},
+      #{positionName,jdbcType=VARCHAR}, #{highSalary,jdbcType=DECIMAL}, #{lowSalary,jdbcType=DECIMAL},
+      #{positionType,jdbcType=INTEGER}, #{qualificationsType,jdbcType=INTEGER}, #{lowWorkingLife,jdbcType=INTEGER},
+      #{highWorkingLife,jdbcType=INTEGER}, #{workAddress,jdbcType=VARCHAR}, #{isValid,jdbcType=INTEGER},
+      #{serverCreateDate,jdbcType=TIMESTAMP}, #{serverUpdateDate,jdbcType=TIMESTAMP},
+      #{deadline,jdbcType=TIMESTAMP}, #{isDiscussPersonally,jdbcType=TINYINT}, #{postionStatus,jdbcType=BIGINT},
+      #{publishTime,jdbcType=TIMESTAMP}, #{positionDesc,jdbcType=LONGVARCHAR}, #{positionRequirements,jdbcType=LONGVARCHAR}
+      )
+    </foreach>
+  </insert>
+<!--添加新的职位信息-->
+  <insert id="addCompanyPositionInfo" parameterType="com.ntq.baseMgr.po.CompanyPositionInfosWithBLOBs" >
+   insert into company_position_infos (company_infos_id, position_no,
+      position_name, high_salary, low_salary,
+      position_type, qualifications_type, low_working_life,
+      high_working_life, work_address, is_valid,
+      server_create_date, server_update_date,
+      deadline, is_discuss_personally, postion_status,
+      publish_time, position_desc, position_requirements
+      )
+    values ( #{companyInfosId,jdbcType=BIGINT}, #{positionNo,jdbcType=BIGINT},
+      #{positionName,jdbcType=VARCHAR}, #{highSalary,jdbcType=DECIMAL}, #{lowSalary,jdbcType=DECIMAL},
+      #{positionType,jdbcType=INTEGER}, #{qualificationsType,jdbcType=INTEGER}, #{lowWorkingLife,jdbcType=INTEGER},
+      #{highWorkingLife,jdbcType=INTEGER}, #{workAddress,jdbcType=VARCHAR}, #{isValid,jdbcType=INTEGER},
+      #{serverCreateDate,jdbcType=TIMESTAMP}, #{serverUpdateDate,jdbcType=TIMESTAMP},
+      #{deadline,jdbcType=TIMESTAMP}, #{isDiscussPersonally,jdbcType=TINYINT}, #{postionStatus,jdbcType=BIGINT},
+      #{publishTime,jdbcType=TIMESTAMP}, #{positionDesc,jdbcType=LONGVARCHAR}, #{positionRequirements,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+<!--通过id查看详细信息-->
+  <select id="getCompanyPositionInfoById" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />,
+    <include refid="Blob_Column_List" />
+    from company_position_infos
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <!--分页查询 分页查询-->
+ <!-- <select id="queryCompanyPositionInfoListByCondition" resultMap="BaseResultMap"
+          parameterType="com.ntq.baseMgr.page.Page">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM company_position_infos
+    WHERE is_valid=1
+
+
+  </select>-->
+<!--更新职位信息-->
+  <update id="updateCompanyPositionInfo" parameterType="com.ntq.baseMgr.po.CompanyPositionInfosWithBLOBs" >
+    update company_position_infos
+    set
+    position_no = #{positionNo,jdbcType=BIGINT},
+    position_name = #{positionName,jdbcType=VARCHAR},
+    high_salary = #{highSalary,jdbcType=DECIMAL},
+    low_salary = #{lowSalary,jdbcType=DECIMAL},
+    position_type = #{positionType,jdbcType=INTEGER},
+    qualifications_type = #{qualificationsType,jdbcType=INTEGER},
+    low_working_life = #{lowWorkingLife,jdbcType=INTEGER},
+    high_working_life = #{highWorkingLife,jdbcType=INTEGER},
+    work_address = #{workAddress,jdbcType=VARCHAR},
+    is_valid = #{isValid,jdbcType=INTEGER},
+    server_update_date = #{serverUpdateDate,jdbcType=TIMESTAMP},
+    deadline = #{deadline,jdbcType=TIMESTAMP},
+    is_discuss_personally = #{isDiscussPersonally,jdbcType=TINYINT},
+    postion_status = #{postionStatus,jdbcType=BIGINT},
+    publish_time = #{publishTime,jdbcType=TIMESTAMP},
+    position_desc = #{positionDesc,jdbcType=LONGVARCHAR},
+    position_requirements = #{positionRequirements,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

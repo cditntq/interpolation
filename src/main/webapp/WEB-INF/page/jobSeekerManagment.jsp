@@ -128,25 +128,24 @@
             var reqeustUrl="${baseUrl}/jobSeekerInfo/updateResumeDeliveryDealStatus.action";
             model.commonAjaxGetRequest(reqeustUrl,jsonData);
             //根据条件插入或者更新
-          /*  var jsonData={
+            var jsonData={
                 resumeDeliveryId:resumeDeliveryId,
                 dealStatus:dealStatus
-            };*/
-    /*
+            };
             $.ajax({
                 type: "GET",
-                url: ,
+                //url: ,
                 contentType: 'application/json',
                 data: jsonData,
                 dataType: 'json',
                 success: function (data) {
-                /!*    if (data == 1) {
+                /*    if (data == 1) {
                         //提示插入成功
                         //重新排版界面
 
-                    }*!/
+                    }*/
                 }
-            })*/
+            })
         };
 
         /**

@@ -5,7 +5,7 @@ import com.ntq.baseMgr.po.CompanyInfos;
 
 import java.util.List;
 
-public interface CompanyInfosMapper extends BaseMapper<CompanyInfos,Long>{
+public interface CompanyInfosMapper{
 
 
     /**
@@ -43,4 +43,18 @@ public interface CompanyInfosMapper extends BaseMapper<CompanyInfos,Long>{
      * @return
      */
     void updateCompanyInfos(CompanyInfos companyInfos);
+
+    /**
+     * 插入并返回主键
+     * @param record
+     * @return
+     */
+    Long insertAndGetKey(CompanyInfos record);
+
+    /**
+     * 通过电话号码拿到公司细细你
+     * @param companyPhone
+     * @return
+     */
+    CompanyInfos getCompanyInfoByPhoneNo(Long companyPhone);
 }

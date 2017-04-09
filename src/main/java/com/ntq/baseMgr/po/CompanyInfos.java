@@ -1,141 +1,69 @@
 package com.ntq.baseMgr.po;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
+
 /**
- * <p>@description:公司信息表 </p>
+ * <p>@description:公司简介 </p>
  *
  * @projectName: interpolation
  * @packageName: com.ntq.baseMgr.po
  * @className:
  * @author: shuangyang
- * @date: 17-3-30 下午10:17
+ * @date: 17-4-2 下午12:28
  */
-
-@Data
+@Getter
+@Setter
 public class CompanyInfos {
+    /*自增长ID*/
     private Long id;
-
+    /*公司名称*/
     private String companyName;
-
+   /*公司联系电话*/
     private Long companyPhone;
-
+   /*简历投递邮箱*/
     private String resumeMail;
-
+    /*联系人威信*/
     private String contactWeixinId;
-
-    /*private Boolean recruitType;
-
-    private Boolean companyType;*/
-
+   /*招聘类型*/
     private Integer recruitType;
-
+  /*企业类型*/
     private Integer companyType;
-
+    /*创建时间*/
     private Date serverCreateDate;
-
+    /*修改时间*/
     private Date serverUpdateDate;
-
+    /*是否为创业公司*/
+    private Integer isNewlyEstablished;
+    /*融资状况*/
+    private Integer financingType;
+    /*是否有效*/
     private Integer isValid;
-
+    /*招聘人姓名*/
     private String recruiterName;
-
+   /*公司简介*/
     private String companySynopsis;
 
-/*    public Long getId() {
-        return id;
+    @Override
+    public String toString() {
+        return "CompanyInfos{" +
+                "id=" + id +
+                ", companyName='" + companyName + '\'' +
+                ", companyPhone=" + companyPhone +
+                ", resumeMail='" + resumeMail + '\'' +
+                ", contactWeixinId='" + contactWeixinId + '\'' +
+                ", recruitType=" + recruitType +
+                ", companyType=" + companyType +
+                ", serverCreateDate=" + serverCreateDate +
+                ", serverUpdateDate=" + serverUpdateDate +
+                ", isNewlyEstablished=" + isNewlyEstablished +
+                ", financingType=" + financingType +
+                ", isValid=" + isValid +
+                ", recruiterName='" + recruiterName + '\'' +
+                ", companySynopsis='" + companySynopsis + '\'' +
+                '}';
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName == null ? null : companyName.trim();
-    }
-
-    public Long getCompanyPhone() {
-        return companyPhone;
-    }
-
-    public void setCompanyPhone(Long companyPhone) {
-        this.companyPhone = companyPhone;
-    }
-
-    public String getResumeMail() {
-        return resumeMail;
-    }
-
-    public void setResumeMail(String resumeMail) {
-        this.resumeMail = resumeMail == null ? null : resumeMail.trim();
-    }
-
-    public String getContactWeixinId() {
-        return contactWeixinId;
-    }
-
-    public void setContactWeixinId(String contactWeixinId) {
-        this.contactWeixinId = contactWeixinId == null ? null : contactWeixinId.trim();
-    }
-
-    public Boolean getRecruitType() {
-        return recruitType;
-    }
-
-    public void setRecruitType(Boolean recruitType) {
-        this.recruitType = recruitType;
-    }
-
-    public Boolean getCompanyType() {
-        return companyType;
-    }
-
-    public void setCompanyType(Boolean companyType) {
-        this.companyType = companyType;
-    }
-
-    public Date getServerCreateDate() {
-        return serverCreateDate;
-    }
-
-    public void setServerCreateDate(Date serverCreateDate) {
-        this.serverCreateDate = serverCreateDate;
-    }
-
-    public Date getServerUpdateDate() {
-        return serverUpdateDate;
-    }
-
-    public void setServerUpdateDate(Date serverUpdateDate) {
-        this.serverUpdateDate = serverUpdateDate;
-    }
-
-    public Boolean getIsValid() {
-        return isValid;
-    }
-
-    public void setIsValid(Boolean isValid) {
-        this.isValid = isValid;
-    }
-
-    public String getRecruiterName() {
-        return recruiterName;
-    }
-
-    public void setRecruiterName(String recruiterName) {
-        this.recruiterName = recruiterName == null ? null : recruiterName.trim();
-    }
-
-    public String getCompanySynopsis() {
-        return companySynopsis;
-    }
-
-    public void setCompanySynopsis(String companySynopsis) {
-        this.companySynopsis = companySynopsis == null ? null : companySynopsis.trim();
-    }*/
 }

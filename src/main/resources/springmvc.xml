@@ -25,12 +25,10 @@
             </list>
         </property>
     </bean>
-    <!--定义统一的异常处理器-->
-    <bean class="com.ntq.baseMgr.exception.CustomExceptionResolver"></bean>
     <!--视图配置-->
     <bean
             class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/page/"/>
+        <property name="prefix" value="/page/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
     <!--采用cglib动态代理-->

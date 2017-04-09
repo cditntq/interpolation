@@ -1,6 +1,7 @@
 package com.ntq.baseMgr.page;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +16,8 @@ import java.util.Map;
  * @author: shuangyang
  * @date: 17-4-2 下午12:28
  */
-@Data
+@Setter
+@Getter
 public class Page<T> {
     private int pageNo = 1;//页码，默认是第一页
     private int pageSize = 15;//每页显示的记录数，默认是15

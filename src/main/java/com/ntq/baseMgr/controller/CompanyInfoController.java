@@ -2,6 +2,7 @@ package com.ntq.baseMgr.controller;
 
 import com.ntq.baseMgr.page.Page;
 import com.ntq.baseMgr.po.CompanyInfos;
+import com.ntq.baseMgr.po.CompanyPositionInfosWithBLOBs;
 import com.ntq.baseMgr.service.CompanyInfoService;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.util.StatusCode;
@@ -9,11 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * <p>@description:公司信息的Controller </p>
@@ -32,44 +35,88 @@ public class CompanyInfoController {
     @Autowired
     private CompanyInfoService companyInfoService;//公司信息service
 
-    /**
+/*    *//**
      * 公司页面跳转
      *
      * @return
-     */
+     *//*
     @RequestMapping(value = "/companyInfosPage")
     public String index(HttpSession httpSession) {
         return "companyInfos";
-    }
+    }*/
+/*
+
+    */
+
+
 
 
     /**
-     * 公司信息录入
-     * @param companyInfos 公司实体
+     * 发布职位首页(两个按钮：1 新公司发布职位,2已经录入公司发布职位)
+     *
      * @return
      */
-    @RequestMapping(value = "/addCompanyInfos", method = RequestMethod.POST)
-    public ResponseResult<Void> addCompanyInfos(CompanyInfos companyInfos){
+    @RequestMapping(value = "/positionReleaseIndex")
+    public String positionReleaseIndex() {
+        return "companyPositionReleaseIndex";
+    }
+
+    /**
+     * 转跳验证
+     *
+     * @param session     TODO 这里需要处理的是当前的用户  但需要注意的在处理验证码失败的情况 返回操作的true 成功 能够转跳,false验证失败暂时没做
+     * @param phoneNumber 手机号码
+     * @param verifyCode  收到的验证码
+     * @return
+     */
+    @RequestMapping(value = "/verifyRedirect", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseResult<Void> verifyRedirect(HttpSession session, Long phoneNumber, String verifyCode) {
         ResponseResult<Void> responseResult = new ResponseResult<>();
+        //1.匹配验证码 //todo
         try {
-            responseResult=  companyInfoService.addCompanyInfos(companyInfos);
+            return companyInfoService.verifyRedirect(session, phoneNumber, verifyCode);
         } catch (Exception e) {
-            responseResult.setCode(StatusCode.INSERT_FAIL.getCode());
-            responseResult.setFailureMessage(StatusCode.INSERT_FAIL.getMessage());
+            responseResult.setCode(StatusCode.Fail.getCode());
+            responseResult.setFailureMessage(StatusCode.Fail.getMessage());
+
         }
         return responseResult;
     }
 
     /**
+     * 新的公司和其发布的职位录入
+     *
+     * @param companyInfo                       公司信息
+     * @param companyPositionInfosWithBLOBsList 对应公司要发布的职位信息
+     * @return
+     */
+    @RequestMapping(value = "/addCompanyInfoWithPositionInfoList",method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseResult<Void> addCompanyInfoWithPositionInfoList(@RequestBody CompanyInfos companyInfo, @RequestBody  List<CompanyPositionInfosWithBLOBs> companyPositionInfosWithBLOBsList) {
+        ResponseResult<Void> responseResult = new ResponseResult<>();
+        try {
+            responseResult = companyInfoService.addCompanyInfoWithPositionInfoList(companyInfo, companyPositionInfosWithBLOBsList);
+        } catch (Exception e) {
+            responseResult.setCode(StatusCode.INSERT_FAIL.getCode());
+            responseResult.setFailureMessage(StatusCode.INSERT_FAIL.getMessage());
+        }
+        return responseResult;
+
+    }
+
+
+    /**
      * 公司信息更新
+     *
      * @param companyInfos 公司实体
      * @return
      */
     @RequestMapping(value = "/updateCompanyInfos", method = RequestMethod.POST)
-    public ResponseResult<Void> updateCompanyInfos(CompanyInfos companyInfos)  {
+    public ResponseResult<Void> updateCompanyInfos(CompanyInfos companyInfos) {
         ResponseResult<Void> responseResult = new ResponseResult<>();
         try {
-            responseResult= companyInfoService.updateCompanyInfos(companyInfos);
+            responseResult = companyInfoService.updateCompanyInfos(companyInfos);
         } catch (Exception e) {
             responseResult.setCode(StatusCode.UPDATE_FAIL.getCode());
             responseResult.setFailureMessage(StatusCode.UPDATE_FAIL.getMessage());
@@ -88,7 +135,7 @@ public class CompanyInfoController {
     public ResponseResult<CompanyInfos> getCompanyInfosById(Long id) {
         ResponseResult<CompanyInfos> responseResult = new ResponseResult<>();
         try {
-            responseResult= companyInfoService.getJobSeekerInfoVoById(id);
+            responseResult = companyInfoService.getJobSeekerInfoVoById(id);
         } catch (Exception e) {
             responseResult.setCode(StatusCode.UPDATE_FAIL.getCode());
             responseResult.setFailureMessage(StatusCode.UPDATE_FAIL.getMessage());
@@ -106,7 +153,7 @@ public class CompanyInfoController {
     @ResponseBody
     public Page<CompanyInfos> queryCompanyInfoListByCondition(Page<CompanyInfos> page) {
         try {
-            page= companyInfoService.queryCompanyInfoListByCondition(page);
+            page = companyInfoService.queryCompanyInfoListByCondition(page);
         } catch (Exception e) {
             page.setSuccess(false);
         }
@@ -124,7 +171,7 @@ public class CompanyInfoController {
     public ResponseResult<Void> deleteCompanyInfoListByIds(String ids) {
         ResponseResult<Void> result = new ResponseResult<>();
         try {
-            result= companyInfoService.deleteCompanyInfoListByIds(ids);
+            result = companyInfoService.deleteCompanyInfoListByIds(ids);
         } catch (Exception e) {
             result.setCode(StatusCode.DELETE_FAIL.getCode());
             result.setFailureMessage(StatusCode.DELETE_FAIL.getMessage());
@@ -132,5 +179,10 @@ public class CompanyInfoController {
         }
         return result;
     }
+    @RequestMapping(value = "/getTest")
+    @ResponseBody
+    public CompanyInfos getTest(){
+        return companyInfoService.getTest();
 
+    }
 }

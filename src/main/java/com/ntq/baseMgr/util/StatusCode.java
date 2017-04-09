@@ -56,6 +56,7 @@ public enum StatusCode {
         this.message = message;
     }
 
+
     public static StatusCode getStatusCode(int code) {
         return valueOf(code);
     }

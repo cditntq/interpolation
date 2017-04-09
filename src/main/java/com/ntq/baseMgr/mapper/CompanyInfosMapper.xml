@@ -11,6 +11,8 @@
         <result column="company_type" property="companyType" jdbcType="INTEGER"/>
         <result column="server_create_date" property="serverCreateDate" jdbcType="TIMESTAMP"/>
         <result column="server_update_date" property="serverUpdateDate" jdbcType="TIMESTAMP"/>
+        <result column="is_newly_established" property="isNewlyEstablished" jdbcType="INTEGER"/>
+        <result column="financing_type" property="financingType" jdbcType="INTEGER"/>
         <result column="is_valid" property="isValid" jdbcType="INTEGER"/>
         <result column="recruiter_name" property="recruiterName" jdbcType="VARCHAR"/>
     </resultMap>
@@ -18,9 +20,10 @@
         <result column="company_synopsis" property="companySynopsis" jdbcType="LONGVARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, company_name, company_phone, resume_mail, contact_weixin_id, recruit_type, company_type, 
-    server_create_date, server_update_date, is_valid, recruiter_name
-  </sql>
+        id, company_name, company_phone, resume_mail, contact_weixin_id, recruit_type, company_type,
+        server_create_date, server_update_date, is_newly_established, financing_type, is_valid,
+        recruiter_name
+    </sql>
     <sql id="Blob_Column_List">
     company_synopsis
   </sql>
@@ -32,6 +35,25 @@
         from company_infos
         where id = #{id,jdbcType=BIGINT}
     </select>
+
+
+    <!--插入并返回主键ID-->
+    <insert id="insertAndGetKey" parameterType="com.ntq.baseMgr.po.CompanyInfos">
+        <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS ID
+        </selectKey>
+        insert into company_infos ( company_name, company_phone,
+        resume_mail, contact_weixin_id, recruit_type,
+        company_type, server_create_date, server_update_date,
+        is_newly_established, financing_type, is_valid,
+        recruiter_name, company_synopsis)
+        values ( #{companyName,jdbcType=VARCHAR}, #{companyPhone,jdbcType=BIGINT},
+        #{resumeMail,jdbcType=VARCHAR}, #{contactWeixinId,jdbcType=VARCHAR}, #{recruitType,jdbcType=INTEGER},
+        #{companyType,jdbcType=INTEGER}, #{serverCreateDate,jdbcType=TIMESTAMP}, #{serverUpdateDate,jdbcType=TIMESTAMP},
+        #{isNewlyEstablished,jdbcType=INTEGER}, #{financingType,jdbcType=INTEGER}, #{isValid,jdbcType=INTEGER},
+        #{recruiterName,jdbcType=VARCHAR}, #{companySynopsis,jdbcType=LONGVARCHAR})
+    </insert>
+
     <!--新增公司信息录入-->
     <insert id="addCompanyInfos" parameterType="com.ntq.baseMgr.po.CompanyInfos">
     insert into company_infos (company_name, company_phone,
@@ -45,6 +67,8 @@
     #{isValid,jdbcType=BIT}, #{recruiterName,jdbcType=VARCHAR}, #{companySynopsis,jdbcType=LONGVARCHAR}
     )
   </insert>
+
+
     <!--通过id查询当前求公司信息-->
     <select id="getJobSeekerInfoVoById" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long">
         select
@@ -83,6 +107,14 @@
         company_synopsis = #{companySynopsis,jdbcType=LONGVARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
+       <!--根据电话号码获取用户信息-->
+    <select id="getCompanyInfoByPhoneNo" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM company_infos
+        WHERE
+        company_phone=#{companyPhone,jdbcType=BIGINT}
+    </select>
 
 
 </mapper>

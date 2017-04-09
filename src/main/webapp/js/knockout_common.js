@@ -58,7 +58,6 @@ function globalViewModel(params) {
             success: function (response) {
                 //清空数据重新加载
                 self.EntityValues([]);
-
                 $.each(response.results, function (i, result) {
                     self.EntityValues.push(self.js2ko(result));
                 });

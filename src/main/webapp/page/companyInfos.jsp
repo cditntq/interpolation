@@ -67,12 +67,7 @@
         entityDeleteUrl: function () {
             return "${baseUrl}/companyInfo/deleteCompanyInfoListByIds.action";
         },
-        //总共记录查询
-        totalCountQueryUrl: function () {
-            // return "${baseUrl}/companyInfo/totalCount.action";
-
-        },
-        //返回选中框的标题
+            //返回选中框的标题
         checkedboxName: function () {
             return "itemCheck";
         }

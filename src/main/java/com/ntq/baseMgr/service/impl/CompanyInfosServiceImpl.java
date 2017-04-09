@@ -1,9 +1,11 @@
 package com.ntq.baseMgr.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.ntq.baseMgr.mapper.CompanyInfosMapper;
-import com.ntq.baseMgr.mapper.JobSeekerInfosMapper;
+import com.ntq.baseMgr.mapper.CompanyPositionInfosMapper;
 import com.ntq.baseMgr.page.Page;
 import com.ntq.baseMgr.po.CompanyInfos;
+import com.ntq.baseMgr.po.CompanyPositionInfosWithBLOBs;
 import com.ntq.baseMgr.service.CompanyInfoService;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.util.StatusCode;
@@ -11,10 +13,9 @@ import com.ntq.baseMgr.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * <p>@description:公司信息Service接口实现 </p>
@@ -26,10 +27,12 @@ import java.util.stream.Collectors;
  * @date: 17-4-3 下午5:42
  */
 @Service
-public class CompanyInfosServiceImpl extends BaseServiceImpl<CompanyInfos, Long> implements CompanyInfoService {
+public class CompanyInfosServiceImpl implements CompanyInfoService {
 
     @Autowired
-    private CompanyInfosMapper companyInfosMapper;
+    private CompanyInfosMapper companyInfosMapper;//公司Dao接口
+    @Autowired
+    private CompanyPositionInfosMapper companyPositionInfoMapper;//公司职位Dao接口
 
     /**
      * 新增公司信息录入
@@ -112,5 +115,64 @@ public class CompanyInfosServiceImpl extends BaseServiceImpl<CompanyInfos, Long>
         responseResult.setCode(StatusCode.UPDATE_SUCCESS.getCode());
         responseResult.setMessage(StatusCode.UPDATE_SUCCESS.getMessage());
         return responseResult;
+    }
+
+    @Override
+    public ResponseResult<Void> addCompanyInfoWithPositionInfoList(CompanyInfos companyInfo, List<CompanyPositionInfosWithBLOBs> companyPositionInfosWithBLOBsList) {
+        ResponseResult<Void> responseResult = new ResponseResult<>();
+        /*设置创建和更新时间*/
+        Date currentDate = new Date();
+        companyInfo.setServerCreateDate(currentDate);
+        companyInfo.setServerUpdateDate(currentDate);
+        // 1.插入公司信息并获取返回的主键
+        companyInfosMapper.insertAndGetKey(companyInfo);
+        // Long companyInfoId = companyInfo.getId();
+
+        Long companyInfoId = 6L;
+
+        //2.插入职位信息
+        //2.1 设置职位创建和更新时间
+        for (CompanyPositionInfosWithBLOBs companyPositionInfo : companyPositionInfosWithBLOBsList) {
+            companyPositionInfo.setServerUpdateDate(currentDate);
+            companyPositionInfo.setServerCreateDate(currentDate);
+            companyPositionInfo.setCompanyInfosId(companyInfoId);//设置关联的公司信息的主表id
+
+            //拼接职位编号 todo
+    /*        new StringBuilder().append(companyInfo.getCompanyType()).append(companyInfoId).*/
+        }
+        //2.2 批量插入
+        companyPositionInfoMapper.insertByBatch(companyPositionInfosWithBLOBsList);
+        //companyInfosMapper.updateCompanyInfos(companyInfos);
+        responseResult.setCode(StatusCode.INSERT_SUCCESS.getCode());
+        responseResult.setMessage(StatusCode.INSERT_SUCCESS.getMessage());
+        return null;
+    }
+
+
+    @Override
+    public ResponseResult<Void> verifyRedirect(HttpSession session, Long phoneNumber, String verifyCode) {
+
+        ResponseResult<Void> responseResult = new ResponseResult<>();
+        //1.匹配验证码 //todo
+        //2.查找公司信息有无与该号码匹配的的公司
+        Long phoneNo = 15123247202L;
+        CompanyInfos companyInfo = companyInfosMapper.getCompanyInfoByPhoneNo(phoneNo);
+        System.out.println(companyInfo.toString());
+        if (companyInfo != null) {
+            session.setAttribute("companyInfo", companyInfo);
+            //转跳到 到职位信息的列表
+            responseResult.setCode(StatusCode.OK.getCode());
+            responseResult.setMessage(StatusCode.OK.getMessage());
+        } else {
+            responseResult.setCode(StatusCode.Fail.getCode());
+            responseResult.setFailureMessage(StatusCode.Fail.getMessage());
+        }
+        return responseResult;
+    }
+
+    @Override
+    public CompanyInfos getTest() {
+        Long phoneNo = 15123247202L;
+        return companyInfosMapper.getCompanyInfoByPhoneNo(phoneNo);
     }
 }
