@@ -59,10 +59,9 @@ public interface CompanyInfoService {
     /**
      * 新的公司和其发布的职位录入
      * @param companyInfo 公司信息
-     * @param companyPositionInfosWithBLOBsList 对应公司要发布的职位信息
      * @return
      */
-    ResponseResult<Void> addCompanyInfoWithPositionInfoList(CompanyInfos companyInfo, List<CompanyPositionInfosWithBLOBs> companyPositionInfosWithBLOBsList);
+    ResponseResult<Void> addCompanyInfoWithPositionInfoList(CompanyInfos companyInfo);
     /**
      * 转跳验证
      *

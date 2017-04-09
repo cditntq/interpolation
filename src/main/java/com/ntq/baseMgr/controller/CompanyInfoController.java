@@ -88,15 +88,14 @@ public class CompanyInfoController {
      * 新的公司和其发布的职位录入
      *
      * @param companyInfo                       公司信息
-     * @param companyPositionInfosWithBLOBsList 对应公司要发布的职位信息
      * @return
      */
     @RequestMapping(value = "/addCompanyInfoWithPositionInfoList",method = RequestMethod.POST)
     @ResponseBody
-    public ResponseResult<Void> addCompanyInfoWithPositionInfoList(@RequestBody CompanyInfos companyInfo, @RequestBody  List<CompanyPositionInfosWithBLOBs> companyPositionInfosWithBLOBsList) {
+    public ResponseResult<Void> addCompanyInfoWithPositionInfoList(@RequestBody CompanyInfos companyInfo) {
         ResponseResult<Void> responseResult = new ResponseResult<>();
         try {
-            responseResult = companyInfoService.addCompanyInfoWithPositionInfoList(companyInfo, companyPositionInfosWithBLOBsList);
+            responseResult = companyInfoService.addCompanyInfoWithPositionInfoList(companyInfo);
         } catch (Exception e) {
             responseResult.setCode(StatusCode.INSERT_FAIL.getCode());
             responseResult.setFailureMessage(StatusCode.INSERT_FAIL.getMessage());

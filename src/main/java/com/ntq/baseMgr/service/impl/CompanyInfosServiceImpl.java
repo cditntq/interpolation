@@ -118,7 +118,7 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
     }
 
     @Override
-    public ResponseResult<Void> addCompanyInfoWithPositionInfoList(CompanyInfos companyInfo, List<CompanyPositionInfosWithBLOBs> companyPositionInfosWithBLOBsList) {
+    public ResponseResult<Void> addCompanyInfoWithPositionInfoList(CompanyInfos companyInfo) {
         ResponseResult<Void> responseResult = new ResponseResult<>();
         /*设置创建和更新时间*/
         Date currentDate = new Date();
@@ -132,7 +132,7 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
 
         //2.插入职位信息
         //2.1 设置职位创建和更新时间
-        for (CompanyPositionInfosWithBLOBs companyPositionInfo : companyPositionInfosWithBLOBsList) {
+        for (CompanyPositionInfosWithBLOBs companyPositionInfo : companyInfo.getCompanyPositionInfosWithBLOBsList()) {
             companyPositionInfo.setServerUpdateDate(currentDate);
             companyPositionInfo.setServerCreateDate(currentDate);
             companyPositionInfo.setCompanyInfosId(companyInfoId);//设置关联的公司信息的主表id
@@ -141,7 +141,7 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
     /*        new StringBuilder().append(companyInfo.getCompanyType()).append(companyInfoId).*/
         }
         //2.2 批量插入
-        companyPositionInfoMapper.insertByBatch(companyPositionInfosWithBLOBsList);
+        companyPositionInfoMapper.insertByBatch(companyInfo.getCompanyPositionInfosWithBLOBsList());
         //companyInfosMapper.updateCompanyInfos(companyInfos);
         responseResult.setCode(StatusCode.INSERT_SUCCESS.getCode());
         responseResult.setMessage(StatusCode.INSERT_SUCCESS.getMessage());

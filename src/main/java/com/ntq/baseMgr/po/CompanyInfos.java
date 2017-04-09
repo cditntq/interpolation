@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>@description:公司简介 </p>
@@ -45,7 +46,8 @@ public class CompanyInfos {
     private String recruiterName;
    /*公司简介*/
     private String companySynopsis;
-
+    /*公司职位信息列表 */
+    private List<CompanyPositionInfosWithBLOBs> companyPositionInfosWithBLOBsList ;
     @Override
     public String toString() {
         return "CompanyInfos{" +
