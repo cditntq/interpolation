@@ -65,6 +65,7 @@ public class CompanyInfos {
                 ", isValid=" + isValid +
                 ", recruiterName='" + recruiterName + '\'' +
                 ", companySynopsis='" + companySynopsis + '\'' +
+                ", companyPositionInfosWithBLOBsList='" + companyPositionInfosWithBLOBsList + '\'' +
                 '}';
     }
 

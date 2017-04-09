@@ -1,13 +1,14 @@
 package com.ntq.baseMgr.po;
 
 import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class CompanyPositionInfosWithBLOBs extends CompanyPositionInfos {
     /*职位描述*/
-    @Getter
     private String positionDesc;
     /*职位要求*/
-    @Getter
     private String positionRequirements;
 
 
