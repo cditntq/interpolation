@@ -38,10 +38,11 @@ CREATE TABLE `company_infos` (
 
 -- ----------------------------
 --  Table structure for `company_position_infos`
+DROP TABLE IF EXISTS  company_position_infos ;
 CREATE TABLE `company_position_infos` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `company_infos_id` bigint(20) NOT NULL COMMENT '公司信息ID',
-  `position_no` bigint(20) NOT NULL COMMENT '职位编号：企业类别（民营、国企、外企）+企业信息表主键ID+年+月+日+三位编号。11170402001',
+  `position_no` bigint(20) NOT NULL COMMENT '职位编号：年月日+00001 如：2017040100001',
   `position_name` varchar(100) COLLATE utf8_bin NOT NULL COMMENT '职位信息',
   `high_salary` decimal(18,2) NOT NULL DEFAULT '0.00' COMMENT '最高薪水',
   `low_salary` decimal(18,2) NOT NULL DEFAULT '0.00' COMMENT '最低薪水',
@@ -57,11 +58,11 @@ CREATE TABLE `company_position_infos` (
   `server_update_date` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '服务器更新时间',
   `deadline` datetime NOT NULL COMMENT '有效期，职位有效期为内推圈发布职位的时间往后推两周',
   `is_discuss_personally` tinyint(4) NOT NULL DEFAULT '2' COMMENT '是否面议。1-是，2-否',
-  `postion_status` bigint(1) NOT NULL DEFAULT '1' COMMENT '职位状态,1-待审核、2-已发布、3-拒绝发布、4-待下架、5-已下架',
+  `postion_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '职位状态,1-待审核、2-已发布、3-拒绝发布、4-待下架、5-已下架',
   `publish_time` timestamp NULL DEFAULT NULL COMMENT '发布时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='职位信息'
 
 -- ----------------------------
 --  Table structure for `job_seeker_infos`
