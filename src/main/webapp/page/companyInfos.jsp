@@ -24,7 +24,7 @@
     var originValue = ko.observable({
         id: 0,
         /*企业名称*/
-        companyName: '',
+        companyName: 'test',
         /*公司电话*/
         companyPhone: '',
         /*简历投递邮箱*/
@@ -83,19 +83,35 @@
 //        model.getPage = ko.observable(1);
         //拼接查询条件并执行查询计划
         model.getWhereConditionAndQuery = function () {
-            var map = {
+       /*     var map = {
                 "jobCode": $("#jobCode").val(),
                 "jobSeekerPhone": $("#jobSeekerPhone").val()
-            }
-            /*var map = new Map(['jobCode', $("#jobCode").val()], ['jobSeekerPhone', $("#jobSeekerPhone").val()]);*/
-            // var dealStatus=$("#dealStatusId").val();
-            /*拼接查询条件*/
-            //var tmpWhereCondtion = "jobCode=" + $("#jobCode").val() + "&jobSeekerPhone=" + $("#jobSeekerPhone").val();
-            /*   if (dealStatus!='0'){
-             tmpWhereCondtion=tmpWhereCondtion+"&dealStatus="+dealStatus;
-             }*/
-            model.whereCondition = model.js2ko(map);
-            model.dataQuery();
+            };*/
+            var list=[];
+            var data1={"positionName":"test"};
+        //    var data2={"userName":"ququ","address":"gr"};
+            list.push(data1);
+            var data={
+                companyInfo:model.ko2js(originValue),
+                companyPositionInfoList:list
+            };
+            $.ajax({
+                type: "post",
+                url: "${baseUrl}/companyInfo/addCompanyInfoWithPositionInfoList.action",
+                contentType: 'application/json',
+                data:JSON.stringify(data),
+                dataType: 'json',
+                success: function (data) {
+                    if (data == 1) {
+                        //提示插入成功
+                        //重新排版界面
+
+                    }
+                }
+            })
+
+            /*model.whereCondition = model.js2ko(map);
+            model.dataQuery();*/
 
         };
 

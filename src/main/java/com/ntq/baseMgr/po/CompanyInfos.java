@@ -46,27 +46,5 @@ public class CompanyInfos {
     private String recruiterName;
    /*公司简介*/
     private String companySynopsis;
-    /*公司职位信息列表 */
-    private List<CompanyPositionInfosWithBLOBs> companyPositionInfosWithBLOBsList ;
-    @Override
-    public String toString() {
-        return "CompanyInfos{" +
-                "id=" + id +
-                ", companyName='" + companyName + '\'' +
-                ", companyPhone=" + companyPhone +
-                ", resumeMail='" + resumeMail + '\'' +
-                ", contactWeixinId='" + contactWeixinId + '\'' +
-                ", recruitType=" + recruitType +
-                ", companyType=" + companyType +
-                ", serverCreateDate=" + serverCreateDate +
-                ", serverUpdateDate=" + serverUpdateDate +
-                ", isNewlyEstablished=" + isNewlyEstablished +
-                ", financingType=" + financingType +
-                ", isValid=" + isValid +
-                ", recruiterName='" + recruiterName + '\'' +
-                ", companySynopsis='" + companySynopsis + '\'' +
-                ", companyPositionInfosWithBLOBsList='" + companyPositionInfosWithBLOBsList + '\'' +
-                '}';
-    }
 
 }

@@ -9,15 +9,26 @@
     <result column="server_create_date" property="serverCreateDate" jdbcType="TIMESTAMP" />
     <result column="server_update_date" property="serverUpdateDate" jdbcType="TIMESTAMP" />
     <result column="deal_status" property="dealStatus" jdbcType="INTEGER" />
-    <result column="is_valid" property="isValid" jdbcType="BIT" />
+    <result column="is_valid" property="isValid" jdbcType="INTEGER" />
+    <result column="is_feedback" property="isFeedback" jdbcType="INTEGER" />
+    <result column="resume_name" property="resumeName" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.ntq.baseMgr.po.JobSeekerResumeDeliveryWithBLOBs" extends="BaseResultMap" >
+    <result column="feedback_content" property="feedbackContent" jdbcType="LONGVARCHAR" />
+    <result column="not_pass_reason" property="notPassReason" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, job_seeker_infos_id, job_code, resume_path, server_create_date, server_update_date, 
-    deal_status, is_valid
+    id, job_seeker_infos_id, job_code, resume_path, server_create_date, server_update_date,
+    deal_status, is_valid, is_feedback, resume_name
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+  <sql id="Blob_Column_List" >
+    feedback_content, not_pass_reason
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from job_seeker_resume_delivery
     where id = #{id,jdbcType=BIGINT}
   </select>

@@ -16,7 +16,7 @@ function globalViewModel(params) {
     self.entityAddUrl = params.entityAddUrl();//新增实体url
     self.entityUpdateUrl = params.entityUpdateUrl();//更新实体url
     self.entityDeleteUrl = params.entityDeleteUrl();//删除实体url
-    self.totalCountQueryUrl = params.totalCountQueryUrl();//
+  //  self.totalCountQueryUrl = params.totalCountQueryUrl();//
     self.isAdd = false;//是否增加
     self.checkedboxName = params.checkedboxName();//checkbox的指定名称
     self.checkedIds = ko.observable();
@@ -26,9 +26,9 @@ function globalViewModel(params) {
     //初始化集合操作
     self.init = function () {
         self.dataQuery();
-        self.pageCountQuery();
+       // self.pageCountQuery();
     };
-    //获取分页数量 并进行分页相关处理
+/*    //获取分页数量 并进行分页相关处理
     self.pageCountQuery = function () {
         $.ajax({
             type: "GET",
@@ -40,7 +40,7 @@ function globalViewModel(params) {
             }
         })
 
-    };
+    };*/
     //获取查询的数据 int page, int size, String whereCondition
     self.dataQuery = function () {
         var page={

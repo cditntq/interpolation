@@ -1,7 +1,11 @@
 package com.ntq.baseMgr.po;
 
-import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.Date;
+@Getter
+@Setter
 public class JobSeekerResumeDelivery {
     private Long id;
 
@@ -17,69 +21,11 @@ public class JobSeekerResumeDelivery {
 
     private Integer dealStatus;
 
-    private Boolean isValid;
+    private Integer isValid;
 
-    public Long getId() {
-        return id;
-    }
+    private Integer isFeedback;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private String resumeName;
 
-    public Long getJobSeekerInfosId() {
-        return jobSeekerInfosId;
-    }
 
-    public void setJobSeekerInfosId(Long jobSeekerInfosId) {
-        this.jobSeekerInfosId = jobSeekerInfosId;
-    }
-
-    public String getJobCode() {
-        return jobCode;
-    }
-
-    public void setJobCode(String jobCode) {
-        this.jobCode = jobCode == null ? null : jobCode.trim();
-    }
-
-    public String getResumePath() {
-        return resumePath;
-    }
-
-    public void setResumePath(String resumePath) {
-        this.resumePath = resumePath == null ? null : resumePath.trim();
-    }
-
-    public Date getServerCreateDate() {
-        return serverCreateDate;
-    }
-
-    public void setServerCreateDate(Date serverCreateDate) {
-        this.serverCreateDate = serverCreateDate;
-    }
-
-    public Date getServerUpdateDate() {
-        return serverUpdateDate;
-    }
-
-    public void setServerUpdateDate(Date serverUpdateDate) {
-        this.serverUpdateDate = serverUpdateDate;
-    }
-
-    public Integer getDealStatus() {
-        return dealStatus;
-    }
-
-    public void setDealStatus(Integer dealStatus) {
-        this.dealStatus = dealStatus;
-    }
-
-    public Boolean getIsValid() {
-        return isValid;
-    }
-
-    public void setIsValid(Boolean isValid) {
-        this.isValid = isValid;
-    }
 }

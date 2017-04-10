@@ -63,7 +63,7 @@ public class JobSeekerInfosServiceImpl extends BaseServiceImpl<JobSeekerInfos, L
         Long insertKey = jobSeekerInfosVo.getId();
         //4.存储附件相关信息
         JobSeekerResumeDelivery delivery = new JobSeekerResumeDelivery();
-        delivery.setIsValid(true);
+        delivery.setIsValid(1);
         delivery.setResumePath(storePath);
         delivery.setJobSeekerInfosId(insertKey);
         delivery.setServerCreateDate(new Date());
@@ -107,7 +107,7 @@ public class JobSeekerInfosServiceImpl extends BaseServiceImpl<JobSeekerInfos, L
     public Long insertAndReturnKey(JobSeekerInfos record) {
         record.setServerCreateDate(new Date());
         record.setServerUpdateDate(new Date());
-        record.setIsValid(true);//默认设置信息有效d
+        record.setIsValid(1);//默认设置信息有效d
         return jobSeekerInfosMapper.insertAndGetKey(record);
     }
 

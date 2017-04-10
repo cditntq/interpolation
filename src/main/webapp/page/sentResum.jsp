@@ -42,7 +42,7 @@
 									<h1>个人信息</h1></span>
 
                                 <form class="form-horizontal form-label-left"
-                                      action="${baseUrl}/JobSeekerInfo/addJobSeekerInfoAndResume.do"
+                                      action="${baseUrl}/jobSeekerInfo/addJobSeekerInfoAndResume.action"
                                       method="POST" enctype="multipart/form-data">
                                     <%--投递人姓名--%>
                                     <div class="item form-group">

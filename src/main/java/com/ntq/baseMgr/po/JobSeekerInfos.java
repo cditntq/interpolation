@@ -1,7 +1,11 @@
 package com.ntq.baseMgr.po;
 
-import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.Date;
+@Getter
+@Setter
 public class JobSeekerInfos {
     private Long id;
 
@@ -25,101 +29,6 @@ public class JobSeekerInfos {
 
     private Date serverUpdateDate;
 
-    private Boolean isValid;
+    private Integer isValid;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getJobSeekerName() {
-        return jobSeekerName;
-    }
-
-    public void setJobSeekerName(String jobSeekerName) {
-        this.jobSeekerName = jobSeekerName == null ? null : jobSeekerName.trim();
-    }
-
-    public Long getJobSeekerSex() {
-        return jobSeekerSex;
-    }
-
-    public void setJobSeekerSex(Long jobSeekerSex) {
-        this.jobSeekerSex = jobSeekerSex;
-    }
-
-    public Long getJobSeekerPhone() {
-        return jobSeekerPhone;
-    }
-
-    public void setJobSeekerPhone(Long jobSeekerPhone) {
-        this.jobSeekerPhone = jobSeekerPhone;
-    }
-
-    public String getJobSeekerEmail() {
-        return jobSeekerEmail;
-    }
-
-    public void setJobSeekerEmail(String jobSeekerEmail) {
-        this.jobSeekerEmail = jobSeekerEmail == null ? null : jobSeekerEmail.trim();
-    }
-
-    public String getJobSeekerWeixin() {
-        return jobSeekerWeixin;
-    }
-
-    public void setJobSeekerWeixin(String jobSeekerWeixin) {
-        this.jobSeekerWeixin = jobSeekerWeixin == null ? null : jobSeekerWeixin.trim();
-    }
-
-    public String getGraduateSchool() {
-        return graduateSchool;
-    }
-
-    public void setGraduateSchool(String graduateSchool) {
-        this.graduateSchool = graduateSchool == null ? null : graduateSchool.trim();
-    }
-
-    public String getMajorSubjects() {
-        return majorSubjects;
-    }
-
-    public void setMajorSubjects(String majorSubjects) {
-        this.majorSubjects = majorSubjects == null ? null : majorSubjects.trim();
-    }
-
-    public Date getGraduateDate() {
-        return graduateDate;
-    }
-
-    public void setGraduateDate(Date graduateDate) {
-        this.graduateDate = graduateDate;
-    }
-
-    public Date getServerCreateDate() {
-        return serverCreateDate;
-    }
-
-    public void setServerCreateDate(Date serverCreateDate) {
-        this.serverCreateDate = serverCreateDate;
-    }
-
-    public Date getServerUpdateDate() {
-        return serverUpdateDate;
-    }
-
-    public void setServerUpdateDate(Date serverUpdateDate) {
-        this.serverUpdateDate = serverUpdateDate;
-    }
-
-    public Boolean getIsValid() {
-        return isValid;
-    }
-
-    public void setIsValid(Boolean isValid) {
-        this.isValid = isValid;
-    }
 }

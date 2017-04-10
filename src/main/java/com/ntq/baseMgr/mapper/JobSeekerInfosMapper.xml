@@ -40,21 +40,6 @@
     delete from job_seeker_infos
     where id = #{id,jdbcType=BIGINT}
   </delete>
-    <update id="updateByPrimaryKey" parameterType="com.ntq.baseMgr.po.JobSeekerInfos">
-    update job_seeker_infos
-    set job_seeker_name = #{jobSeekerName,jdbcType=VARCHAR},
-      job_seeker_sex = #{jobSeekerSex,jdbcType=BIGINT},
-      job_seeker_phone = #{jobSeekerPhone,jdbcType=BIGINT},
-      job_seeker_email = #{jobSeekerEmail,jdbcType=VARCHAR},
-      job_seeker_weixin = #{jobSeekerWeixin,jdbcType=VARCHAR},
-      graduate_school = #{graduateSchool,jdbcType=VARCHAR},
-      major_subjects = #{majorSubjects,jdbcType=VARCHAR},
-      graduate_date = #{graduateDate,jdbcType=DATE},
-      server_create_date = #{serverCreateDate,jdbcType=TIMESTAMP},
-      server_update_date = #{serverUpdateDate,jdbcType=TIMESTAMP},
-      is_valid = #{isValid,jdbcType=BIT}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
 
     <!--插入并返回当前录入求职者的行数据id-->
     <insert id="insertAndReturnKey"

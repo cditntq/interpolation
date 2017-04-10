@@ -59,7 +59,7 @@ public class JobSeekerInfoController {
      */
     @RequestMapping(value = "/addJobSeekerInfoAndResume", method = RequestMethod.POST)
     public String addJobSeekerInfoAndResume(JobSeekerInfosVo jobSeekerInfosVo, UploadFileVo vo, HttpServletRequest request) throws Exception {
-        jobSeekerInfosService.insertJobSeekerInfo(jobSeekerInfosVo, vo, request);
+       // jobSeekerInfosService.insertJobSeekerInfo(jobSeekerInfosVo, vo, request);
         return "sentResum";
     }
 

@@ -2,11 +2,10 @@ package com.ntq.baseMgr.service;
 
 import com.ntq.baseMgr.page.Page;
 import com.ntq.baseMgr.po.CompanyInfos;
-import com.ntq.baseMgr.po.CompanyPositionInfosWithBLOBs;
 import com.ntq.baseMgr.util.ResponseResult;
+import com.ntq.baseMgr.vo.CompanyInfoWithPositionInfoListVo;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 /**
  * <p>@description:公司信息Service接口 </p>
@@ -58,10 +57,10 @@ public interface CompanyInfoService {
     ResponseResult<Void> updateCompanyInfos(CompanyInfos companyInfos) throws Exception;
     /**
      * 新的公司和其发布的职位录入
-     * @param companyInfo 公司信息
+     * @param companyInfoWithPositionInfoListVo 公司信息
      * @return
      */
-    ResponseResult<Void> addCompanyInfoWithPositionInfoList(CompanyInfos companyInfo);
+    ResponseResult<Void> addCompanyInfoWithPositionInfoList(CompanyInfoWithPositionInfoListVo companyInfoWithPositionInfoListVo);
     /**
      * 转跳验证
      *

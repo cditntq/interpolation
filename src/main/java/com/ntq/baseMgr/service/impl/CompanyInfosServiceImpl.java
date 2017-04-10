@@ -1,6 +1,5 @@
 package com.ntq.baseMgr.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.ntq.baseMgr.mapper.CompanyInfosMapper;
 import com.ntq.baseMgr.mapper.CompanyPositionInfosMapper;
 import com.ntq.baseMgr.page.Page;
@@ -10,6 +9,7 @@ import com.ntq.baseMgr.service.CompanyInfoService;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.util.StatusCode;
 import com.ntq.baseMgr.util.StringUtil;
+import com.ntq.baseMgr.vo.CompanyInfoWithPositionInfoListVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -118,12 +118,15 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
     }
 
     @Override
-    public ResponseResult<Void> addCompanyInfoWithPositionInfoList(CompanyInfos companyInfo) {
+    public ResponseResult<Void> addCompanyInfoWithPositionInfoList(CompanyInfoWithPositionInfoListVo companyInfoWithPositionInfoListVo) {
         ResponseResult<Void> responseResult = new ResponseResult<>();
-        /*设置创建和更新时间*/
+        /*1.设置创建和更新时间*/
         Date currentDate = new Date();
+        //设置公司
+        CompanyInfos companyInfo = companyInfoWithPositionInfoListVo.getCompanyInfo();
         companyInfo.setServerCreateDate(currentDate);
         companyInfo.setServerUpdateDate(currentDate);
+        companyInfo.setIsValid(1);//设置默认有效
         // 1.插入公司信息并获取返回的主键
         companyInfosMapper.insertAndGetKey(companyInfo);
         // Long companyInfoId = companyInfo.getId();
@@ -131,21 +134,22 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
         Long companyInfoId = 6L;
 
         //2.插入职位信息
+        List<CompanyPositionInfosWithBLOBs> companyPositionInfosWithBlobList = companyInfoWithPositionInfoListVo.getCompanyPositionInfosWithBlobList();
         //2.1 设置职位创建和更新时间
-        for (CompanyPositionInfosWithBLOBs companyPositionInfo : companyInfo.getCompanyPositionInfosWithBLOBsList()) {
+        for (CompanyPositionInfosWithBLOBs companyPositionInfo : companyPositionInfosWithBlobList) {
             companyPositionInfo.setServerUpdateDate(currentDate);
             companyPositionInfo.setServerCreateDate(currentDate);
             companyPositionInfo.setCompanyInfosId(companyInfoId);//设置关联的公司信息的主表id
+            companyPositionInfo.setIsValid(1);//设置默认有效
 
             //拼接职位编号 todo
-    /*        new StringBuilder().append(companyInfo.getCompanyType()).append(companyInfoId).*/
+            // new StringBuilder().append(companyInfo.getCompanyType()).append(companyInfoId).
         }
         //2.2 批量插入
-        companyPositionInfoMapper.insertByBatch(companyInfo.getCompanyPositionInfosWithBLOBsList());
-        //companyInfosMapper.updateCompanyInfos(companyInfos);
+        companyPositionInfoMapper.insertByBatch(companyPositionInfosWithBlobList);
         responseResult.setCode(StatusCode.INSERT_SUCCESS.getCode());
         responseResult.setMessage(StatusCode.INSERT_SUCCESS.getMessage());
-        return null;
+        return responseResult;
     }
 
 

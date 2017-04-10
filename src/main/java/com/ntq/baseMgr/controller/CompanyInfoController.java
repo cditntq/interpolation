@@ -2,10 +2,10 @@ package com.ntq.baseMgr.controller;
 
 import com.ntq.baseMgr.page.Page;
 import com.ntq.baseMgr.po.CompanyInfos;
-import com.ntq.baseMgr.po.CompanyPositionInfosWithBLOBs;
 import com.ntq.baseMgr.service.CompanyInfoService;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.util.StatusCode;
+import com.ntq.baseMgr.vo.CompanyInfoWithPositionInfoListVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
-import java.util.Map;
 
 /**
  * <p>@description:公司信息的Controller </p>
@@ -33,18 +31,16 @@ public class CompanyInfoController {
     @Autowired
     private CompanyInfoService companyInfoService;//公司信息service
 
-/*    *//**
+ /*   *
      * 公司页面跳转
      *
-     * @return
-     *//*
+     * @return*/
+
     @RequestMapping(value = "/companyInfosPage")
     public String index(HttpSession httpSession) {
         return "companyInfos";
-    }*/
-/*
+    }
 
-    */
 
 
 
@@ -85,9 +81,27 @@ public class CompanyInfoController {
     /**
      * 新的公司和其发布的职位录入
      *
-     * @param companyInfo                       公司信息
+     * @param companyInfoWithPositionInfoListVo                       公司信息以及职位信息
      * @return
      */
+    @RequestMapping(value = "/addCompanyInfoWithPositionInfoList",method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseResult<Void> addCompanyInfoWithPositionInfoList(@RequestBody CompanyInfoWithPositionInfoListVo companyInfoWithPositionInfoListVo) {
+        ResponseResult<Void> responseResult = new ResponseResult<>();
+        try {
+            responseResult = companyInfoService.addCompanyInfoWithPositionInfoList(companyInfoWithPositionInfoListVo);
+        } catch (Exception e) {
+            responseResult.setCode(StatusCode.INSERT_FAIL.getCode());
+            responseResult.setFailureMessage(StatusCode.INSERT_FAIL.getMessage());
+        }
+        return responseResult;
+    }
+  /*  *//**
+     * 新的公司和其发布的职位录入
+     *
+     * @param companyInfo                       公司信息
+     * @return
+     *//*
     @RequestMapping(value = "/addCompanyInfoWithPositionInfoList",method = RequestMethod.POST)
     @ResponseBody
     public ResponseResult<Void> addCompanyInfoWithPositionInfoList(@RequestBody CompanyInfos companyInfo) {
@@ -100,7 +114,7 @@ public class CompanyInfoController {
         }
         return responseResult;
 
-    }
+    }*/
 
 
     /**

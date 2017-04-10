@@ -24,7 +24,7 @@
     var originValue = ko.observable({
         id: 0,
         /*企业名称*/
-        companyName: '',
+        companyName: 'test',
         /*公司电话*/
         companyPhone: '',
         /*简历投递邮箱*/

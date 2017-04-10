@@ -85,24 +85,24 @@
   </update>
   <!--批量插入-->
   <insert id="insertByBatch" parameterType="java.util.List">
-      insert into company_position_infos ( company_infos_id, position_no,
-      position_name, high_salary, low_salary,
-      position_type, qualifications_type, low_working_life,
-      high_working_life, work_address, is_valid,
-      server_create_date, server_update_date,
-      deadline, is_discuss_personally, postion_status,
-      publish_time, position_desc, position_requirements
-      )
-    values
+      insert into company_position_infos (company_infos_id, position_no,
+        position_name, high_salary, low_salary,
+        position_type, qualifications_type, low_working_life,
+        high_working_life, work_address, is_valid,
+        server_create_date, server_update_date,
+        deadline, is_discuss_personally, postion_status,
+        publish_time, position_desc, position_requirements
+        )
+      values
     <foreach collection="list" item="item" index="index" separator=",">
-      ( #{companyInfosId,jdbcType=BIGINT}, #{positionNo,jdbcType=BIGINT},
-      #{positionName,jdbcType=VARCHAR}, #{highSalary,jdbcType=DECIMAL}, #{lowSalary,jdbcType=DECIMAL},
-      #{positionType,jdbcType=INTEGER}, #{qualificationsType,jdbcType=INTEGER}, #{lowWorkingLife,jdbcType=INTEGER},
-      #{highWorkingLife,jdbcType=INTEGER}, #{workAddress,jdbcType=VARCHAR}, #{isValid,jdbcType=INTEGER},
-      #{serverCreateDate,jdbcType=TIMESTAMP}, #{serverUpdateDate,jdbcType=TIMESTAMP},
-      #{deadline,jdbcType=TIMESTAMP}, #{isDiscussPersonally,jdbcType=TINYINT}, #{postionStatus,jdbcType=BIGINT},
-      #{publishTime,jdbcType=TIMESTAMP}, #{positionDesc,jdbcType=LONGVARCHAR}, #{positionRequirements,jdbcType=LONGVARCHAR}
-      )
+      values (#{companyInfosId,jdbcType=BIGINT}, #{positionNo,jdbcType=BIGINT},
+        #{positionName,jdbcType=VARCHAR}, #{highSalary,jdbcType=DECIMAL}, #{lowSalary,jdbcType=DECIMAL},
+        #{positionType,jdbcType=INTEGER}, #{qualificationsType,jdbcType=INTEGER}, #{lowWorkingLife,jdbcType=INTEGER},
+        #{highWorkingLife,jdbcType=INTEGER}, #{workAddress,jdbcType=VARCHAR}, #{isValid,jdbcType=INTEGER},
+        #{serverCreateDate,jdbcType=TIMESTAMP}, #{serverUpdateDate,jdbcType=TIMESTAMP},
+        #{deadline,jdbcType=TIMESTAMP}, #{isDiscussPersonally,jdbcType=TINYINT}, #{postionStatus,jdbcType=BIGINT},
+        #{publishTime,jdbcType=TIMESTAMP}, #{positionDesc,jdbcType=LONGVARCHAR}, #{positionRequirements,jdbcType=LONGVARCHAR}
+        )
     </foreach>
   </insert>
 <!--添加新的职位信息-->
@@ -124,6 +124,8 @@
       #{publishTime,jdbcType=TIMESTAMP}, #{positionDesc,jdbcType=LONGVARCHAR}, #{positionRequirements,jdbcType=LONGVARCHAR}
       )
   </insert>
+
+
 <!--通过id查看详细信息-->
   <select id="getCompanyPositionInfoById" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
     select

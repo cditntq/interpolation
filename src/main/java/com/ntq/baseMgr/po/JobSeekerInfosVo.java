@@ -1,6 +1,8 @@
 package com.ntq.baseMgr.po;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * <p>@description:扩展信息用于接收附件的附件信息</p>
@@ -11,7 +13,8 @@ import lombok.Data;
  * @author: shuangyang
  * @date: 17-3-19 下午4:24
  */
-@Data
+@Getter
+@Setter
 public class JobSeekerInfosVo extends JobSeekerInfos {
 
 
@@ -22,7 +25,7 @@ public class JobSeekerInfosVo extends JobSeekerInfos {
     //处理状态
     private Integer dealStatus;
     //是否有效
-    private Boolean isValid;
+    private Integer isValid;
     //附件id
     private Long ResumeDeliveryId;
 
