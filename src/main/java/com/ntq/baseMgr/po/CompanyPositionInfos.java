@@ -41,8 +41,33 @@ public class CompanyPositionInfos {
     /*是否面议*/
     private Integer isDiscussPersonally;
     /*职位状态*/
-    private Long postionStatus;
+    private Integer postionStatus;
     /*发时间*/
     private Date publishTime;
+
+
+    @Override
+    public String toString() {
+        return "CompanyPositionInfos{" +
+                "id=" + id +
+                ", companyInfosId=" + companyInfosId +
+                ", positionNo=" + positionNo +
+                ", positionName='" + positionName + '\'' +
+                ", highSalary=" + highSalary +
+                ", lowSalary=" + lowSalary +
+                ", positionType=" + positionType +
+                ", qualificationsType=" + qualificationsType +
+                ", lowWorkingLife=" + lowWorkingLife +
+                ", highWorkingLife=" + highWorkingLife +
+                ", workAddress='" + workAddress + '\'' +
+                ", isValid=" + isValid +
+                ", serverCreateDate=" + serverCreateDate +
+                ", serverUpdateDate=" + serverUpdateDate +
+                ", deadline=" + deadline +
+                ", isDiscussPersonally=" + isDiscussPersonally +
+                ", postionStatus=" + postionStatus +
+                ", publishTime=" + publishTime +
+                '}';
+    }
 
 }

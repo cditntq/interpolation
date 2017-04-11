@@ -11,7 +11,6 @@ public class CompanyPositionInfosWithBLOBs extends CompanyPositionInfos {
     /*职位要求*/
     private String positionRequirements;
 
-
     public void setPositionDesc(String positionDesc) {
         this.positionDesc = positionDesc == null ? null : positionDesc.trim();
     }
@@ -20,4 +19,6 @@ public class CompanyPositionInfosWithBLOBs extends CompanyPositionInfos {
     public void setPositionRequirements(String positionRequirements) {
         this.positionRequirements = positionRequirements == null ? null : positionRequirements.trim();
     }
+
+
 }

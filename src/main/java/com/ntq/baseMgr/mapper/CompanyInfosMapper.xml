@@ -48,12 +48,12 @@
         is_newly_established, financing_type, is_valid,
         recruiter_name, company_synopsis)
         values (#{companyName,jdbcType=VARCHAR}, #{companyPhone,jdbcType=BIGINT},
-        #{resumeMail,jdbcType=VARCHAR}, #{contactWeixinId,jdbcType=VARCHAR}, #{recruitType,jdbcType=BIT},
-        #{companyType,jdbcType=INTEGER}, #{serverCreateDate,jdbcType=TIMESTAMP}, #{serverUpdateDate,jdbcType=TIMESTAMP},
+        #{resumeMail,jdbcType=VARCHAR}, #{contactWeixinId,jdbcType=VARCHAR}, #{recruitType,jdbcType=INTEGER},
+        #{companyType,jdbcType=BIT}, #{serverCreateDate,jdbcType=TIMESTAMP}, #{serverUpdateDate,jdbcType=TIMESTAMP},
         #{isNewlyEstablished,jdbcType=INTEGER}, #{financingType,jdbcType=INTEGER}, #{isValid,jdbcType=INTEGER},
         #{recruiterName,jdbcType=VARCHAR}, #{companySynopsis,jdbcType=LONGVARCHAR})
     </insert>
-        <!--新增公司信息录入-->
+    <!--新增公司信息录入-->
     <insert id="addCompanyInfos" parameterType="com.ntq.baseMgr.po.CompanyInfos">
         insert into company_infos (company_name, company_phone,
         resume_mail, contact_weixin_id, recruit_type,
@@ -106,7 +106,7 @@
         company_synopsis = #{companySynopsis,jdbcType=LONGVARCHAR}
         where id = #{id,jdbcType=BIGINT}
     </update>
-       <!--根据电话号码获取用户信息-->
+    <!--根据电话号码获取用户信息-->
     <select id="getCompanyInfoByPhoneNo" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>

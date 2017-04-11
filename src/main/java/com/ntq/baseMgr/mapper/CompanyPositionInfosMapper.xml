@@ -18,7 +18,7 @@
     <result column="server_update_date" property="serverUpdateDate" jdbcType="TIMESTAMP" />
     <result column="deadline" property="deadline" jdbcType="TIMESTAMP" />
     <result column="is_discuss_personally" property="isDiscussPersonally" jdbcType="TINYINT" />
-    <result column="postion_status" property="postionStatus" jdbcType="BIGINT" />
+    <result column="postion_status" property="postionStatus" jdbcType="INTEGER" />
     <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.ntq.baseMgr.po.CompanyPositionInfosWithBLOBs" extends="BaseResultMap" >
@@ -90,18 +90,18 @@
         position_type, qualifications_type, low_working_life,
         high_working_life, work_address, is_valid,
         server_create_date, server_update_date,
-        deadline, is_discuss_personally, postion_status,
-        publish_time, position_desc, position_requirements
+        is_discuss_personally, postion_status,
+        position_desc, position_requirements
         )
       values
     <foreach collection="list" item="item" index="index" separator=",">
-      values (#{companyInfosId,jdbcType=BIGINT}, #{positionNo,jdbcType=BIGINT},
-        #{positionName,jdbcType=VARCHAR}, #{highSalary,jdbcType=DECIMAL}, #{lowSalary,jdbcType=DECIMAL},
-        #{positionType,jdbcType=INTEGER}, #{qualificationsType,jdbcType=INTEGER}, #{lowWorkingLife,jdbcType=INTEGER},
-        #{highWorkingLife,jdbcType=INTEGER}, #{workAddress,jdbcType=VARCHAR}, #{isValid,jdbcType=INTEGER},
-        #{serverCreateDate,jdbcType=TIMESTAMP}, #{serverUpdateDate,jdbcType=TIMESTAMP},
-        #{deadline,jdbcType=TIMESTAMP}, #{isDiscussPersonally,jdbcType=TINYINT}, #{postionStatus,jdbcType=BIGINT},
-        #{publishTime,jdbcType=TIMESTAMP}, #{positionDesc,jdbcType=LONGVARCHAR}, #{positionRequirements,jdbcType=LONGVARCHAR}
+     (#{item.companyInfosId,jdbcType=BIGINT}, #{item.positionNo,jdbcType=BIGINT},
+        #{item.positionName,jdbcType=VARCHAR}, #{item.highSalary,jdbcType=DECIMAL}, #{item.lowSalary,jdbcType=DECIMAL},
+        #{item.positionType,jdbcType=INTEGER}, #{item.qualificationsType,jdbcType=INTEGER}, #{item.lowWorkingLife,jdbcType=INTEGER},
+        #{item.highWorkingLife,jdbcType=INTEGER}, #{item.workAddress,jdbcType=VARCHAR}, #{item.isValid,jdbcType=INTEGER},
+        #{item.serverCreateDate,jdbcType=TIMESTAMP}, #{item.serverUpdateDate,jdbcType=TIMESTAMP},
+        #{item.isDiscussPersonally,jdbcType=TINYINT}, #{item.postionStatus,jdbcType=BIGINT},
+        #{item.positionDesc,jdbcType=LONGVARCHAR}, #{item.positionRequirements,jdbcType=LONGVARCHAR}
         )
     </foreach>
   </insert>

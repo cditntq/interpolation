@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ntq.baseMgr.mapper.MessageValidateRecordMapper">
+    <resultMap id="BaseResultMap" type="com.ntq.baseMgr.po.MessageValidateRecord">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="phone_num" property="phoneNum" jdbcType="BIGINT"/>
+        <result column="token" property="token" jdbcType="VARCHAR"/>
+        <result column="valide_time" property="valideTime" jdbcType="TIMESTAMP"/>
+        <result column="send_success" property="sendSuccess" jdbcType="TINYINT"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, phone_num, token, valide_time, send_success
+  </sql>
+    <!--获取积略-->
+    <select id="getMessageValidateRecord" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from message_validate_record
+        where phone_num=#{phoneNumber,jdbcType=BIGINT} AND token= #{verifyCode,jdbcType=VARCHAR}
+    </select>
+    <!--插入第三方发送的验证码-->
+    <insert id="insertMessageValidateRecord" parameterType="com.ntq.baseMgr.po.MessageValidateRecord">
+      insert into message_validate_record (phone_num, token,
+      valide_time, send_success)
+    values (#{phoneNum,jdbcType=BIGINT}, #{token,jdbcType=VARCHAR},
+      #{valideTime,jdbcType=TIMESTAMP}, #{sendSuccess,jdbcType=TINYINT})
+  </insert>
+</mapper>

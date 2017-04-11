@@ -89,7 +89,7 @@
             };
             $.ajax({
                 type: "GET",
-                url: "${baseUrl}/companyPositionInfo/verifyRedirect.action",
+                url: "${baseUrl}/companyPositionInfo/verifyMessageCode.action",
                 contentType: 'application/json',
                 data: jsonData,
                 dataType: 'json',

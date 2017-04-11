@@ -60,16 +60,16 @@ public interface CompanyInfoService {
      * @param companyInfoWithPositionInfoListVo 公司信息
      * @return
      */
-    ResponseResult<Void> addCompanyInfoWithPositionInfoList(CompanyInfoWithPositionInfoListVo companyInfoWithPositionInfoListVo);
+    ResponseResult<Void> addCompanyInfoWithPositionInfoList(CompanyInfoWithPositionInfoListVo companyInfoWithPositionInfoListVo) throws Exception;
     /**
      * 转跳验证
      *
      * @param session
-     * @param phoneNumber
-     * @param verifyCode
+     * @param phoneNumber 手机号
+     * @param verifyCode 验证码
      * @return
      */
-    ResponseResult<Void> verifyRedirect(HttpSession session, Long phoneNumber, String verifyCode);
+    ResponseResult<Void> verifyMessageCode(HttpSession session, Long phoneNumber, String verifyCode);
 
     CompanyInfos getTest();
 }

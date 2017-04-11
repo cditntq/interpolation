@@ -3,23 +3,19 @@ package com.ntq.baseMgr.mapper;
 import com.ntq.baseMgr.page.Page;
 import com.ntq.baseMgr.po.CompanyPositionInfos;
 import com.ntq.baseMgr.po.CompanyPositionInfosWithBLOBs;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface CompanyPositionInfosMapper {
-    int deleteByPrimaryKey(Long id);
 
     int insert(CompanyPositionInfosWithBLOBs record);
 
-    int insertSelective(CompanyPositionInfosWithBLOBs record);
+
 
     CompanyPositionInfosWithBLOBs selectByPrimaryKey(Long id);
 
-    int updateByPrimaryKeySelective(CompanyPositionInfosWithBLOBs record);
 
-    int updateByPrimaryKeyWithBLOBs(CompanyPositionInfosWithBLOBs record);
-
-    int updateByPrimaryKey(CompanyPositionInfos record);
 
     /**
      * 批量插入职位信息

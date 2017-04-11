@@ -23,7 +23,7 @@ import java.util.Map;
  */
 public class CreateSerialNo {
 
-    private static Map<String,String> map=new HashMap<String, String>();
+    private static Map<String,String> map=new HashMap<>();
     private static String STATNUM="000001";
 
     /**
@@ -79,7 +79,7 @@ public class CreateSerialNo {
      */
     public static void main(String[] args) {
         CreateSerialNo t= new CreateSerialNo();
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < 20; i++) {
             System.out.println(t.getNum());
         }
     }

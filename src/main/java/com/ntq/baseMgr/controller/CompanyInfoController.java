@@ -56,20 +56,19 @@ public class CompanyInfoController {
     }
 
     /**
-     * 转跳验证
+     *验证码校验是否为已注册的公司
      *
      * @param session     TODO 这里需要处理的是当前的用户  但需要注意的在处理验证码失败的情况 返回操作的true 成功 能够转跳,false验证失败暂时没做
      * @param phoneNumber 手机号码
      * @param verifyCode  收到的验证码
      * @return
      */
-    @RequestMapping(value = "/verifyRedirect", method = RequestMethod.GET)
+    @RequestMapping(value = "/verifyMessageCode", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseResult<Void> verifyRedirect(HttpSession session, Long phoneNumber, String verifyCode) {
+    public ResponseResult<Void> verifyMessageCode(HttpSession session, Long phoneNumber, String verifyCode) {
         ResponseResult<Void> responseResult = new ResponseResult<>();
-        //1.匹配验证码 //todo
         try {
-            return companyInfoService.verifyRedirect(session, phoneNumber, verifyCode);
+            return companyInfoService.verifyMessageCode(session, phoneNumber, verifyCode);
         } catch (Exception e) {
             responseResult.setCode(StatusCode.Fail.getCode());
             responseResult.setFailureMessage(StatusCode.Fail.getMessage());
@@ -96,26 +95,6 @@ public class CompanyInfoController {
         }
         return responseResult;
     }
-  /*  *//**
-     * 新的公司和其发布的职位录入
-     *
-     * @param companyInfo                       公司信息
-     * @return
-     *//*
-    @RequestMapping(value = "/addCompanyInfoWithPositionInfoList",method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseResult<Void> addCompanyInfoWithPositionInfoList(@RequestBody CompanyInfos companyInfo) {
-        ResponseResult<Void> responseResult = new ResponseResult<>();
-        try {
-            responseResult = companyInfoService.addCompanyInfoWithPositionInfoList(companyInfo);
-        } catch (Exception e) {
-            responseResult.setCode(StatusCode.INSERT_FAIL.getCode());
-            responseResult.setFailureMessage(StatusCode.INSERT_FAIL.getMessage());
-        }
-        return responseResult;
-
-    }*/
-
 
     /**
      * 公司信息更新

@@ -65,6 +65,7 @@
     <!-- 通知 -->
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
+            <tx:method name="add*" propagation="REQUIRED"/>
             <tx:method name="save*" propagation="REQUIRED"/>
             <tx:method name="insert*" propagation="REQUIRED"/>
             <tx:method name="update*" propagation="REQUIRED"/>

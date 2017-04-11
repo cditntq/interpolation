@@ -2,10 +2,13 @@ package com.ntq.baseMgr.service.impl;
 
 import com.ntq.baseMgr.mapper.CompanyInfosMapper;
 import com.ntq.baseMgr.mapper.CompanyPositionInfosMapper;
+import com.ntq.baseMgr.mapper.MessageValidateRecordMapper;
 import com.ntq.baseMgr.page.Page;
 import com.ntq.baseMgr.po.CompanyInfos;
 import com.ntq.baseMgr.po.CompanyPositionInfosWithBLOBs;
+import com.ntq.baseMgr.po.MessageValidateRecord;
 import com.ntq.baseMgr.service.CompanyInfoService;
+import com.ntq.baseMgr.util.CreateSerialNo;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.util.StatusCode;
 import com.ntq.baseMgr.util.StringUtil;
@@ -33,6 +36,8 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
     private CompanyInfosMapper companyInfosMapper;//公司Dao接口
     @Autowired
     private CompanyPositionInfosMapper companyPositionInfoMapper;//公司职位Dao接口
+    @Autowired
+    private MessageValidateRecordMapper messageValidateRecordMapper;//验证码Dao接口
 
     /**
      * 新增公司信息录入
@@ -118,7 +123,7 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
     }
 
     @Override
-    public ResponseResult<Void> addCompanyInfoWithPositionInfoList(CompanyInfoWithPositionInfoListVo companyInfoWithPositionInfoListVo) {
+    public ResponseResult<Void> addCompanyInfoWithPositionInfoList(CompanyInfoWithPositionInfoListVo companyInfoWithPositionInfoListVo) throws Exception {
         ResponseResult<Void> responseResult = new ResponseResult<>();
         /*1.设置创建和更新时间*/
         Date currentDate = new Date();
@@ -129,21 +134,20 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
         companyInfo.setIsValid(1);//设置默认有效
         // 1.插入公司信息并获取返回的主键
         companyInfosMapper.insertAndGetKey(companyInfo);
-        // Long companyInfoId = companyInfo.getId();
-
-        Long companyInfoId = 6L;
-
+        Long companyInfoId = companyInfo.getId();
         //2.插入职位信息
         List<CompanyPositionInfosWithBLOBs> companyPositionInfosWithBlobList = companyInfoWithPositionInfoListVo.getCompanyPositionInfosWithBlobList();
-        //2.1 设置职位创建和更新时间
+        //2.1 设置职位创建和更新时间以及职位编号
+        CreateSerialNo serialNo = new CreateSerialNo();//用于生成职位编号
         for (CompanyPositionInfosWithBLOBs companyPositionInfo : companyPositionInfosWithBlobList) {
             companyPositionInfo.setServerUpdateDate(currentDate);
             companyPositionInfo.setServerCreateDate(currentDate);
             companyPositionInfo.setCompanyInfosId(companyInfoId);//设置关联的公司信息的主表id
             companyPositionInfo.setIsValid(1);//设置默认有效
+            companyPositionInfo.setPostionStatus(1);
+            //生成职位编号
+            companyPositionInfo.setPositionNo(Long.valueOf(serialNo.getNum()));
 
-            //拼接职位编号 todo
-            // new StringBuilder().append(companyInfo.getCompanyType()).append(companyInfoId).
         }
         //2.2 批量插入
         companyPositionInfoMapper.insertByBatch(companyPositionInfosWithBlobList);
@@ -154,13 +158,19 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
 
 
     @Override
-    public ResponseResult<Void> verifyRedirect(HttpSession session, Long phoneNumber, String verifyCode) {
+    public ResponseResult<Void> verifyMessageCode(HttpSession session, Long phoneNumber, String verifyCode) {
 
         ResponseResult<Void> responseResult = new ResponseResult<>();
-        //1.匹配验证码 //todo
+        //1.匹配验证码
+        MessageValidateRecord messageValidateRecord = messageValidateRecordMapper.getMessageValidateRecord(phoneNumber, verifyCode);
+        //验证码匹配失败
+        if (null == messageValidateRecord) {
+            responseResult.setCode(StatusCode.Fail.getCode());
+            responseResult.setFailureMessage("验证码输入错误");
+            return responseResult;
+        }
         //2.查找公司信息有无与该号码匹配的的公司
-        Long phoneNo = 15123247202L;
-        CompanyInfos companyInfo = companyInfosMapper.getCompanyInfoByPhoneNo(phoneNo);
+        CompanyInfos companyInfo = companyInfosMapper.getCompanyInfoByPhoneNo(phoneNumber);
         System.out.println(companyInfo.toString());
         if (companyInfo != null) {
             session.setAttribute("companyInfo", companyInfo);
@@ -169,7 +179,7 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
             responseResult.setMessage(StatusCode.OK.getMessage());
         } else {
             responseResult.setCode(StatusCode.Fail.getCode());
-            responseResult.setFailureMessage(StatusCode.Fail.getMessage());
+            responseResult.setFailureMessage("没有与该手机号匹配的公司！请认真核实");
         }
         return responseResult;
     }

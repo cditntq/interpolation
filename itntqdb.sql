@@ -30,11 +30,13 @@ CREATE TABLE `company_infos` (
   `company_synopsis` text COLLATE utf8_bin NOT NULL COMMENT '公司简介',
   `server_create_date` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '服务器创建时间',
   `server_update_date` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '服务器更新时间',
+  `is_newly_established` tinyint(1) NOT NULL DEFAULT '2' COMMENT '是否为创业公司。1-是，2-否',
+  `financing_type` tinyint(1) NOT NULL DEFAULT '6' COMMENT '融资情况.1-preA，2-A，3-A+，4-B，5-B+，6-无融资',
   `is_valid` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否有效。1-有效，2-无效',
   `recruiter_name` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '招聘人姓名',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT "公司信息"
 
 -- ----------------------------
 --  Table structure for `company_position_infos`
@@ -56,13 +58,13 @@ CREATE TABLE `company_position_infos` (
   `is_valid` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否有效.1-有效,2-无效',
   `server_create_date` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '服务创建时间',
   `server_update_date` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '服务器更新时间',
-  `deadline` datetime NOT NULL COMMENT '有效期，职位有效期为内推圈发布职位的时间往后推两周',
+  `deadline` datetime  NULL COMMENT '有效期，职位有效期为内推圈发布职位的时间往后推两周',
   `is_discuss_personally` tinyint(4) NOT NULL DEFAULT '2' COMMENT '是否面议。1-是，2-否',
   `postion_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '职位状态,1-待审核、2-已发布、3-拒绝发布、4-待下架、5-已下架',
   `publish_time` timestamp NULL DEFAULT NULL COMMENT '发布时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='职位信息'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT '职位信息';
 
 -- ----------------------------
 --  Table structure for `job_seeker_infos`
@@ -180,13 +182,13 @@ CREATE TABLE `sys_user_role` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-SET FOREIGN_KEY_CHECKS = 1;
-
+DROP TABLE IF EXISTS `message_validate_record`;
 CREATE TABLE `message_validate_record` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `phone_num` varchar(11) DEFAULT NULL COMMENT '发送短信的手机号码' ,
+  `phone_num` bigint(11) NOT NULL COMMENT '发送短信的手机号码' ,
   `token` varchar(10) DEFAULT NULL COMMENT '验证码',
   `valide_time` timestamp NULL DEFAULT NULL COMMENT '发送时间',
   `send_success` tinyint(2) DEFAULT NULL COMMENT '1:成功,2:失败',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT '短信验证码'
+

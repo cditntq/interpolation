@@ -57,5 +57,5 @@ public interface CompanyPositionInfoService {
      * @param verifyCode
      * @return
      *//*
-    ResponseResult<Void> verifyRedirect(HttpSession session, Long phoneNumber, String verifyCode) throws Exception;*/
+    ResponseResult<Void> verifyMessageCode(HttpSession session, Long phoneNumber, String verifyCode) throws Exception;*/
 }

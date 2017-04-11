@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * <p>@description: </p>
+ * <p>@description: 公司和职位的Vo类</p>
  *
  * @projectName: interpolation
  * @packageName: com.ntq.baseMgr.vo

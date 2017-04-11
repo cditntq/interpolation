@@ -53,7 +53,7 @@ public class CompanyPositionInfoServiceImpl implements CompanyPositionInfoServic
         companyPositionInfosWithBLOBs.setServerCreateDate(currentDate);
         companyPositionInfosWithBLOBs.setServerUpdateDate(currentDate);
         companyPositionInfosWithBLOBs.setIsValid(1);//默认设置有效
-        companyPositionInfosWithBLOBs.setPostionStatus(1l);//默认待审核
+        companyPositionInfosWithBLOBs.setPostionStatus(1);//默认待审核
         //todo 发布日期
         companyPositionInfosMapper.addCompanyPositionInfo(companyPositionInfosWithBLOBs);
         responseResult.setCode(StatusCode.INSERT_SUCCESS.getCode());
@@ -101,7 +101,7 @@ public class CompanyPositionInfoServiceImpl implements CompanyPositionInfoServic
     public ResponseResult<Void> updateOrInsertCompanyPositionInfo(CompanyPositionInfosWithBLOBs companyPositionInfosWithBLOBs) throws Exception {
         ResponseResult<Void> responseResult = new ResponseResult<>();
         //1 获取职位状态
-        Long positionStatus = companyPositionInfosWithBLOBs.getPostionStatus();
+        int positionStatus = companyPositionInfosWithBLOBs.getPostionStatus();
         if (1 == positionStatus) {
             //更新操作
             companyPositionInfosMapper.updateCompanyPositionInfo(companyPositionInfosWithBLOBs);
@@ -120,7 +120,7 @@ public class CompanyPositionInfoServiceImpl implements CompanyPositionInfoServic
             companyPositionInfosWithBLOBs.setServerCreateDate(currentDate);
             companyPositionInfosWithBLOBs.setServerUpdateDate(currentDate);
             companyPositionInfosWithBLOBs.setIsValid(1);//默认设置有效
-            companyPositionInfosWithBLOBs.setPostionStatus(1l);//默认待审核
+            companyPositionInfosWithBLOBs.setPostionStatus(1);//默认待审核
             //todo 发布日期
             companyPositionInfosMapper.addCompanyPositionInfo(companyPositionInfosWithBLOBs);
             responseResult.setCode(StatusCode.INSERT_SUCCESS.getCode());
@@ -135,11 +135,11 @@ public class CompanyPositionInfoServiceImpl implements CompanyPositionInfoServic
      *
      * @param session
      * @param phoneNumber
-     * @param verifyCode
+     * @param verifyMessageCode
      * @return
      *//*
     @Override
-    public ResponseResult<Void> verifyRedirect(HttpSession session, Long phoneNumber, String verifyCode) throws Exception {
+    public ResponseResult<Void> verifyMessageCode(HttpSession session, Long phoneNumber, String verifyMessageCode) throws Exception {
         //1.匹配验证码 //todo
         ResponseResult<Void> responseResult = new ResponseResult<>();
         //2.查找公司信息有无与该号码匹配的的公司

@@ -2,9 +2,10 @@ package com.ntq.baseMgr.mapper;
 
 import com.ntq.baseMgr.page.Page;
 import com.ntq.baseMgr.po.CompanyInfos;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface CompanyInfosMapper{
 
 
