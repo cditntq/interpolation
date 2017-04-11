@@ -22,11 +22,12 @@ public class RequestUtil {
 
     /**
      * 设置session会话
-     * @param session
      * @param key
      * @param value
      */
-    public static void  setSession(HttpSession session,String key,Object value){
+    public static void  setSession(String key,Object value){
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        HttpSession session = request.getSession();
         session.setAttribute(key,value);
     }
 

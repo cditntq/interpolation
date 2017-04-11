@@ -10,6 +10,7 @@ import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.util.StatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -42,7 +43,7 @@ public class CompanyPositionInfoController {
      */
     @RequestMapping(value = "/addCompanyPositionInfo", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseResult<Void> addCompanyPositionInfo(CompanyPositionInfosWithBLOBs companyPositionInfosWithBLOBs) {
+    public ResponseResult<Void> addCompanyPositionInfo(@RequestBody CompanyPositionInfosWithBLOBs companyPositionInfosWithBLOBs) {
         ResponseResult<Void> result = new ResponseResult<>();
         try {
             return companyPositionInfoService.addCompanyPositionInfo(companyPositionInfosWithBLOBs);
@@ -115,13 +116,14 @@ public class CompanyPositionInfoController {
 
 /*
     */
-/**
- * 根据id批量删除职位信息
- *
- * @param ids
- * @return
- * @throws Exception
- *//*
+
+    /**
+     * 根据id批量删除职位信息
+     *
+     * @param ids
+     * @return
+     * @throws Exception
+     *//*
 
     @RequestMapping(value = "/deleteJobSeekerInfoListByIds")
     @ResponseBody
@@ -137,5 +139,10 @@ public class CompanyPositionInfoController {
         return result;
     }
 */
-
+    @RequestMapping(value = "/getTest")
+    @ResponseBody
+    public CompanyPositionInfos getTest() {
+        CompanyPositionInfos companyPositionInfos = companyPositionInfoService.getTest();
+        return companyPositionInfos;
+    }
 }

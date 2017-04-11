@@ -49,13 +49,11 @@ public interface CompanyPositionInfoService {
      */
     ResponseResult<Void> updateOrInsertCompanyPositionInfo(CompanyPositionInfosWithBLOBs companyPositionInfosWithBLOBs) throws Exception;
 
-   /* *//**
-     * 转跳验证
-     *
-     * @param session
-     * @param phoneNumber
-     * @param verifyCode
+    /**
+     * 测试
      * @return
-     *//*
-    ResponseResult<Void> verifyMessageCode(HttpSession session, Long phoneNumber, String verifyCode) throws Exception;*/
+     */
+    CompanyPositionInfos getTest();
+
+
 }

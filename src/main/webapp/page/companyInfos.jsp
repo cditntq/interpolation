@@ -91,13 +91,10 @@
             var data1={"positionName":"test"};
         //    var data2={"userName":"ququ","address":"gr"};
             list.push(data1);
-            var data={
-                companyInfo:model.ko2js(originValue),
-                companyPositionInfoList:list
-            };
+           var data={"id":"","companyInfosId":"","positionNo":20170411000001,"positionName":"高级开发","highSalary":300.00,"lowSalary":200.00,"positionType":1,"qualificationsType":1,"lowWorkingLife":1,"highWorkingLife":3,"workAddress":"天府新区xxx大道","isValid":1,"serverCreateDate":1491894272290,"serverUpdateDate":1491894272290,"deadline":null,"isDiscussPersonally":1,"postionStatus":1,"publishTime":null,"positionDesc":"职位信息","positionRequirements":"具备xxx技能,从入门到放弃"};
             $.ajax({
                 type: "post",
-                url: "${baseUrl}/companyInfo/addCompanyInfoWithPositionInfoList.action",
+                url: "${baseUrl}/companyPositionInfo/addCompanyPositionInfo.action",
                 contentType: 'application/json',
                 data:JSON.stringify(data),
                 dataType: 'json',

@@ -8,10 +8,7 @@ import com.ntq.baseMgr.po.CompanyInfos;
 import com.ntq.baseMgr.po.CompanyPositionInfosWithBLOBs;
 import com.ntq.baseMgr.po.MessageValidateRecord;
 import com.ntq.baseMgr.service.CompanyInfoService;
-import com.ntq.baseMgr.util.CreateSerialNo;
-import com.ntq.baseMgr.util.ResponseResult;
-import com.ntq.baseMgr.util.StatusCode;
-import com.ntq.baseMgr.util.StringUtil;
+import com.ntq.baseMgr.util.*;
 import com.ntq.baseMgr.vo.CompanyInfoWithPositionInfoListVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -173,6 +170,7 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
         CompanyInfos companyInfo = companyInfosMapper.getCompanyInfoByPhoneNo(phoneNumber);
         System.out.println(companyInfo.toString());
         if (companyInfo != null) {
+          //  RequestUtil.setSession("companyInfos", companyInfo);
             session.setAttribute("companyInfo", companyInfo);
             //转跳到 到职位信息的列表
             responseResult.setCode(StatusCode.OK.getCode());

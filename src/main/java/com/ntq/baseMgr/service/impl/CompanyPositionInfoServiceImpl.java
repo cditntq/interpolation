@@ -7,6 +7,7 @@ import com.ntq.baseMgr.po.CompanyInfos;
 import com.ntq.baseMgr.po.CompanyPositionInfos;
 import com.ntq.baseMgr.po.CompanyPositionInfosWithBLOBs;
 import com.ntq.baseMgr.service.CompanyPositionInfoService;
+import com.ntq.baseMgr.util.CreateSerialNo;
 import com.ntq.baseMgr.util.RequestUtil;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.util.StatusCode;
@@ -44,10 +45,13 @@ public class CompanyPositionInfoServiceImpl implements CompanyPositionInfoServic
     public ResponseResult<Void> addCompanyPositionInfo(CompanyPositionInfosWithBLOBs companyPositionInfosWithBLOBs) throws Exception {
         ResponseResult<Void> responseResult = new ResponseResult<>();
         //1.获取公司主键
-        CompanyInfos companyInfos = (CompanyInfos) RequestUtil.getSessionAttribute("companyInfos");//获取公司信息
+        CompanyInfos companyInfos = (CompanyInfos) RequestUtil.getSessionAttribute("companyInfo");//获取公司信息
         Long companyInfoId = companyInfos.getId();
         companyPositionInfosWithBLOBs.setCompanyInfosId(companyInfoId);
-        //2.生成职位编号 TODO
+        //2.生成职位编号
+        CreateSerialNo serialNo=new CreateSerialNo();
+        Long positionNo = Long.valueOf(serialNo.getNum());
+        companyPositionInfosWithBLOBs.setPositionNo(positionNo);
         //3.设置创建和更新时间
         Date currentDate = new Date();
         companyPositionInfosWithBLOBs.setServerCreateDate(currentDate);
@@ -130,30 +134,11 @@ public class CompanyPositionInfoServiceImpl implements CompanyPositionInfoServic
         return responseResult;
     }
 
-/*    *//**
-     * 转跳验证
-     *
-     * @param session
-     * @param phoneNumber
-     * @param verifyMessageCode
-     * @return
-     *//*
     @Override
-    public ResponseResult<Void> verifyMessageCode(HttpSession session, Long phoneNumber, String verifyMessageCode) throws Exception {
-        //1.匹配验证码 //todo
-        ResponseResult<Void> responseResult = new ResponseResult<>();
-        //2.查找公司信息有无与该号码匹配的的公司
-        Long phoneNo = 15123247202L;
-        CompanyInfos companyInfo = companyInfosMapper.getCompanyInfoByPhoneNo(phoneNo);
-        if (companyInfo != null) {
-            session.setAttribute("companyInfo", companyInfo);
-            //转跳到 到职位信息的列表
-            responseResult.setCode(StatusCode.OK.getCode());
-            responseResult.setMessage(StatusCode.OK.getMessage());
-        } else {
-            responseResult.setCode(StatusCode.Fail.getCode());
-            responseResult.setFailureMessage(StatusCode.Fail.getMessage());
-        }
-        return responseResult;
-    }*/
+    public CompanyPositionInfos getTest() {
+        Long id = 1l;
+        return companyPositionInfosMapper.getCompanyPositionInfoById(id);
+    }
+
+
 }

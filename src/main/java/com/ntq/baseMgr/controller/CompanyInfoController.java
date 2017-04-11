@@ -31,7 +31,7 @@ public class CompanyInfoController {
     @Autowired
     private CompanyInfoService companyInfoService;//公司信息service
 
- /*   *
+/*   *
      * 公司页面跳转
      *
      * @return*/
@@ -45,18 +45,18 @@ public class CompanyInfoController {
 
 
 
-    /**
+  /*  *//**
      * 发布职位首页(两个按钮：1 新公司发布职位,2已经录入公司发布职位)
      *
      * @return
-     */
+     *//*
     @RequestMapping(value = "/positionReleaseIndex")
     public String positionReleaseIndex() {
         return "companyPositionReleaseIndex";
-    }
+    }*/
 
     /**
-     *验证码校验是否为已注册的公司
+     * 验证码校验是否为已注册的公司
      *
      * @param session     TODO 这里需要处理的是当前的用户  但需要注意的在处理验证码失败的情况 返回操作的true 成功 能够转跳,false验证失败暂时没做
      * @param phoneNumber 手机号码
@@ -71,7 +71,7 @@ public class CompanyInfoController {
             return companyInfoService.verifyMessageCode(session, phoneNumber, verifyCode);
         } catch (Exception e) {
             responseResult.setCode(StatusCode.Fail.getCode());
-            responseResult.setFailureMessage(StatusCode.Fail.getMessage());
+            responseResult.setFailureMessage("短信验证失败");
 
         }
         return responseResult;
@@ -80,10 +80,10 @@ public class CompanyInfoController {
     /**
      * 新的公司和其发布的职位录入
      *
-     * @param companyInfoWithPositionInfoListVo                       公司信息以及职位信息
+     * @param companyInfoWithPositionInfoListVo 公司信息以及职位信息
      * @return
      */
-    @RequestMapping(value = "/addCompanyInfoWithPositionInfoList",method = RequestMethod.POST)
+    @RequestMapping(value = "/addCompanyInfoWithPositionInfoList", method = RequestMethod.POST)
     @ResponseBody
     public ResponseResult<Void> addCompanyInfoWithPositionInfoList(@RequestBody CompanyInfoWithPositionInfoListVo companyInfoWithPositionInfoListVo) {
         ResponseResult<Void> responseResult = new ResponseResult<>();
@@ -169,9 +169,10 @@ public class CompanyInfoController {
         }
         return result;
     }
+
     @RequestMapping(value = "/getTest")
     @ResponseBody
-    public CompanyInfos getTest(){
+    public CompanyInfos getTest() {
         return companyInfoService.getTest();
 
     }
