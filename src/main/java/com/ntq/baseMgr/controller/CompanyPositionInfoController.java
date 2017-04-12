@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>@description: 职位信息相关的Controller</p>
@@ -120,7 +122,7 @@ public class CompanyPositionInfoController {
     /**
      * 根据id批量删除职位信息
      *
-     * @param ids
+     * @param
      * @return
      * @throws Exception
      *//*
@@ -141,8 +143,15 @@ public class CompanyPositionInfoController {
 */
     @RequestMapping(value = "/getTest")
     @ResponseBody
-    public CompanyPositionInfos getTest() {
-        CompanyPositionInfos companyPositionInfos = companyPositionInfoService.getTest();
-        return companyPositionInfos;
+    public Page<Void> getTest() {
+        Page<Void> page = new Page<>();
+        //测试职位的json数据
+        //CompanyPositionInfos companyPositionInfos = companyPositionInfoService.getTest();
+        //测试分页查询的json数据
+        Map<String, Object> map = new HashMap();
+        map.put("jobSeekerNO", "00001");
+        map.put("jobSeekerName", "杨爽");
+        page.setParams(map);
+        return page;
     }
 }

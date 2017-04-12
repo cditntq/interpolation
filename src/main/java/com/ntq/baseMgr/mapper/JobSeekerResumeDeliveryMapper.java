@@ -2,10 +2,12 @@ package com.ntq.baseMgr.mapper;
 
 import com.ntq.baseMgr.po.JobSeekerResumeDelivery;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface JobSeekerResumeDeliveryMapper extends BaseMapper<JobSeekerResumeDelivery,Long> {
+@Repository
+public interface JobSeekerResumeDeliveryMapper {
 
     /**
      * 查询对应的求职者的简历信息的处理状态
@@ -21,4 +23,10 @@ public interface JobSeekerResumeDeliveryMapper extends BaseMapper<JobSeekerResum
     void deleteBatchJobSeekerResumeDeliveryList(List<Long> ids);
 
     void updateResumeDeliveryDealStatus(@Param(value = "resumeDeliveryId") long resumeDeliveryId, @Param(value = "dealStatus") int dealStatus);
+
+    /**
+     * 插入新求职者的简历相关信息
+     * @param delivery
+     */
+    void insertJobSeekerResumDelivery(JobSeekerResumeDelivery delivery);
 }

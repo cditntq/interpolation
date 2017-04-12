@@ -19,10 +19,6 @@ import org.springframework.stereotype.Service;
 public class JobSeekerResumeDeliveryServiceImpl extends BaseServiceImpl<JobSeekerResumeDelivery,Long> implements JobSeekerResumeDeliveryService {
     @Autowired
     private JobSeekerResumeDeliveryMapper jobSeekerResumeDeliveryMapper;
-    @Autowired
-    public void setBaseMapper() throws Exception {
-        super.setBaseMapper(jobSeekerResumeDeliveryMapper);
-    }
 
 
     /**

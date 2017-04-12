@@ -2,16 +2,12 @@ package com.ntq.baseMgr.service;
 
 
 import com.ntq.baseMgr.page.Page;
+import com.ntq.baseMgr.po.JobSeekerInfosExtDto;
 import com.ntq.baseMgr.po.JobSeekerInfosVo;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.vo.UploadFileVo;
-import com.ntq.baseMgr.po.JobSeekerInfos;
-import com.ntq.baseMgr.po.JobSeekerInfosExtDto;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
 
 /**
  * <p>@description: 求职者信息的service</p>
@@ -22,22 +18,15 @@ import java.util.List;
  * @author: shuangyang
  * @date: 17-3-19 下午2:35
  */
-public interface JobSeekerInfosService extends BaseService<JobSeekerInfos,Long> {
+public interface JobSeekerInfosService {
 
-    /**
-     * 插入求职者个人信息并返回key
-     * @param record
-     * @return
-     *//*
-     Long insertAndGetKey(JobSeekerInfos record);
-*/
     /**
      * 录入求职者个人信息以及简历
      * @param jobSeekerInfosVo
      * @param vo
      * @param request
      */
-    void insertJobSeekerInfo(JobSeekerInfosVo jobSeekerInfosVo, UploadFileVo vo, HttpServletRequest request) throws Exception;
+    ResponseResult<Void> insertJobSeekerInfo(JobSeekerInfosVo jobSeekerInfosVo, UploadFileVo vo, HttpServletRequest request) throws Exception;
 
     /**
      * 分页查询求职者信息

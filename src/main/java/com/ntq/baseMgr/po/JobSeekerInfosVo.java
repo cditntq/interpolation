@@ -1,6 +1,5 @@
 package com.ntq.baseMgr.po;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,13 +19,5 @@ public class JobSeekerInfosVo extends JobSeekerInfos {
 
     //职位编码
     private String jobCode;
-    //存储路径
-    private String resumePath;
-    //处理状态
-    private Integer dealStatus;
-    //是否有效
-    private Integer isValid;
-    //附件id
-    private Long ResumeDeliveryId;
 
 }

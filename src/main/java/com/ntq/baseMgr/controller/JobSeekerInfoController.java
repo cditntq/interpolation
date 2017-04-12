@@ -8,6 +8,7 @@ import com.ntq.baseMgr.service.JobSeekerInfosService;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.util.StatusCode;
 import com.ntq.baseMgr.vo.UploadFileVo;
+import com.sun.org.apache.regexp.internal.RE;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,19 +49,25 @@ public class JobSeekerInfoController {
         return "jobSeekerManagment";
     }
 
-
     /**
      * 求职者信息录入以及简历上传
      *
-     * @param request
-     * @param vo
+     * @param jobSeekerInfosVo 求职者信息录入
+     * @param vo 简历上传
+     * @param request request请求
      * @return
-     * @throws Exception
      */
     @RequestMapping(value = "/addJobSeekerInfoAndResume", method = RequestMethod.POST)
-    public String addJobSeekerInfoAndResume(JobSeekerInfosVo jobSeekerInfosVo, UploadFileVo vo, HttpServletRequest request) throws Exception {
-       // jobSeekerInfosService.insertJobSeekerInfo(jobSeekerInfosVo, vo, request);
-        return "sentResum";
+    public ResponseResult<Void> addJobSeekerInfoAndResume(JobSeekerInfosVo jobSeekerInfosVo, UploadFileVo vo, HttpServletRequest request) {
+        ResponseResult<Void> responseResult=new ResponseResult<>();
+        //测试的数据
+        try {
+            responseResult= jobSeekerInfosService.insertJobSeekerInfo(jobSeekerInfosVo, vo, request);
+        } catch (Exception e) {
+            responseResult.setCode(StatusCode.INSERT_FAIL.getCode());
+            responseResult.setFailureMessage(StatusCode.INSERT_FAIL.getMessage());
+        }
+        return responseResult;
     }
 
 
@@ -75,6 +82,7 @@ public class JobSeekerInfoController {
     public ResponseResult<JobSeekerInfosVo> getJobSeekerInfoVoById(Long id) {
         return jobSeekerInfosService.getJobSeekerInfoVoById(id);
     }
+
     /**
      * 分页查询求职者信息
      *
@@ -87,7 +95,7 @@ public class JobSeekerInfoController {
         try {
             return jobSeekerInfosService.queryJobSeekerInfosListByCondition(page);
         } catch (Exception e) {
-          page.setSuccess(false);
+            page.setSuccess(false);
         }
         return page;
     }
@@ -102,7 +110,7 @@ public class JobSeekerInfoController {
     @RequestMapping(value = "/deleteJobSeekerInfoListByIds")
     @ResponseBody
     public ResponseResult<Void> deleteJobSeekerInfoListByIds(String ids) {
-        ResponseResult<Void> result=new ResponseResult<>();
+        ResponseResult<Void> result = new ResponseResult<>();
         try {
             return jobSeekerInfosService.deleteBatchJobSeekerInfoList(ids);
         } catch (Exception e) {
@@ -123,9 +131,9 @@ public class JobSeekerInfoController {
     @RequestMapping(value = "/updateResumeDeliveryDealStatus")
     @ResponseBody
     public ResponseResult<Void> updateResumeDeliveryDealStatus(long resumeDeliveryId, int dealStatus) {
-        ResponseResult<Void> responseResult=new ResponseResult<>();
+        ResponseResult<Void> responseResult = new ResponseResult<>();
         try {
-            responseResult= jobSeekerInfosService.updateResumeDeliveryDealStatus(resumeDeliveryId, dealStatus);
+            responseResult = jobSeekerInfosService.updateResumeDeliveryDealStatus(resumeDeliveryId, dealStatus);
         } catch (Exception e) {
             responseResult.setCode(StatusCode.UPDATE_FAIL.getCode());
             responseResult.setFailureMessage(StatusCode.UPDATE_FAIL.getMessage());

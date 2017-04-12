@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ntq.baseMgr.mapper.JobSeekerInfosMapper">
-    <resultMap id="BaseResultMap" type="com.ntq.baseMgr.po.JobSeekerInfos">
-        <id column="id" property="id" jdbcType="BIGINT"/>
-        <result column="job_seeker_name" property="jobSeekerName" jdbcType="VARCHAR"/>
-        <result column="job_seeker_sex" property="jobSeekerSex" jdbcType="BIGINT"/>
-        <result column="job_seeker_phone" property="jobSeekerPhone" jdbcType="BIGINT"/>
-        <result column="job_seeker_email" property="jobSeekerEmail" jdbcType="VARCHAR"/>
-        <result column="job_seeker_weixin" property="jobSeekerWeixin" jdbcType="VARCHAR"/>
-        <result column="graduate_school" property="graduateSchool" jdbcType="VARCHAR"/>
-        <result column="major_subjects" property="majorSubjects" jdbcType="VARCHAR"/>
-        <result column="graduate_date" property="graduateDate" jdbcType="DATE"/>
-        <result column="server_create_date" property="serverCreateDate" jdbcType="TIMESTAMP"/>
-        <result column="server_update_date" property="serverUpdateDate" jdbcType="TIMESTAMP"/>
-        <result column="is_valid" property="isValid" jdbcType="BIT"/>
+    <resultMap id="BaseResultMap" type="com.ntq.baseMgr.po.JobSeekerInfos" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="job_seeker_name" property="jobSeekerName" jdbcType="VARCHAR" />
+        <result column="job_seeker_sex" property="jobSeekerSex" jdbcType="BIGINT" />
+        <result column="job_seeker_phone" property="jobSeekerPhone" jdbcType="BIGINT" />
+        <result column="job_seeker_email" property="jobSeekerEmail" jdbcType="VARCHAR" />
+        <result column="job_seeker_weixin" property="jobSeekerWeixin" jdbcType="VARCHAR" />
+        <result column="graduate_school" property="graduateSchool" jdbcType="VARCHAR" />
+        <result column="major_subjects" property="majorSubjects" jdbcType="VARCHAR" />
+        <result column="record_of_formal_schooling" property="recordOfFormalSchooling" jdbcType="INTEGER" />
+        <result column="graduate_date" property="graduateDate" jdbcType="DATE" />
+        <result column="server_create_date" property="serverCreateDate" jdbcType="TIMESTAMP" />
+        <result column="server_update_date" property="serverUpdateDate" jdbcType="TIMESTAMP" />
+        <result column="is_valid" property="isValid" jdbcType="INTEGER" />
+        <result column="is_add_ntqweixin" property="isAddNtqweixin" jdbcType="INTEGER" />
     </resultMap>
     <resultMap id="BaseResultVoMap" type="com.ntq.baseMgr.po.JobSeekerInfosExtDto">
         <result column="id" property="id" jdbcType="BIGINT"/>
@@ -42,21 +44,21 @@
   </delete>
 
     <!--插入并返回当前录入求职者的行数据id-->
-    <insert id="insertAndReturnKey"
+    <insert id="insertAndGetKey"
             parameterType="com.ntq.baseMgr.po.JobSeekerInfos">
         <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
             SELECT LAST_INSERT_ID() AS ID
         </selectKey>
         insert into job_seeker_infos (job_seeker_name, job_seeker_sex,
         job_seeker_phone, job_seeker_email, job_seeker_weixin,
-        graduate_school, major_subjects, graduate_date,
-        server_create_date, server_update_date,
-        is_valid)
-        values ( #{jobSeekerName,jdbcType=VARCHAR}, #{jobSeekerSex,jdbcType=BIGINT},
+        graduate_school, major_subjects, record_of_formal_schooling,
+        graduate_date, server_create_date, server_update_date,
+        is_valid, is_add_ntqweixin)
+        values (#{jobSeekerName,jdbcType=VARCHAR}, #{jobSeekerSex,jdbcType=BIGINT},
         #{jobSeekerPhone,jdbcType=BIGINT}, #{jobSeekerEmail,jdbcType=VARCHAR}, #{jobSeekerWeixin,jdbcType=VARCHAR},
-        #{graduateSchool,jdbcType=VARCHAR}, #{majorSubjects,jdbcType=VARCHAR}, #{graduateDate,jdbcType=DATE},
-        #{serverCreateDate,jdbcType=TIMESTAMP}, #{serverUpdateDate,jdbcType=TIMESTAMP},
-        #{isValid,jdbcType=BIT})
+        #{graduateSchool,jdbcType=VARCHAR}, #{majorSubjects,jdbcType=VARCHAR}, #{recordOfFormalSchooling,jdbcType=INTEGER},
+        #{graduateDate,jdbcType=DATE}, #{serverCreateDate,jdbcType=TIMESTAMP}, #{serverUpdateDate,jdbcType=TIMESTAMP},
+        #{isValid,jdbcType=INTEGER}, #{isAddNtqweixin,jdbcType=INTEGER})
     </insert>
     <!--分页查询-->
 

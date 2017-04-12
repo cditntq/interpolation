@@ -79,12 +79,14 @@ CREATE TABLE `job_seeker_infos` (
   `job_seeker_weixin` varchar(30) COLLATE utf8_bin NOT NULL COMMENT '求职者微信ID',
   `graduate_school` varchar(100) COLLATE utf8_bin NOT NULL COMMENT '毕业学校',
   `major_subjects` varchar(100) COLLATE utf8_bin NOT NULL COMMENT '所学专业',
+  `record_of_formal_schooling` tinyint(1) NOT NULL DEFAULT '3' COMMENT '学历：1-高中，2-大专，3-本科，4-研究生，5-博士，6-博士后，7-留学，8-其他',
   `graduate_date` date NOT NULL COMMENT '毕业日期',
-  `server_create_date` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '服务端创建时间',
-  `server_update_date` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '服务端最后修改时间',
+  `server_create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '服务端创建时间',
+  `server_update_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '服务端最后修改时间',
   `is_valid` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否有效，1-有效，2-无效',
+  `is_add_ntqweixin` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否已经添加内推圈组织者微信 1-是，2-否',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT '求职者基本信息';
 
 -- ----------------------------
 --  Table structure for `job_seeker_resume_delivery`
@@ -105,6 +107,9 @@ CREATE TABLE `job_seeker_resume_delivery` (
   `resume_name` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '简历名称',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
 
 -- ----------------------------
 --  Table structure for `sys_authority`

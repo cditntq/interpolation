@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  * @date: 17-3-19 下午2:37
  */
 @Service
-public class JobSeekerInfosServiceImpl extends BaseServiceImpl<JobSeekerInfos, Long> implements JobSeekerInfosService {
+public class JobSeekerInfosServiceImpl implements JobSeekerInfosService {
 
     @Value("#{configProperties['mail_from']}")
     private String resumPath;//简历存放地址
@@ -42,35 +42,46 @@ public class JobSeekerInfosServiceImpl extends BaseServiceImpl<JobSeekerInfos, L
     @Autowired
     private IUploadFileService uploadFileService;//上传文件的service
     @Autowired
-    private JobSeekerResumeDeliveryService jobSeekerResumeDeliveryService;//处理上传附件相关信息
-    @Autowired
     private MailSenderServiceImpl mailSenderServiceImpl;//邮件发送服务
 
-    @Autowired
-    public void setBaseMapper() throws Exception {
-        super.setBaseMapper(jobSeekerInfosMapper);
-    }
 
-
-    public void insertJobSeekerInfo(JobSeekerInfosVo jobSeekerInfosVo, UploadFileVo vo, HttpServletRequest request) throws Exception {
+    public ResponseResult<Void> insertJobSeekerInfo(JobSeekerInfosVo jobSeekerInfosVo, UploadFileVo vo, HttpServletRequest request) throws Exception {
+        ResponseResult<Void> responseResult = new ResponseResult<>();
+        //测试数据录入 start--
+        jobSeekerInfosVo.setIsAddNtqweixin(1);//设置为已经添加
+        jobSeekerInfosVo.setRecordOfFormalSchooling(3);//设置默认为本科
+        //测试数据录入 end--
+        //当前录入时时间
+        Date currentDate = new Date();
+        jobSeekerInfosVo.setServerCreateDate(currentDate);
+        jobSeekerInfosVo.setServerUpdateDate(currentDate);
+        jobSeekerInfosVo.setIsValid(1);//设置默认有效
         //录入求职者信息
-        //1.拼接简历名称 "username_"+"职位编码.doc"
+        //1.插入用户信息并返回id
+        jobSeekerInfosMapper.insertAndGetKey(jobSeekerInfosVo);
+        Long jobSeekerInfoId = jobSeekerInfosVo.getId();
+
+        //2.拼接简历名称 "username_"+"职位编码.doc"
         vo.setName(jobSeekerInfosVo.getJobSeekerName() + "_" + jobSeekerInfosVo.getJobCode() + ".doc");
-        //2.上传附件处理并返回存储路径
+        //3.上传附件处理并返回存储路径
         String storePath = uploadFileService.uploadForm(vo);
-        //3.插入用户信息并返回id
-        // insertAndGetKey(jobSeekerInfosVo);
-        Long insertKey = jobSeekerInfosVo.getId();
+
         //4.存储附件相关信息
         JobSeekerResumeDelivery delivery = new JobSeekerResumeDelivery();
-        delivery.setIsValid(1);
+        delivery.setIsValid(1);//默认设置有效
         delivery.setResumePath(storePath);
-        delivery.setJobSeekerInfosId(insertKey);
-        delivery.setServerCreateDate(new Date());
-        delivery.setServerUpdateDate(new Date());
+        delivery.setJobSeekerInfosId(jobSeekerInfoId);
+        delivery.setServerCreateDate(currentDate);
+        delivery.setServerUpdateDate(currentDate);
         delivery.setJobCode(jobSeekerInfosVo.getJobCode());
+        delivery.setResumeName(vo.getName());
         delivery.setDealStatus(1);//默认处理状态
-        jobSeekerResumeDeliveryService.insert(delivery);
+        delivery.setIsValid(1);//设置默认有效
+        delivery.setIsFeedback(1);//设置默认未反馈
+        jobSeekerResumeDeliveryMapper.insertJobSeekerResumDelivery(delivery);
+        responseResult.setCode(StatusCode.INSERT_SUCCESS.getCode());
+        responseResult.setMessage(StatusCode.INSERT_SUCCESS.getMessage());
+        return responseResult;
     }
 
     @Override
@@ -83,7 +94,7 @@ public class JobSeekerInfosServiceImpl extends BaseServiceImpl<JobSeekerInfos, L
     }
 
     @Override
-    public ResponseResult<Void> deleteBatchJobSeekerInfoList(String ids) throws Exception{
+    public ResponseResult<Void> deleteBatchJobSeekerInfoList(String ids) throws Exception {
         ResponseResult<Void> responseResult = new ResponseResult<>();
         //解析字符串
         List<Long> idList = Arrays.asList(ids.split(",")).stream().map(s -> Long.parseLong(s.trim())).collect(Collectors.toList());
@@ -103,15 +114,12 @@ public class JobSeekerInfosServiceImpl extends BaseServiceImpl<JobSeekerInfos, L
      * @param record
      * @return
      */
-    @Override
     public Long insertAndReturnKey(JobSeekerInfos record) {
         record.setServerCreateDate(new Date());
         record.setServerUpdateDate(new Date());
         record.setIsValid(1);//默认设置信息有效d
         return jobSeekerInfosMapper.insertAndGetKey(record);
     }
-
-
 
 
     /**
@@ -126,7 +134,7 @@ public class JobSeekerInfosServiceImpl extends BaseServiceImpl<JobSeekerInfos, L
         try {
          /*   Map<String, JobSeekerInfosVo> map = new HashMap<>();*/
             //1.查询求职者的个人相关信息
-            JobSeekerInfosVo jobSeekerInfosVo = (JobSeekerInfosVo) jobSeekerInfosMapper.getJobSeekerInfoById(id);
+        /*    JobSeekerInfosVo jobSeekerInfosVo = (JobSeekerInfosVo) jobSeekerInfosMapper.getJobSeekerInfoById(id);
             //2.查询对应的求职者的简历信息的处理状态
             JobSeekerResumeDelivery jobSeekerResumeDelivery = jobSeekerResumeDeliveryService.getJobSeekerResumeDeliveryByJobSeekerId(id);
             //获取是否有效
@@ -134,7 +142,7 @@ public class JobSeekerInfosServiceImpl extends BaseServiceImpl<JobSeekerInfos, L
             //获取存储路径
             jobSeekerInfosVo.setResumePath(jobSeekerResumeDelivery.getResumePath());
             //获取处理状态
-            jobSeekerInfosVo.setDealStatus(jobSeekerResumeDelivery.getDealStatus());
+            jobSeekerInfosVo.setDealStatus(jobSeekerResumeDelivery.getDealStatus());*/
             //封装返回信息
             //  responseResult.setData(map);
             responseResult.setCode(StatusCode.OK.getCode());
@@ -154,11 +162,11 @@ public class JobSeekerInfosServiceImpl extends BaseServiceImpl<JobSeekerInfos, L
      * @return
      */
     @Override
-    public ResponseResult<Void> updateResumeDeliveryDealStatus(long resumeDeliveryId, int dealStatus) throws Exception{
-            ResponseResult<Void> rep = new ResponseResult<>();
-            jobSeekerResumeDeliveryMapper.updateResumeDeliveryDealStatus(resumeDeliveryId, dealStatus);
-            rep.setCode(StatusCode.UPDATE_SUCCESS.getCode());
-            rep.setMessage(StatusCode.UPDATE_SUCCESS.getMessage());
+    public ResponseResult<Void> updateResumeDeliveryDealStatus(long resumeDeliveryId, int dealStatus) throws Exception {
+        ResponseResult<Void> rep = new ResponseResult<>();
+        jobSeekerResumeDeliveryMapper.updateResumeDeliveryDealStatus(resumeDeliveryId, dealStatus);
+        rep.setCode(StatusCode.UPDATE_SUCCESS.getCode());
+        rep.setMessage(StatusCode.UPDATE_SUCCESS.getMessage());
         return rep;
     }
 

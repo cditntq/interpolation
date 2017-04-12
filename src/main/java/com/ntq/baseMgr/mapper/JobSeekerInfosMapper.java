@@ -4,6 +4,7 @@ import com.ntq.baseMgr.page.Page;
 import com.ntq.baseMgr.po.JobSeekerInfos;
 import com.ntq.baseMgr.po.JobSeekerInfosExtDto;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,8 @@ import java.util.Map;
 /**
  *
  */
-public interface JobSeekerInfosMapper extends BaseMapper<JobSeekerInfos, Long> {
+@Repository
+public interface JobSeekerInfosMapper {
     /**
      * 插入求职者个人信息并返回key
      *
