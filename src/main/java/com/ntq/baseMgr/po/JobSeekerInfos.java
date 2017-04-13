@@ -23,7 +23,7 @@ public class JobSeekerInfos {
     private String graduateSchool;
     //专业
     private String majorSubjects;
-    //毕业事件
+    //毕业时间
     private Date graduateDate;
     //学历
     private Integer recordOfFormalSchooling;

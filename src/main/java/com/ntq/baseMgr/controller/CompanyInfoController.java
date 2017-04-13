@@ -41,24 +41,31 @@ public class CompanyInfoController {
         return "companyInfos";
     }
 
-
-
-
-
-  /*  *//**
-     * 发布职位首页(两个按钮：1 新公司发布职位,2已经录入公司发布职位)
+    /**
+     * 点击获取验证码
      *
-     * @return
-     *//*
-    @RequestMapping(value = "/positionReleaseIndex")
-    public String positionReleaseIndex() {
-        return "companyPositionReleaseIndex";
-    }*/
+     * @param phoneNumber 电话号码
+     * @return 返回
+     */
+    @RequestMapping(value = "/getMessageCode",method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseResult<Void> getMessageCode(Long phoneNumber) {
+        ResponseResult<Void> responseResult = new ResponseResult<>();
+
+        try {
+            responseResult = companyInfoService.getMessageCode(phoneNumber);
+        } catch (Exception e) {
+            responseResult.setCode(StatusCode.Fail.getCode());
+            responseResult.setFailureMessage(StatusCode.Fail.getMessage());
+        }
+        return responseResult;
+    }
 
     /**
      * 验证码校验是否为已注册的公司
+     *  这里需要处理的是当前的用户  但需要注意的在处理验证码失败的情况 返回操作的true 成功 能够转跳,false验证失败暂时没做
      *
-     * @param session     TODO 这里需要处理的是当前的用户  但需要注意的在处理验证码失败的情况 返回操作的true 成功 能够转跳,false验证失败暂时没做
+     * @param session
      * @param phoneNumber 手机号码
      * @param verifyCode  收到的验证码
      * @return

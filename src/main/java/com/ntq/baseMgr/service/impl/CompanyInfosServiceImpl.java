@@ -10,10 +10,19 @@ import com.ntq.baseMgr.po.MessageValidateRecord;
 import com.ntq.baseMgr.service.CompanyInfoService;
 import com.ntq.baseMgr.util.*;
 import com.ntq.baseMgr.vo.CompanyInfoWithPositionInfoListVo;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -155,6 +164,56 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
 
 
     @Override
+    public ResponseResult<Void> getMessageCode(Long phoneNumber) throws Exception {
+        ResponseResult<Void> responseResult = new ResponseResult<>();
+        //1. 调用接口获取手机号并得到验证码
+        HttpClient client = new HttpClient();
+        PostMethod method = new PostMethod(MessageCodeUtil.GET_MESSAGE_CODE_URL);
+        client.getParams().setContentCharset("GBK");
+        method.setRequestHeader("ContentType", "application/x-www-form-urlencoded;charset=GBK");
+        //1.1生成验证码
+        int mobile_code = (int) ((Math.random() * 9 + 1) * 100000);
+        //1.2生成短信内容
+        String content = new String("您的验证码是：" + mobile_code + "。请不要把验证码泄露给其他人。");
+        NameValuePair[] data = {//提交短信
+                new NameValuePair("account", MessageCodeUtil.APIID), //查看用户名请登录用户中心->验证码、通知短信->帐户及签名设置->APIID
+                new NameValuePair("password", MessageCodeUtil.APIKEY),  //查看密码请登录用户中心->验证码、通知短信->帐户及签名设置->APIKEY
+                new NameValuePair("mobile", phoneNumber.toString()),
+                new NameValuePair("content", content),
+        };
+        method.setRequestBody(data);
+        client.executeMethod(method);
+        String SubmitResult = method.getResponseBodyAsString();
+        //解析请求得到的参数
+        Document doc = DocumentHelper.parseText(SubmitResult);
+        Element root = doc.getRootElement();
+        String code = root.elementText("code");
+        String msg = root.elementText("msg");
+        String smsid = root.elementText("smsid");
+        /*System.out.println(code);
+        System.out.println(msg);
+        System.out.println(smsid);*/
+        //验证码录入数据库
+        MessageValidateRecord messageValidateRecord = new MessageValidateRecord();
+        messageValidateRecord.setToken(String.valueOf(mobile_code));
+        messageValidateRecord.setValideTime(new Date());//验证码发送时间
+
+        messageValidateRecord.setPhoneNum(phoneNumber);//电话
+        if ("2".equals(code)) {//请求成功
+            // System.out.println("短信提交成功");//插入数验证码的数据库
+            messageValidateRecord.setSendSuccess(1);//发送成功
+            responseResult.setCode(StatusCode.INSERT_SUCCESS.getCode());
+            responseResult.setMessage("短信发送成功");
+        } else {//异常处理
+            messageValidateRecord.setSendSuccess(1);//发送失败
+            responseResult.setCode(StatusCode.INSERT_FAIL.getCode());
+            responseResult.setFailureMessage("短信发送失败");
+        }
+        messageValidateRecordMapper.insertMessageValidateRecord(messageValidateRecord);
+        return responseResult;
+    }
+
+    @Override
     public ResponseResult<Void> verifyMessageCode(HttpSession session, Long phoneNumber, String verifyCode) {
 
         ResponseResult<Void> responseResult = new ResponseResult<>();
@@ -170,7 +229,7 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
         CompanyInfos companyInfo = companyInfosMapper.getCompanyInfoByPhoneNo(phoneNumber);
         System.out.println(companyInfo.toString());
         if (companyInfo != null) {
-          //  RequestUtil.setSession("companyInfos", companyInfo);
+            //  RequestUtil.setSession("companyInfos", companyInfo);
             session.setAttribute("companyInfo", companyInfo);
             //转跳到 到职位信息的列表
             responseResult.setCode(StatusCode.OK.getCode());
