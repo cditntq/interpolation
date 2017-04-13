@@ -3,6 +3,7 @@ package com.ntq.baseMgr.mapper;
 import com.ntq.baseMgr.page.Page;
 import com.ntq.baseMgr.po.JobSeekerInfos;
 import com.ntq.baseMgr.po.JobSeekerInfosExtDto;
+import com.ntq.baseMgr.vo.JobSeekerInfoVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -45,4 +46,18 @@ public interface JobSeekerInfosMapper {
      */
 
     void deleteBatchJobSeekerInfoListAndResumeDelivery(List<Long> ids);
+
+    /**
+     * 通过电话号码查询求职者记录
+     * @param phoneNumber
+     * @return
+     */
+    JobSeekerInfos getJobSeekerInfoByPhoneNo(Long phoneNumber);
+
+    /**
+     * 分页查询求职者信息
+     * @param page
+     * @return
+     */
+    List<JobSeekerInfoVo> queryJobSeekerInfoVoList(Page<JobSeekerInfoVo> page);
 }

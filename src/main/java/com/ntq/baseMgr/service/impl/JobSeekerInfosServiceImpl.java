@@ -2,14 +2,23 @@ package com.ntq.baseMgr.service.impl;
 
 import com.ntq.baseMgr.mapper.JobSeekerInfosMapper;
 import com.ntq.baseMgr.mapper.JobSeekerResumeDeliveryMapper;
+import com.ntq.baseMgr.mapper.MessageValidateRecordMapper;
 import com.ntq.baseMgr.page.Page;
 import com.ntq.baseMgr.po.*;
 import com.ntq.baseMgr.service.IUploadFileService;
 import com.ntq.baseMgr.service.JobSeekerInfosService;
 import com.ntq.baseMgr.service.JobSeekerResumeDeliveryService;
+import com.ntq.baseMgr.util.ConstantUtil;
+import com.ntq.baseMgr.util.MessageCodeUtil;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.util.StatusCode;
 import com.ntq.baseMgr.vo.UploadFileVo;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +26,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -43,6 +53,8 @@ public class JobSeekerInfosServiceImpl implements JobSeekerInfosService {
     private IUploadFileService uploadFileService;//上传文件的service
     @Autowired
     private MailSenderServiceImpl mailSenderServiceImpl;//邮件发送服务
+    @Autowired
+    private MessageValidateRecordMapper messageValidateRecordMapper;
 
 
     public ResponseResult<Void> insertJobSeekerInfo(JobSeekerInfosVo jobSeekerInfosVo, UploadFileVo vo, HttpServletRequest request) throws Exception {
@@ -188,6 +200,91 @@ public class JobSeekerInfosServiceImpl implements JobSeekerInfosService {
         mailSenderServiceImpl.sendMail(mailBean);
         responseResult.setCode(StatusCode.MAIL_SENDER_SUCCESS.getCode());
         responseResult.setMessage(StatusCode.MAIL_SENDER_SUCCESS.getMessage());
+        return responseResult;
+    }
+
+    /**
+     * 获取验证码
+     *
+     * @param phoneNumber
+     * @return
+     */
+    @Override
+    public ResponseResult<Void> getMessageCode(Long phoneNumber) throws Exception {
+        ResponseResult<Void> responseResult = new ResponseResult<>();
+        //1. 调用接口获取手机号并得到验证码
+        HttpClient client = new HttpClient();
+        PostMethod method = new PostMethod(MessageCodeUtil.GET_MESSAGE_CODE_URL);
+        client.getParams().setContentCharset("GBK");
+        method.setRequestHeader("ContentType", "application/x-www-form-urlencoded;charset=GBK");
+        //1.1生成验证码
+        int mobile_code = (int) ((Math.random() * 9 + 1) * 100000);
+        //1.2生成短信内容
+        String content = new String("您的验证码是：" + mobile_code + "。请不要把验证码泄露给其他人。");
+        NameValuePair[] data = {//提交短信
+                new NameValuePair("account", MessageCodeUtil.APIID),
+                new NameValuePair("password", MessageCodeUtil.APIKEY),
+                new NameValuePair("mobile", phoneNumber.toString()),
+                new NameValuePair("content", content),
+        };
+        method.setRequestBody(data);
+        client.executeMethod(method);
+        String SubmitResult = method.getResponseBodyAsString();
+        //解析请求得到的参数
+        Document doc = DocumentHelper.parseText(SubmitResult);
+        Element root = doc.getRootElement();
+        String code = root.elementText("code");
+        String msg = root.elementText("msg");
+        String smsid = root.elementText("smsid");
+        //验证码录入数据库
+        MessageValidateRecord messageValidateRecord = new MessageValidateRecord();
+        messageValidateRecord.setToken(String.valueOf(mobile_code));
+        messageValidateRecord.setValideTime(new Date());//验证码发送时间
+        messageValidateRecord.setPhoneNum(phoneNumber);//电话
+        if ("2".equals(code)) {//请求成功
+            // System.out.println("短信提交成功");//插入数验证码的数据库
+            messageValidateRecord.setSendSuccess(1);//发送成功
+            responseResult.setCode(StatusCode.INSERT_SUCCESS.getCode());
+            responseResult.setMessage("短信发送成功");
+        } else {//异常处理
+            messageValidateRecord.setSendSuccess(1);//发送失败
+            responseResult.setCode(StatusCode.INSERT_FAIL.getCode());
+            responseResult.setFailureMessage("短信发送失败");
+        }
+        messageValidateRecordMapper.insertMessageValidateRecord(messageValidateRecord);
+        return responseResult;
+    }
+
+    /**
+     * 转跳验证
+     *
+     * @param session
+     * @param phoneNumber 手机号
+     * @param verifyCode  验证码
+     * @return
+     */
+    @Override
+    public ResponseResult<Void> verifyMessageCode(HttpSession session, Long phoneNumber, String verifyCode) throws Exception {
+        ResponseResult<Void> responseResult = new ResponseResult<>();
+        //1.匹配验证码
+        MessageValidateRecord messageValidateRecord = messageValidateRecordMapper.getMessageValidateRecord(phoneNumber, verifyCode);
+        //验证码匹配失败
+        if (null == messageValidateRecord) {
+            responseResult.setCode(StatusCode.Fail.getCode());
+            responseResult.setFailureMessage("验证码输入错误");
+            return responseResult;
+        }
+        //2.查求职者有无与该号码匹配的的信息
+        JobSeekerInfos jobSeekerInfos = jobSeekerInfosMapper.getJobSeekerInfoByPhoneNo(phoneNumber);
+        if (jobSeekerInfos != null) {
+            session.setAttribute(ConstantUtil.JOBSEEKER_INFOS, jobSeekerInfos);
+            //转跳到 到职位信息的列表
+            responseResult.setCode(StatusCode.OK.getCode());
+            responseResult.setMessage(StatusCode.OK.getMessage());
+        } else {
+            responseResult.setCode(StatusCode.Fail.getCode());
+            responseResult.setFailureMessage("没有与该手机号匹配的用户！请认真核实");
+        }
         return responseResult;
     }
 }

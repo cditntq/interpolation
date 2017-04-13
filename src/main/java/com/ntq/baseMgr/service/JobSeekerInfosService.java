@@ -8,6 +8,7 @@ import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.vo.UploadFileVo;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * <p>@description: 求职者信息的service</p>
@@ -65,4 +66,22 @@ public interface JobSeekerInfosService {
      * @return
      */
     ResponseResult<String> resumeFeedBack(String jobSeekerEmail, String feedBackMessage) throws Exception;
+
+    /**
+     * 获取验证码
+     *
+     * @param phoneNumber
+     * @return
+     */
+    ResponseResult<Void> getMessageCode(Long phoneNumber) throws Exception;
+
+    /**
+     * 转跳验证
+     *
+     * @param session
+     * @param phoneNumber 手机号
+     * @param verifyCode  验证码
+     * @return
+     */
+    ResponseResult<Void> verifyMessageCode(HttpSession session, Long phoneNumber, String verifyCode) throws Exception;
 }

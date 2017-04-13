@@ -2,6 +2,7 @@ package com.ntq.baseMgr.service.impl;
 
 import com.ntq.baseMgr.mapper.CompanyInfosMapper;
 import com.ntq.baseMgr.mapper.CompanyPositionInfosMapper;
+import com.ntq.baseMgr.mapper.JobSeekerInfosMapper;
 import com.ntq.baseMgr.page.Page;
 import com.ntq.baseMgr.po.CompanyInfos;
 import com.ntq.baseMgr.po.CompanyPositionInfos;
@@ -9,6 +10,7 @@ import com.ntq.baseMgr.po.CompanyPositionInfosWithBLOBs;
 import com.ntq.baseMgr.service.CompanyPositionInfoService;
 import com.ntq.baseMgr.util.*;
 import com.ntq.baseMgr.vo.CompanyPositionInfoVo;
+import com.ntq.baseMgr.vo.JobSeekerInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,8 @@ public class CompanyPositionInfoServiceImpl implements CompanyPositionInfoServic
     private CompanyPositionInfosMapper companyPositionInfosMapper;
     @Autowired
     private CompanyInfosMapper companyInfosMapper;
+    @Autowired
+    private JobSeekerInfosMapper jobSeekerInfosMapper;
 
     /**
      * 添加新的职位信息
@@ -149,6 +153,20 @@ public class CompanyPositionInfoServiceImpl implements CompanyPositionInfoServic
     public CompanyPositionInfos getTest() {
         Long id = 1l;
         return companyPositionInfosMapper.getCompanyPositionInfoById(id);
+    }
+
+    /**
+     * 分页查询获取求职者list
+     *
+     * @param page
+     * @return
+     */
+    @Override
+    public Page<JobSeekerInfoVo> queryJobSeekerInfoVoList(Page<JobSeekerInfoVo> page) throws Exception {
+        List<JobSeekerInfoVo> jobSeekerInfoVoList = jobSeekerInfosMapper.queryJobSeekerInfoVoList(page);
+        page.setResults(jobSeekerInfoVoList);
+        page.setSuccess(true);
+        return page;
     }
 
 

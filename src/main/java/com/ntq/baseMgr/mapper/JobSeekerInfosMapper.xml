@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ntq.baseMgr.mapper.JobSeekerInfosMapper">
-    <resultMap id="BaseResultMap" type="com.ntq.baseMgr.po.JobSeekerInfos" >
-        <id column="id" property="id" jdbcType="BIGINT" />
-        <result column="job_seeker_name" property="jobSeekerName" jdbcType="VARCHAR" />
-        <result column="job_seeker_sex" property="jobSeekerSex" jdbcType="BIGINT" />
-        <result column="job_seeker_phone" property="jobSeekerPhone" jdbcType="BIGINT" />
-        <result column="job_seeker_email" property="jobSeekerEmail" jdbcType="VARCHAR" />
-        <result column="job_seeker_weixin" property="jobSeekerWeixin" jdbcType="VARCHAR" />
-        <result column="graduate_school" property="graduateSchool" jdbcType="VARCHAR" />
-        <result column="major_subjects" property="majorSubjects" jdbcType="VARCHAR" />
-        <result column="record_of_formal_schooling" property="recordOfFormalSchooling" jdbcType="INTEGER" />
-        <result column="graduate_date" property="graduateDate" jdbcType="DATE" />
-        <result column="server_create_date" property="serverCreateDate" jdbcType="TIMESTAMP" />
-        <result column="server_update_date" property="serverUpdateDate" jdbcType="TIMESTAMP" />
-        <result column="is_valid" property="isValid" jdbcType="INTEGER" />
-        <result column="is_add_ntqweixin" property="isAddNtqweixin" jdbcType="INTEGER" />
+    <resultMap id="BaseResultMap" type="com.ntq.baseMgr.po.JobSeekerInfos">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="job_seeker_name" property="jobSeekerName" jdbcType="VARCHAR"/>
+        <result column="job_seeker_sex" property="jobSeekerSex" jdbcType="BIGINT"/>
+        <result column="job_seeker_phone" property="jobSeekerPhone" jdbcType="BIGINT"/>
+        <result column="job_seeker_email" property="jobSeekerEmail" jdbcType="VARCHAR"/>
+        <result column="job_seeker_weixin" property="jobSeekerWeixin" jdbcType="VARCHAR"/>
+        <result column="graduate_school" property="graduateSchool" jdbcType="VARCHAR"/>
+        <result column="major_subjects" property="majorSubjects" jdbcType="VARCHAR"/>
+        <result column="record_of_formal_schooling" property="recordOfFormalSchooling" jdbcType="INTEGER"/>
+        <result column="graduate_date" property="graduateDate" jdbcType="DATE"/>
+        <result column="server_create_date" property="serverCreateDate" jdbcType="TIMESTAMP"/>
+        <result column="server_update_date" property="serverUpdateDate" jdbcType="TIMESTAMP"/>
+        <result column="is_valid" property="isValid" jdbcType="INTEGER"/>
+        <result column="is_add_ntqweixin" property="isAddNtqweixin" jdbcType="INTEGER"/>
     </resultMap>
     <resultMap id="BaseResultVoMap" type="com.ntq.baseMgr.po.JobSeekerInfosExtDto">
         <result column="id" property="id" jdbcType="BIGINT"/>
@@ -26,6 +26,13 @@
         <result column="resume_path" property="resumePath" jdbcType="VARCHAR"/>
         <result column="resumeDeliveryId" property="resumeDeliveryId" jdbcType="BIGINT"/>
         <result column="deal_status" property="dealStatus" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--求职者简约信息-->
+    <resultMap id="JobSeekerResultMap" type="com.ntq.baseMgr.vo.JobSeekerInfoVo">
+        <result column="job_seeker_name" property="jobSeekerName" jdbcType="VARCHAR"/>
+        <result column="job_seeker_phone" property="jobSeekerPhone" jdbcType="BIGINT"/>
+        <result column="record_of_formal_schooling" property="recordOfFormalSchooling" jdbcType="INTEGER"/>
     </resultMap>
     <sql id="Base_Column_List">
     id, job_seeker_name, job_seeker_sex, job_seeker_phone, job_seeker_email, job_seeker_weixin, 
@@ -56,7 +63,8 @@
         is_valid, is_add_ntqweixin)
         values (#{jobSeekerName,jdbcType=VARCHAR}, #{jobSeekerSex,jdbcType=BIGINT},
         #{jobSeekerPhone,jdbcType=BIGINT}, #{jobSeekerEmail,jdbcType=VARCHAR}, #{jobSeekerWeixin,jdbcType=VARCHAR},
-        #{graduateSchool,jdbcType=VARCHAR}, #{majorSubjects,jdbcType=VARCHAR}, #{recordOfFormalSchooling,jdbcType=INTEGER},
+        #{graduateSchool,jdbcType=VARCHAR}, #{majorSubjects,jdbcType=VARCHAR},
+        #{recordOfFormalSchooling,jdbcType=INTEGER},
         #{graduateDate,jdbcType=DATE}, #{serverCreateDate,jdbcType=TIMESTAMP}, #{serverUpdateDate,jdbcType=TIMESTAMP},
         #{isValid,jdbcType=INTEGER}, #{isAddNtqweixin,jdbcType=INTEGER})
     </insert>
@@ -88,6 +96,33 @@
         <include refid="Base_Column_List"/>
         from job_seeker_infos
         where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <!--通过电话号码查询用户-->
+    <select id="getJobSeekerInfoByPhoneNo" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from job_seeker_infos
+        where job_seeker_phone = #{phoneNumber,jdbcType=BIGINT}
+    </select>
+
+    <!--公司查看求职者信息-->
+    <select id="queryJobSeekerInfoVoList" resultMap="JobSeekerResultMap"
+            parameterType="com.ntq.baseMgr.page.Page">
+        SELECT
+        job_seeker_name,
+        job_seeker_phone,
+        record_of_formal_schooling
+        FROM job_seeker_infos
+        JOIN job_seeker_resume_delivery
+        ON job_seeker_infos.id = job_seeker_infos_id
+        JOIN company_position_infos
+        ON job_code = position_no
+        <where>
+            <if test="params.positionNo != '' and params.positionNo != null">
+                AND position_no = #{params.positionNo}
+            </if>
+        </where>
     </select>
     <!--根据id批量删除记录-->
     <update id="deleteBatchJobSeekerInfoListAndResumeDelivery" parameterType="java.util.List">

@@ -5,6 +5,7 @@ import com.ntq.baseMgr.po.CompanyPositionInfos;
 import com.ntq.baseMgr.po.CompanyPositionInfosWithBLOBs;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.vo.CompanyPositionInfoVo;
+import com.ntq.baseMgr.vo.JobSeekerInfoVo;
 
 /**
  * <p>@description: 职位信息的接口定义</p>
@@ -54,5 +55,10 @@ public interface CompanyPositionInfoService {
      */
     CompanyPositionInfos getTest();
 
-
+    /**
+     * 分页查询获取求职者list
+     * @param page
+     * @return
+     */
+    Page<JobSeekerInfoVo> queryJobSeekerInfoVoList(Page<JobSeekerInfoVo> page) throws Exception;
 }

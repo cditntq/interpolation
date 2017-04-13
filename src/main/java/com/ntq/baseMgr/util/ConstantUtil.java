@@ -16,6 +16,7 @@ public class ConstantUtil {
 
     /***************session start**********************/
     public final static String COMPANY_INFOS = "companyInfos";
+    public final static String JOBSEEKER_INFOS = "jobSeekerInfos";
     /***************session end**********************/
     //公司id编号
     public final static String COMPANY_INFOS_ID = "companyInfosId";

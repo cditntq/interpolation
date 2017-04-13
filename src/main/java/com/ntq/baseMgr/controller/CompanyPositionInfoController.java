@@ -9,6 +9,7 @@ import com.ntq.baseMgr.service.CompanyPositionInfoService;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.util.StatusCode;
 import com.ntq.baseMgr.vo.CompanyPositionInfoVo;
+import com.ntq.baseMgr.vo.JobSeekerInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -95,6 +96,8 @@ public class CompanyPositionInfoController {
         return page;
     }
 
+    //
+
     /**
      * TODO 重新发布职位 1:当为审核状态时，更新当前信息,当不为审核状态新增加
      *
@@ -116,6 +119,16 @@ public class CompanyPositionInfoController {
     }
 
 
+    @RequestMapping(value = "/queryJobSeekerInfoVoList")
+    @ResponseBody
+    public Page<JobSeekerInfoVo> queryJobSeekerInfoVoList(@RequestBody  Page<JobSeekerInfoVo> page) {
+        try {
+            return companyPositionInfoService.queryJobSeekerInfoVoList(page);
+        } catch (Exception e) {
+            page.setSuccess(false);
+        }
+        return page;
+    }
 
 /*
     */
