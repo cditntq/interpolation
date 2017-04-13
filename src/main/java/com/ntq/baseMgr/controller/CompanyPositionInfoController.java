@@ -8,6 +8,7 @@ import com.ntq.baseMgr.service.CompanyInfoService;
 import com.ntq.baseMgr.service.CompanyPositionInfoService;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.util.StatusCode;
+import com.ntq.baseMgr.vo.CompanyPositionInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -85,7 +86,7 @@ public class CompanyPositionInfoController {
      */
     @RequestMapping(value = "/queryCompanyPositionInfoListByCondition")
     @ResponseBody
-    public Page<CompanyPositionInfos> queryCompanyPositionInfoListByCondition(Page<CompanyPositionInfos> page) {
+    public Page<CompanyPositionInfoVo> queryCompanyPositionInfoListByCondition(@RequestBody Page<CompanyPositionInfoVo> page) {
         try {
             return companyPositionInfoService.queryCompanyPositionInfoListByCondition(page);
         } catch (Exception e) {
@@ -95,7 +96,7 @@ public class CompanyPositionInfoController {
     }
 
     /**
-     * 重新发布职位 1:当为审核状态时，更新当前信息,当不为审核状态新增加
+     * TODO 重新发布职位 1:当为审核状态时，更新当前信息,当不为审核状态新增加
      *
      * @param companyPositionInfosWithBLOBs
      * @return

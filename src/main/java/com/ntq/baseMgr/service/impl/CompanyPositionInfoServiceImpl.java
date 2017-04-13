@@ -7,14 +7,11 @@ import com.ntq.baseMgr.po.CompanyInfos;
 import com.ntq.baseMgr.po.CompanyPositionInfos;
 import com.ntq.baseMgr.po.CompanyPositionInfosWithBLOBs;
 import com.ntq.baseMgr.service.CompanyPositionInfoService;
-import com.ntq.baseMgr.util.CreateSerialNo;
-import com.ntq.baseMgr.util.RequestUtil;
-import com.ntq.baseMgr.util.ResponseResult;
-import com.ntq.baseMgr.util.StatusCode;
+import com.ntq.baseMgr.util.*;
+import com.ntq.baseMgr.vo.CompanyPositionInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +46,7 @@ public class CompanyPositionInfoServiceImpl implements CompanyPositionInfoServic
         Long companyInfoId = companyInfos.getId();
         companyPositionInfosWithBLOBs.setCompanyInfosId(companyInfoId);
         //2.生成职位编号
-        CreateSerialNo serialNo=new CreateSerialNo();
+        CreateSerialNo serialNo = new CreateSerialNo();
         Long positionNo = Long.valueOf(serialNo.getNum());
         companyPositionInfosWithBLOBs.setPositionNo(positionNo);
         //3.设置创建和更新时间
@@ -87,17 +84,31 @@ public class CompanyPositionInfoServiceImpl implements CompanyPositionInfoServic
      * @return
      */
     @Override
-    public Page<CompanyPositionInfos> queryCompanyPositionInfoListByCondition(Page<CompanyPositionInfos> page) {
+    public Page<CompanyPositionInfoVo> queryCompanyPositionInfoListByCondition(Page<CompanyPositionInfoVo> page) throws Exception {
         //添加查询条件
-        CompanyInfos companyInfos = (CompanyInfos) RequestUtil.getSessionAttribute("companyInfos");//获取公司信息
-        //获取公司列表主键
-        Long companyInfoId = companyInfos.getId();
+        CompanyInfos companyInfos = (CompanyInfos) RequestUtil.getSessionAttribute(ConstantUtil.COMPANY_INFOS);//获取公司信息
+        //判断是否登录
+        if (null == companyInfos) {//
+            page.setSuccess(false);
+        } else {
+            //获取公司列表主键
+            Long companyInfoId = 1l;
+            Map<String, Object> map = page.getParams();
+            map.put(ConstantUtil.COMPANY_INFOS_ID, companyInfoId);//公司编号
+            page.setParams(map);
+            List<CompanyPositionInfoVo> companyPositionInfoVoList = companyPositionInfosMapper.queryCompanyPositionInfoListByCondition(page);
+            page.setResults(companyPositionInfoVoList);
+            page.setSuccess(true);
+        }
+
+   /*     //获取公司列表主键
+        Long companyInfoId = 1l;
         Map<String, Object> map = page.getParams();
-        map.put("companyInfosId", companyInfoId);
+        map.put(ConstantUtil.COMPANY_INFOS_ID, companyInfoId);//公司编号
         page.setParams(map);
-        List<CompanyPositionInfos> companyPositionInfoList = companyPositionInfosMapper.queryCompanyPositionInfoListByCondition(page);
-        page.setResults(companyPositionInfoList);
-        page.setSuccess(true);
+        List<CompanyPositionInfoVo> companyPositionInfoVoList = companyPositionInfosMapper.queryCompanyPositionInfoListByCondition(page);
+        page.setResults(companyPositionInfoVoList);
+        page.setSuccess(true);*/
         return page;
     }
 

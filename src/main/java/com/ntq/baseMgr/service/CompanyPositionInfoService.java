@@ -4,8 +4,7 @@ import com.ntq.baseMgr.page.Page;
 import com.ntq.baseMgr.po.CompanyPositionInfos;
 import com.ntq.baseMgr.po.CompanyPositionInfosWithBLOBs;
 import com.ntq.baseMgr.util.ResponseResult;
-
-import javax.servlet.http.HttpSession;
+import com.ntq.baseMgr.vo.CompanyPositionInfoVo;
 
 /**
  * <p>@description: 职位信息的接口定义</p>
@@ -39,7 +38,7 @@ public interface CompanyPositionInfoService {
      * @param page 分页对象
      * @return
      */
-    Page<CompanyPositionInfos> queryCompanyPositionInfoListByCondition(Page<CompanyPositionInfos> page);
+    Page<CompanyPositionInfoVo> queryCompanyPositionInfoListByCondition(Page<CompanyPositionInfoVo> page) throws Exception;
 
     /**
      * 重新发布职位 1:当为审核状态时，更新当前信息,当不为审核状态新增加
