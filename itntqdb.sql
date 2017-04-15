@@ -36,7 +36,7 @@ CREATE TABLE `company_infos` (
   `recruiter_name` varchar(20) COLLATE utf8_bin NOT NULL COMMENT '招聘人姓名',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT "公司信息"
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT '公司信息';
 
 -- ----------------------------
 --  Table structure for `company_position_infos`
@@ -62,6 +62,7 @@ CREATE TABLE `company_position_infos` (
   `is_discuss_personally` tinyint(4) NOT NULL DEFAULT '2' COMMENT '是否面议。1-是，2-否',
   `postion_status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '职位状态,1-待审核、2-已发布、3-拒绝发布、4-待下架、5-已下架',
   `publish_time` timestamp NULL DEFAULT NULL COMMENT '发布时间',
+  `remark` varchar(100) COLLATE utf8_bin COMMENT '职位描述',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT '职位信息';

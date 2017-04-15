@@ -18,12 +18,12 @@ import java.util.Date;
 @Getter
 public class CompanyPositionInfoExtVo {
 
-    /*主键ID*/
+    /*职位主键ID*/
     private Long id;
     /*公司id*/
     private Long companyInfosId;
     /*公司名称*/
-    private Long companyName;
+    private String companyName;
     /*职位编号*/
     private Long positionNo;
     /*职位名称*/
@@ -32,6 +32,8 @@ public class CompanyPositionInfoExtVo {
     private Integer postionStatus;
     /*创建时间*/
     private Date serverCreateDate;
+    /*备注*/
+    private String remark;
     /*发时间*/
     private Date publishTime;
 }

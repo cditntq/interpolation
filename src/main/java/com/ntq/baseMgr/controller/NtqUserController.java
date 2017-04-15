@@ -9,11 +9,12 @@ import com.ntq.baseMgr.util.StatusCode;
 import com.ntq.baseMgr.vo.CompanyPositionInfoExtVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/NtqUser")
+@RequestMapping("/ntqUser")
 public class NtqUserController {
 
     @Autowired
@@ -25,11 +26,11 @@ public class NtqUserController {
      * @param page 分页对象
      * @return
      */
-    @RequestMapping(value = "/queryCompanyInfoListByCondition")
+    @RequestMapping(value = "/queryCompanyPositionInfoVoListByCondition")
     @ResponseBody
-    public Page<CompanyPositionInfoExtVo> queryCompanyInfoVoListByCondition(Page<CompanyPositionInfoExtVo> page) {
+    public Page<CompanyPositionInfoExtVo> queryCompanyPositionInfoVoListByCondition(@RequestBody  Page<CompanyPositionInfoExtVo> page) {
         try {
-            page = userService.queryCompanyInfoVoListByCondition(page);
+            page = userService.queryCompanyPositionInfoVoListByCondition(page);
         } catch (Exception e) {
             page.setSuccess(false);
         }
@@ -38,15 +39,15 @@ public class NtqUserController {
     /**
      * 通过id编号获取公司信息
      *
-     * @param id 公司自增id
+     * @param companyInfoId 公司自增id
      * @return
      */
     @RequestMapping(value = "/getCompanyInfoById")
     @ResponseBody
-    public ResponseResult<CompanyInfos> getCompanyInfoById(Long id) {
+    public ResponseResult<CompanyInfos> getCompanyInfoById(Long companyInfoId) {
         ResponseResult<CompanyInfos> responseResult = new ResponseResult<>();
         try {
-            responseResult = userService.getCompanyInfoById(id);
+            responseResult = userService.getCompanyInfoById(companyInfoId);
         } catch (Exception e) {
             responseResult.setCode(StatusCode.GET_FAIL.getCode());
             responseResult.setFailureMessage(StatusCode.GET_FAIL.getMessage());
@@ -57,15 +58,15 @@ public class NtqUserController {
     /**
      * 通过id编号获取职位相关信息
      *
-     * @param id 职位ID编号
+     * @param positionId 职位ID编号
      * @return
      */
     @RequestMapping(value = "/getCompanyPositionInfoById")
     @ResponseBody
-    public ResponseResult<CompanyPositionInfos> getCompanyPositionInfoById(Long id) {
+    public ResponseResult<CompanyPositionInfos> getCompanyPositionInfoById(Long positionId) {
         ResponseResult<CompanyPositionInfos> responseResult = new ResponseResult<>();
         try {
-            responseResult = userService.getCompanyPositionInfoById(id);
+            responseResult = userService.getCompanyPositionInfoById(positionId);
         } catch (Exception e) {
             responseResult.setCode(StatusCode.GET_FAIL.getCode());
             responseResult.setFailureMessage(StatusCode.GET_FAIL.getMessage());

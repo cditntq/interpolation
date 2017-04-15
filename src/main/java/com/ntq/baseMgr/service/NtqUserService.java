@@ -22,19 +22,19 @@ public interface NtqUserService {
      * @param page 分页对象
      * @return
      */
-    Page<CompanyPositionInfoExtVo> queryCompanyInfoVoListByCondition(Page<CompanyPositionInfoExtVo> page);
+    Page<CompanyPositionInfoExtVo> queryCompanyPositionInfoVoListByCondition(Page<CompanyPositionInfoExtVo> page) throws Exception;
     /**
      * 通过id编号获取公司信息
      *
      * @param id 公司自增id
      * @return
      */
-    ResponseResult<CompanyInfos> getCompanyInfoById(Long id);
+    ResponseResult<CompanyInfos> getCompanyInfoById(Long id) throws Exception;
     /**
      * 通过id编号获取职位相关信息
      *
      * @param id 职位ID编号
      * @return
      */
-    ResponseResult<CompanyPositionInfos> getCompanyPositionInfoById(Long id);
+    ResponseResult<CompanyPositionInfos> getCompanyPositionInfoById(Long id) throws Exception;
 }

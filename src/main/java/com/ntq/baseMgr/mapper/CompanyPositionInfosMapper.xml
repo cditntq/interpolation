@@ -20,6 +20,7 @@
         <result column="is_discuss_personally" property="isDiscussPersonally" jdbcType="TINYINT"/>
         <result column="postion_status" property="postionStatus" jdbcType="INTEGER"/>
         <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
     </resultMap>
     <resultMap id="ResultMapWithBLOBs" type="com.ntq.baseMgr.po.CompanyPositionInfosWithBLOBs" extends="BaseResultMap">
         <result column="position_desc" property="positionDesc" jdbcType="LONGVARCHAR"/>
@@ -32,6 +33,17 @@
         <result column="position_name" property="positionName" jdbcType="VARCHAR"/>
         <result column="position_type" property="positionType" jdbcType="INTEGER"/>
         <result column="resume_count" property="resumeCount" jdbcType="INTEGER"/>
+        <result column="server_create_date" property="serverCreateDate" jdbcType="TIMESTAMP"/>
+        <result column="postion_status" property="postionStatus" jdbcType="INTEGER"/>
+        <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <resultMap id="PositionExtVoResultMap" type="com.ntq.baseMgr.vo.CompanyPositionInfoExtVo">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="company_infos_id" property="companyInfosId" jdbcType="BIGINT"/>
+        <result column="company_name" property="companyName" jdbcType="VARCHAR"/>
+        <result column="position_no" property="positionNo" jdbcType="BIGINT"/>
+        <result column="position_name" property="positionName" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
         <result column="server_create_date" property="serverCreateDate" jdbcType="TIMESTAMP"/>
         <result column="postion_status" property="postionStatus" jdbcType="INTEGER"/>
         <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP"/>
@@ -150,7 +162,6 @@
     </select>
 
     <!--分页查询 分页查询-->
-
     <select id="queryCompanyPositionInfoListByCondition" resultMap="PositionVoResultMap"
             parameterType="com.ntq.baseMgr.page.Page">
         SELECT
@@ -179,11 +190,37 @@
                 AND position.publish_time like #{params.publishTime}
             </if>
             <if test="params.positionName != '' and params.positionName != null">
-                AND position.position_name like  CONCAT('%',#{params.positionName},'%')
+                AND position.position_name like CONCAT('%',#{params.positionName},'%')
             </if>
         </where>
     </select>
 
+    <!--分页查询 TODO 创建时间和发布时间没有添加上-->
+    <select id="queryCompanyPositionInfoVoListByCondition" resultMap="PositionExtVoResultMap"
+            parameterType="com.ntq.baseMgr.page.Page">
+        SELECT
+            position.id AS id,
+            company_name,
+            company_infos_id,
+            position_name,
+            position_no,
+            postion_status,
+            remark,
+            position.server_create_date as server_create_date,
+            publish_time
+        FROM company_position_infos position JOIN company_infos company ON position.company_infos_id=company.id
+        <where>
+            <if test="params.companyName != '' and params.companyName != null">
+                AND company.company_name = #{params.companyName}
+            </if>
+            <if test="params.postionStatus != '' and params.postionStatus != null">
+                AND position.postion_status = #{params.postionStatus}
+            </if>
+            <if test="params.positionName != '' and params.positionName != null">
+                AND position.position_name like CONCAT('%',#{params.positionName},'%')
+            </if>
+        </where>
+    </select>
     <!--更新职位信息-->
     <update id="updateCompanyPositionInfo" parameterType="com.ntq.baseMgr.po.CompanyPositionInfosWithBLOBs">
     update company_position_infos

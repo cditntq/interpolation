@@ -69,7 +69,7 @@
 
 
     <!--通过id查询当前求公司信息-->
-    <select id="getJobSeekerInfoVoById" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long">
+    <select id="getCompanyInfoById" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long">
         select
         <include refid="Base_Column_List"/>,
         <include refid="Blob_Column_List"/>

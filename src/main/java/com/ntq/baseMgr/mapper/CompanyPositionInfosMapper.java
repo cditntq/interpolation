@@ -3,6 +3,7 @@ package com.ntq.baseMgr.mapper;
 import com.ntq.baseMgr.page.Page;
 import com.ntq.baseMgr.po.CompanyPositionInfos;
 import com.ntq.baseMgr.po.CompanyPositionInfosWithBLOBs;
+import com.ntq.baseMgr.vo.CompanyPositionInfoExtVo;
 import com.ntq.baseMgr.vo.CompanyPositionInfoVo;
 import org.springframework.stereotype.Repository;
 
@@ -53,4 +54,11 @@ public interface CompanyPositionInfosMapper {
      * @param companyPositionInfosWithBLOBs
      */
     void updateCompanyPositionInfo(CompanyPositionInfosWithBLOBs companyPositionInfosWithBLOBs);
+    /**
+     * 分页查询公司职位信息
+     *
+     * @param page 分页对象
+     * @return
+     */
+    List<CompanyPositionInfoExtVo> queryCompanyPositionInfoVoListByCondition(Page<CompanyPositionInfoExtVo> page);
 }

@@ -11,18 +11,15 @@ import com.ntq.baseMgr.service.CompanyInfoService;
 import com.ntq.baseMgr.util.*;
 import com.ntq.baseMgr.vo.CompanyInfoWithPositionInfoListVo;
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.dom4j.Document;
-import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -71,7 +68,7 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
     @Override
     public ResponseResult<CompanyInfos> getJobSeekerInfoVoById(Long id) throws Exception {
         ResponseResult<CompanyInfos> responseResult = new ResponseResult<>();
-        responseResult.setData(companyInfosMapper.getJobSeekerInfoVoById(id));
+        responseResult.setData(companyInfosMapper.getCompanyInfoById(id));
         responseResult.setCode(StatusCode.GET_SUCCESS.getCode());
         responseResult.setMessage(StatusCode.GET_SUCCESS.getMessage());
         return responseResult;
@@ -174,7 +171,7 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
         //1.1生成验证码
         int mobile_code = (int) ((Math.random() * 9 + 1) * 100000);
         //1.2生成短信内容
-        String content = new String("您的验证码是：" + mobile_code + "。请不要把验证码泄露给其他人。");
+        String content = "您的验证码是：" + mobile_code + "。请不要把验证码泄露给其他人。";
         NameValuePair[] data = {//提交短信
                 new NameValuePair("account", MessageCodeUtil.APIID), //查看用户名请登录用户中心->验证码、通知短信->帐户及签名设置->APIID
                 new NameValuePair("password", MessageCodeUtil.APIKEY),  //查看密码请登录用户中心->验证码、通知短信->帐户及签名设置->APIKEY

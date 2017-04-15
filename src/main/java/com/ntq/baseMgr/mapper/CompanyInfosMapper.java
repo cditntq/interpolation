@@ -2,6 +2,7 @@ package com.ntq.baseMgr.mapper;
 
 import com.ntq.baseMgr.page.Page;
 import com.ntq.baseMgr.po.CompanyInfos;
+import com.ntq.baseMgr.vo.CompanyPositionInfoExtVo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public interface CompanyInfosMapper{
      * @param id
      * @return
      */
-    CompanyInfos getJobSeekerInfoVoById(Long id);
+    CompanyInfos getCompanyInfoById(Long id);
     /**
      * 分页查询求职者信息
      *
