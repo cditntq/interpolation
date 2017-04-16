@@ -226,7 +226,7 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
         CompanyInfos companyInfo = companyInfosMapper.getCompanyInfoByPhoneNo(phoneNumber);
         System.out.println(companyInfo.toString());
         if (companyInfo != null) {
-            //  RequestUtil.setSession("companyInfos", companyInfo);
+            //  SessionUtil.setSession("companyInfos", companyInfo);
             session.setAttribute("companyInfo", companyInfo);
             //转跳到 到职位信息的列表
             responseResult.setCode(StatusCode.OK.getCode());

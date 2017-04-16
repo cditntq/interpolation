@@ -25,8 +25,8 @@ import java.io.UnsupportedEncodingException;
 // 表示继承了SpringJUnit4ClassRunner类
 @ContextConfiguration(locations = { "classpath:applicationContext.xml" })
 public class MailSenderUtil {
-    @Autowired
-    private JobSeekerInfosServiceImpl jobSeekerInfosService;
+  /*  @Autowired
+    private JobSeekerInfosServiceImpl jobSeekerInfosService;*/
     @Autowired
     private MailSenderServiceImpl mailSenderService;
     @Test
@@ -35,11 +35,11 @@ public class MailSenderUtil {
         MailSenderServiceImpl mailSenderService = (MailSenderServiceImpl) ac.getBean("mailSenderServiceImpl");*/
         MailBean mailBean = new MailBean();
 
-        mailBean.setFrom("l247677858my@126.com");
-        mailBean.setFromName("XXX");
-        mailBean.setSubject("你好测试信息");
+        mailBean.setFrom("huihui_86626@163.com");
+        mailBean.setFromName("huihui_86626@163.com");
+        mailBean.setSubject("内推圈信息");
         mailBean.setToEmails(new String[]{"247677858@qq.com"});
-        mailBean.setContext("这是发送主题");
+        mailBean.setContext("关于职位升迁发送");
         mailSenderService.sendMail(mailBean);
     }
     @Test

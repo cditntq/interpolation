@@ -46,7 +46,7 @@ public class CompanyPositionInfoServiceImpl implements CompanyPositionInfoServic
     public ResponseResult<Void> addCompanyPositionInfo(CompanyPositionInfosWithBLOBs companyPositionInfosWithBLOBs) throws Exception {
         ResponseResult<Void> responseResult = new ResponseResult<>();
         //1.获取公司主键
-        CompanyInfos companyInfos = (CompanyInfos) RequestUtil.getSessionAttribute("companyInfo");//获取公司信息
+        CompanyInfos companyInfos = (CompanyInfos) SessionUtil.getSessionAttribute("companyInfo");//获取公司信息
         Long companyInfoId = companyInfos.getId();
         companyPositionInfosWithBLOBs.setCompanyInfosId(companyInfoId);
         //2.生成职位编号
@@ -90,7 +90,7 @@ public class CompanyPositionInfoServiceImpl implements CompanyPositionInfoServic
     @Override
     public Page<CompanyPositionInfoVo> queryCompanyPositionInfoListByCondition(Page<CompanyPositionInfoVo> page) throws Exception {
         //添加查询条件
-        CompanyInfos companyInfos = (CompanyInfos) RequestUtil.getSessionAttribute(ConstantUtil.COMPANY_INFOS);//获取公司信息
+        CompanyInfos companyInfos = (CompanyInfos) SessionUtil.getSessionAttribute(ConstantUtil.COMPANY_INFOS);//获取公司信息
         //判断是否登录
         if (null == companyInfos) {//
             page.setSuccess(false);
@@ -130,7 +130,7 @@ public class CompanyPositionInfoServiceImpl implements CompanyPositionInfoServic
         } else {//创建新的职位
 
             //1.获取公司主键
-            CompanyInfos companyInfos = (CompanyInfos) RequestUtil.getSessionAttribute("companyInfos");//获取公司信息
+            CompanyInfos companyInfos = (CompanyInfos) SessionUtil.getSessionAttribute("companyInfos");//获取公司信息
             Long companyInfoId = companyInfos.getId();
             companyPositionInfosWithBLOBs.setCompanyInfosId(companyInfoId);
             //2.生成职位编号 TODO

@@ -5,6 +5,8 @@ import com.ntq.baseMgr.po.CompanyPositionInfos;
 import com.ntq.baseMgr.po.CompanyPositionInfosWithBLOBs;
 import com.ntq.baseMgr.vo.CompanyPositionInfoExtVo;
 import com.ntq.baseMgr.vo.CompanyPositionInfoVo;
+import com.ntq.baseMgr.vo.JobSeekerPositionVo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -61,4 +63,18 @@ public interface CompanyPositionInfosMapper {
      * @return
      */
     List<CompanyPositionInfoExtVo> queryCompanyPositionInfoVoListByCondition(Page<CompanyPositionInfoExtVo> page);
+
+    /**
+     * 更新职位信息
+     * @param positionId
+     * @param message
+     */
+    void updateCompanyPositionInfoById(@Param(value = "positionId") Long positionId, @Param(value = "message")String message);
+    /**
+     * 求职者投递岗位分页查询
+     *
+     * @param page 分页参数
+     * @return
+     */
+    List<JobSeekerPositionVo> queryJobSeekerPositionVoList(Page<JobSeekerPositionVo> page);
 }

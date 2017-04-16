@@ -2,9 +2,12 @@ package com.ntq.baseMgr.service;
 
 
 import com.ntq.baseMgr.page.Page;
+import com.ntq.baseMgr.po.CompanyInfos;
+import com.ntq.baseMgr.po.CompanyPositionInfos;
 import com.ntq.baseMgr.po.JobSeekerInfosExtDto;
 import com.ntq.baseMgr.po.JobSeekerInfosVo;
 import com.ntq.baseMgr.util.ResponseResult;
+import com.ntq.baseMgr.vo.JobSeekerPositionVo;
 import com.ntq.baseMgr.vo.UploadFileVo;
 
 import javax.servlet.http.HttpServletRequest;
@@ -84,4 +87,29 @@ public interface JobSeekerInfosService {
      * @return
      */
     ResponseResult<Void> verifyMessageCode(HttpSession session, Long phoneNumber, String verifyCode) throws Exception;
+
+    /**
+     * 求职者投递岗位分页查询
+     * @param page 分页参数
+     * @return
+     */
+    Page<JobSeekerPositionVo> queryJobSeekerPositionVoList(Page<JobSeekerPositionVo> page)throws Exception;
+    /**
+     * 通过id编号获取公司信息
+     *
+     * @param id 公司自增id
+     * @return
+     */
+    ResponseResult<CompanyInfos> getCompanyInfoById(Long companyInfoId) throws Exception;
+    /**
+     * 通过id编号获取职位相关信息
+     *
+     * @param id 职位ID编号
+     * @return
+     */
+    ResponseResult<CompanyPositionInfos> getCompanyPositionInfoById(Long positionId)throws Exception;
+
+
+
+
 }

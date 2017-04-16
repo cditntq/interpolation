@@ -30,9 +30,7 @@ public class JobSeekerInfosExtDto {
     /*求职者邮箱*/
     private String jobSeekerEmail;
     private Integer dealStatus;
-       /*    //处理状态
-        private Integer dealStatus;
-        //是否有效
-        private Boolean isValid;*/
-    //附件id
+
+
+
 }

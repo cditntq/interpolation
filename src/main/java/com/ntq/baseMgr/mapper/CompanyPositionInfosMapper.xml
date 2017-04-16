@@ -48,6 +48,17 @@
         <result column="postion_status" property="postionStatus" jdbcType="INTEGER"/>
         <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP"/>
     </resultMap>
+    <!--求职者查看职位信息的ResultMap-->
+
+    <resultMap id="JobSeekerPositionVoResultMap" type="com.ntq.baseMgr.vo.JobSeekerPositionVo">
+        <result column="position_id" property="positionId" jdbcType="BIGINT"/>
+        <result column="company_infos_id" property="companyInfosId" jdbcType="BIGINT"/>
+        <result column="company_name" property="companyName" jdbcType="VARCHAR"/>
+        <result column="position_no" property="positionNo" jdbcType="BIGINT"/>
+        <result column="position_name" property="positionName" jdbcType="VARCHAR"/>
+        <result column="server_create_date" property="serverCreateDate" jdbcType="TIMESTAMP"/>
+        <result column="deal_Status" property="dealStatus" jdbcType="INTEGER"/>
+    </resultMap>
     <sql id="Base_Column_List">
     id, company_infos_id, position_no, position_name, high_salary, low_salary, position_type,
     qualifications_type, low_working_life, high_working_life, work_address, is_valid,
@@ -195,19 +206,19 @@
         </where>
     </select>
 
-    <!--分页查询 TODO 创建时间和发布时间没有添加上-->
+    <!--分页查询-->
     <select id="queryCompanyPositionInfoVoListByCondition" resultMap="PositionExtVoResultMap"
             parameterType="com.ntq.baseMgr.page.Page">
         SELECT
-            position.id AS id,
-            company_name,
-            company_infos_id,
-            position_name,
-            position_no,
-            postion_status,
-            remark,
-            position.server_create_date as server_create_date,
-            publish_time
+        position.id AS id,
+        company_name,
+        company_infos_id,
+        position_name,
+        position_no,
+        postion_status,
+        remark,
+        position.server_create_date as server_create_date,
+        publish_time
         FROM company_position_infos position JOIN company_infos company ON position.company_infos_id=company.id
         <where>
             <if test="params.companyName != '' and params.companyName != null">
@@ -218,6 +229,15 @@
             </if>
             <if test="params.positionName != '' and params.positionName != null">
                 AND position.position_name like CONCAT('%',#{params.positionName},'%')
+            </if>
+            <if test="params.serverCreateDate!='' and params.serverCreateDate!=null">
+                AND position.server_create_date BETWEEN timestamp(DATE (#{params.serverCreateDate,jdbcType=TIMESTAMP}))
+                AND
+                timestamp(DATE (#{params.serverCreateDate,jdbcType=TIMESTAMP}),'23:59:59')
+            </if>
+            <if test="params.publishTime!='' and params.publishTime!=null">
+                AND position.publish_time BETWEEN timestamp(DATE (#{params.publishTime})) AND
+                timestamp(DATE (#{params.publishTime}),'23:59:59')
             </if>
         </where>
     </select>
@@ -244,4 +264,53 @@
     position_requirements = #{positionRequirements,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+    <!--通过职位编号更新职位信息-->
+    <update id="updateCompanyPositionInfoById">
+        update company_position_infos
+        set
+        postion_status = 3,
+        remark=#{message,jdbcType=VARCHAR}
+        where id = #{positionId,jdbcType=BIGINT}
+    </update>
+
+
+    <!--分页查询投递者投递的职位-->
+    <select id="queryJobSeekerPositionVoList" resultMap="JobSeekerPositionVoResultMap"
+            parameterType="com.ntq.baseMgr.page.Page">
+        SELECT
+        company_infos_id,
+        company_name,
+        position.id as position_id,
+        position_no,
+        position_name,
+        delivery.deal_status AS deal_status,
+        delivery.server_create_date AS server_create_date
+        FROM job_seeker_resume_delivery delivery
+        JOIN company_position_infos position ON delivery.job_code = position.position_no
+        JOIN company_infos company ON position.company_infos_id = company.id
+        JOIN job_seeker_infos jobSeeker ON delivery.job_seeker_infos_id=jobSeeker.id
+        <where>
+            <if test="params.jobSeekerInfosId!='' and params.jobSeekerInfosId!=null">
+                AND jobSeeker.id= #{params.jobSeekerInfosId}
+            </if>
+            <if test="params.companyName != '' and params.companyName != null">
+                AND company.company_name = like CONCAT('%',#{params.companyName},'%')
+            </if>
+            <if test="params.dealStatus != '' and params.dealStatus != null">
+                AND delivery.deal_status = #{params.postionStatus}
+            </if>
+            <if test="params.positionName != '' and params.positionName != null">
+                AND position.position_name like CONCAT('%',#{params.positionName},'%')
+            </if>
+            <if test="params.positionNo != '' and params.positionNo != null">
+                AND position.position_no like CONCAT('%',#{params.positionNo},'%')
+            </if>
+            <if test="params.serverCreateDate!='' and params.serverCreateDate!=null">
+                AND delivery.server_create_date BETWEEN timestamp(DATE (#{params.serverCreateDate,jdbcType=TIMESTAMP}))
+                AND
+                timestamp(DATE (#{params.serverCreateDate,jdbcType=TIMESTAMP}),'23:59:59')
+            </if>
+        </where>
+    </select>
 </mapper>

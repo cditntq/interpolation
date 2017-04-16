@@ -1,6 +1,5 @@
 package com.ntq.baseMgr.util;
 
-import com.ntq.baseMgr.po.CompanyInfos;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -16,8 +15,8 @@ import javax.servlet.http.HttpSession;
  * @author: shuangyang
  * @date: 17-4-7 下午2:12
  */
-public class RequestUtil {
-    private RequestUtil() {
+public class SessionUtil {
+    private SessionUtil() {
     }
 
     /**

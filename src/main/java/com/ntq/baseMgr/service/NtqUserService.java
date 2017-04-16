@@ -37,4 +37,19 @@ public interface NtqUserService {
      * @return
      */
     ResponseResult<CompanyPositionInfos> getCompanyPositionInfoById(Long id) throws Exception;
+    /**
+     * 通过职位id发送给公司职位拒绝发送，包括理由
+     *
+     * @param positionId 职位ID编号
+     * @param message    拒绝理由
+     * @return
+     */
+    ResponseResult<Void> updatePositionRemarkAndSendMail(Long positionId, String message) throws Exception;
+    /**
+     * 通过id编号获取公司信息
+     *
+     * @param positionId 公司自增id
+     * @return
+     */
+    ResponseResult<Void> updateCompanyPositionInfo(Long positionId);
 }

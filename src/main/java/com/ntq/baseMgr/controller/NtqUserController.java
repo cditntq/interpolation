@@ -28,7 +28,7 @@ public class NtqUserController {
      */
     @RequestMapping(value = "/queryCompanyPositionInfoVoListByCondition")
     @ResponseBody
-    public Page<CompanyPositionInfoExtVo> queryCompanyPositionInfoVoListByCondition(@RequestBody  Page<CompanyPositionInfoExtVo> page) {
+    public Page<CompanyPositionInfoExtVo> queryCompanyPositionInfoVoListByCondition(@RequestBody Page<CompanyPositionInfoExtVo> page) {
         try {
             page = userService.queryCompanyPositionInfoVoListByCondition(page);
         } catch (Exception e) {
@@ -36,6 +36,7 @@ public class NtqUserController {
         }
         return page;
     }
+
     /**
      * 通过id编号获取公司信息
      *
@@ -75,9 +76,45 @@ public class NtqUserController {
     }
 
 
+    /**
+     * 通过职位id发送给公司职位拒绝发送，包括理由
+     *
+     * @param positionId 职位ID编号
+     * @param message    拒绝理由
+     * @return
+     */
+    @RequestMapping(value = "/rejectPositionRelease")
+    @ResponseBody
+    public ResponseResult<Void> rejectPositionRelease(Long positionId, String message) {
+        ResponseResult<Void> responseResult = new ResponseResult<>();
+        try {
+            responseResult = userService.updatePositionRemarkAndSendMail(positionId, message);
+        } catch (Exception e) {
+            responseResult.setCode(StatusCode.Fail.getCode());
+            responseResult.setFailureMessage(StatusCode.Fail.getMessage());
+        }
+        return responseResult;
+    }
 
 
-
+    /**
+     * 发布职位 todo 差一些没有晚上
+     *
+     * @param positionId 职位ID编号
+     * @return
+     */
+    @RequestMapping(value = "/positionRelease")
+    @ResponseBody
+    public ResponseResult<Void> positionRelease(Long positionId) {
+        ResponseResult<Void> responseResult = new ResponseResult<>();
+        try {
+            responseResult = userService.updateCompanyPositionInfo(positionId);
+        } catch (Exception e) {
+            responseResult.setCode(StatusCode.UPDATE_FAIL.getCode());
+            responseResult.setFailureMessage(StatusCode.UPDATE_FAIL.getMessage());
+        }
+        return responseResult;
+    }
 
 
 }

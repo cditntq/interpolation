@@ -1,17 +1,13 @@
 package com.ntq.baseMgr.service.impl;
 
-import com.ntq.baseMgr.mapper.JobSeekerInfosMapper;
-import com.ntq.baseMgr.mapper.JobSeekerResumeDeliveryMapper;
-import com.ntq.baseMgr.mapper.MessageValidateRecordMapper;
+import com.ntq.baseMgr.mapper.*;
 import com.ntq.baseMgr.page.Page;
 import com.ntq.baseMgr.po.*;
 import com.ntq.baseMgr.service.IUploadFileService;
 import com.ntq.baseMgr.service.JobSeekerInfosService;
 import com.ntq.baseMgr.service.JobSeekerResumeDeliveryService;
-import com.ntq.baseMgr.util.ConstantUtil;
-import com.ntq.baseMgr.util.MessageCodeUtil;
-import com.ntq.baseMgr.util.ResponseResult;
-import com.ntq.baseMgr.util.StatusCode;
+import com.ntq.baseMgr.util.*;
+import com.ntq.baseMgr.vo.JobSeekerPositionVo;
 import com.ntq.baseMgr.vo.UploadFileVo;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.NameValuePair;
@@ -55,6 +51,10 @@ public class JobSeekerInfosServiceImpl implements JobSeekerInfosService {
     private MailSenderServiceImpl mailSenderServiceImpl;//邮件发送服务
     @Autowired
     private MessageValidateRecordMapper messageValidateRecordMapper;
+    @Autowired
+    private CompanyInfosMapper companyInfosMapper;
+    @Autowired
+    private CompanyPositionInfosMapper companyPositionInfosMapper;
 
 
     public ResponseResult<Void> insertJobSeekerInfo(JobSeekerInfosVo jobSeekerInfosVo, UploadFileVo vo, HttpServletRequest request) throws Exception {
@@ -285,6 +285,53 @@ public class JobSeekerInfosServiceImpl implements JobSeekerInfosService {
             responseResult.setCode(StatusCode.Fail.getCode());
             responseResult.setFailureMessage("没有与该手机号匹配的用户！请认真核实");
         }
+        return responseResult;
+    }
+
+    /**
+     * 求职者投递岗位分页查询
+     *
+     * @param page 分页参数
+     * @return
+     */
+    @Override
+    public Page<JobSeekerPositionVo> queryJobSeekerPositionVoList(Page<JobSeekerPositionVo> page) throws Exception {
+
+        // 获取当前用户的jobSeekerInfoId
+        JobSeekerInfos jobSeekerInfos = (JobSeekerInfos) SessionUtil.getSessionAttribute(ConstantUtil.JOBSEEKER_INFOS);
+        Long jobSeekerInfosId = jobSeekerInfos.getId();
+        page.getParams().put("jobSeekerInfosId", jobSeekerInfosId);
+        //执行查询
+        page.setResults(companyPositionInfosMapper.queryJobSeekerPositionVoList(page));
+        page.setSuccess(true);
+        return page;
+    }
+
+    /**
+     * 通过id编号获取公司信息
+     *
+     * @param companyInfoId@return
+     */
+    @Override
+    public ResponseResult<CompanyInfos> getCompanyInfoById(Long companyInfoId) throws Exception {
+        ResponseResult<CompanyInfos> responseResult = new ResponseResult<>();
+        responseResult.setCode(StatusCode.GET_SUCCESS.getCode());
+        responseResult.setMessage(StatusCode.GET_SUCCESS.getMessage());
+        responseResult.setData(companyInfosMapper.getCompanyInfoById(companyInfoId));
+        return responseResult;
+    }
+
+    /**
+     * 通过id编号获取职位相关信息
+     *
+     * @param positionId@return
+     */
+    @Override
+    public ResponseResult<CompanyPositionInfos> getCompanyPositionInfoById(Long positionId) throws Exception {
+        ResponseResult<CompanyPositionInfos> responseResult = new ResponseResult<>();
+        responseResult.setCode(StatusCode.GET_SUCCESS.getCode());
+        responseResult.setMessage(StatusCode.GET_SUCCESS.getMessage());
+        responseResult.setData(companyPositionInfosMapper.getCompanyPositionInfoById(positionId));
         return responseResult;
     }
 }

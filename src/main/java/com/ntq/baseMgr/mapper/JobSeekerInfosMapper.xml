@@ -27,6 +27,7 @@
         <result column="resumeDeliveryId" property="resumeDeliveryId" jdbcType="BIGINT"/>
         <result column="deal_status" property="dealStatus" jdbcType="INTEGER"/>
     </resultMap>
+    <!--求职者查看职位信息-->
 
     <!--求职者简约信息-->
     <resultMap id="JobSeekerResultMap" type="com.ntq.baseMgr.vo.JobSeekerInfoVo">

@@ -20,4 +20,8 @@ public class ConstantUtil {
     /***************session end**********************/
     //公司id编号
     public final static String COMPANY_INFOS_ID = "companyInfosId";
+
+    //公司id编号
+    public final static String REMARK = "已发布";
+
 }

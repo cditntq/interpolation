@@ -2,17 +2,21 @@ package com.ntq.baseMgr.controller;
 
 
 import com.ntq.baseMgr.page.Page;
+import com.ntq.baseMgr.po.CompanyInfos;
+import com.ntq.baseMgr.po.CompanyPositionInfos;
 import com.ntq.baseMgr.po.JobSeekerInfosExtDto;
 import com.ntq.baseMgr.po.JobSeekerInfosVo;
 import com.ntq.baseMgr.service.JobSeekerInfosService;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.util.StatusCode;
+import com.ntq.baseMgr.vo.JobSeekerPositionVo;
 import com.ntq.baseMgr.vo.UploadFileVo;
 import com.sun.org.apache.regexp.internal.RE;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -125,12 +129,12 @@ public class JobSeekerInfoController {
         return jobSeekerInfosService.getJobSeekerInfoVoById(id);
     }
 
-    /**
+ /*   *//**
      * 分页查询求职者信息
      *
      * @param page 分页对象
      * @return
-     */
+     *//*
     @RequestMapping(value = "/queryJobSeekerInfoListByCondition")
     @ResponseBody
     public Page<JobSeekerInfosExtDto> queryJobSeekerInfosListByCondition(Page<JobSeekerInfosExtDto> page) {
@@ -140,7 +144,7 @@ public class JobSeekerInfoController {
             page.setSuccess(false);
         }
         return page;
-    }
+    }*/
 
     /**
      * 根据id批量删除求职者个人信息包括简历
@@ -203,5 +207,61 @@ public class JobSeekerInfoController {
         }
         return responseResult;
     }
+
+
+    /**
+     * 求职者投递岗位分页查询
+     * @param page 分页参数
+     * @return
+     */
+    @RequestMapping(value = "/queryJobSeekerPositionVoList")
+    @ResponseBody
+    public Page<JobSeekerPositionVo> queryJobSeekerPositionVoList(@RequestBody  Page<JobSeekerPositionVo> page) {
+        try {
+            return  jobSeekerInfosService.queryJobSeekerPositionVoList(page);
+        } catch (Exception e) {
+            page.setSuccess(false);
+        }
+        return page;
+    }
+
+    /**
+     * 通过id编号获取公司信息
+     *
+     * @param companyInfoId 公司自增id
+     * @return
+     */
+    @RequestMapping(value = "/getCompanyInfoById")
+    @ResponseBody
+    public ResponseResult<CompanyInfos> getCompanyInfoById(Long companyInfoId) {
+        ResponseResult<CompanyInfos> responseResult = new ResponseResult<>();
+        try {
+            responseResult = jobSeekerInfosService.getCompanyInfoById(companyInfoId);
+        } catch (Exception e) {
+            responseResult.setCode(StatusCode.GET_FAIL.getCode());
+            responseResult.setFailureMessage(StatusCode.GET_FAIL.getMessage());
+        }
+        return responseResult;
+    }
+
+    /**
+     * 通过id编号获取职位相关信息
+     *
+     * @param positionId 职位ID编号
+     * @return
+     */
+    @RequestMapping(value = "/getCompanyPositionInfoById")
+    @ResponseBody
+    public ResponseResult<CompanyPositionInfos> getCompanyPositionInfoById(Long positionId) {
+        ResponseResult<CompanyPositionInfos> responseResult = new ResponseResult<>();
+        try {
+            responseResult = jobSeekerInfosService.getCompanyPositionInfoById(positionId);
+        } catch (Exception e) {
+            responseResult.setCode(StatusCode.GET_FAIL.getCode());
+            responseResult.setFailureMessage(StatusCode.GET_FAIL.getMessage());
+        }
+        return responseResult;
+    }
+
 
 }
