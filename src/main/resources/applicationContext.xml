@@ -12,7 +12,7 @@
 		http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd ">
     <!-- 加载配置文件 -->
-    <context:property-placeholder ignore-unresolvable="true" location="classpath:db.properties,classpath:ntq_mail.properties" />
+    <context:property-placeholder ignore-unresolvable="true" location="classpath:remote_cnn.properties,classpath:ntq_mail.properties" />
     <!-- 引入供java类里面使用配置文件 -->
     <bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="locations">
