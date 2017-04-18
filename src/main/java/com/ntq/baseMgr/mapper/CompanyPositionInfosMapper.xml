@@ -50,7 +50,7 @@
     </resultMap>
     <!--求职者查看职位信息的ResultMap-->
 
-    <resultMap id="JobSeekerPositionVoResultMap" type="com.ntq.baseMgr.vo.JobSeekerPositionVo">
+    <resultMap id="JobSeekerPositionVoResultMap" type="com.ntq.baseMgr.vo.JobSeekerPositionDealVo">
         <result column="position_id" property="positionId" jdbcType="BIGINT"/>
         <result column="company_infos_id" property="companyInfosId" jdbcType="BIGINT"/>
         <result column="company_name" property="companyName" jdbcType="VARCHAR"/>
@@ -313,4 +313,5 @@
             </if>
         </where>
     </select>
+
 </mapper>

@@ -7,7 +7,7 @@ import com.ntq.baseMgr.po.CompanyPositionInfos;
 import com.ntq.baseMgr.po.JobSeekerInfosExtDto;
 import com.ntq.baseMgr.po.JobSeekerInfosVo;
 import com.ntq.baseMgr.util.ResponseResult;
-import com.ntq.baseMgr.vo.JobSeekerPositionVo;
+import com.ntq.baseMgr.vo.JobSeekerPositionDealVo;
 import com.ntq.baseMgr.vo.UploadFileVo;
 
 import javax.servlet.http.HttpServletRequest;
@@ -93,7 +93,7 @@ public interface JobSeekerInfosService {
      * @param page 分页参数
      * @return
      */
-    Page<JobSeekerPositionVo> queryJobSeekerPositionVoList(Page<JobSeekerPositionVo> page)throws Exception;
+    Page<JobSeekerPositionDealVo> queryJobSeekerPositionVoList(Page<JobSeekerPositionDealVo> page)throws Exception;
     /**
      * 通过id编号获取公司信息
      *

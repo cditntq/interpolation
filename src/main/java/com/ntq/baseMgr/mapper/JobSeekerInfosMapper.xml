@@ -35,6 +35,14 @@
         <result column="job_seeker_phone" property="jobSeekerPhone" jdbcType="BIGINT"/>
         <result column="record_of_formal_schooling" property="recordOfFormalSchooling" jdbcType="INTEGER"/>
     </resultMap>
+
+    <!--求职者职位详细信息 todo-->
+    <resultMap id="JobSeekerPositionDetailResultMap" type="com.ntq.baseMgr.vo.JobSeekerPositionDetailVo">
+        <result column="job_seeker_weixin" property="jobSeekerWeixin" jdbcType="VARCHAR"/>
+        <result column="job_seeker_name" property="jobSeekerName" jdbcType="VARCHAR"/>
+        <result column="job_seeker_phone" property="jobSeekerPhone" jdbcType="BIGINT"/>
+        <result column="record_of_formal_schooling" property="recordOfFormalSchooling" jdbcType="INTEGER"/>
+    </resultMap>
     <sql id="Base_Column_List">
     id, job_seeker_name, job_seeker_sex, job_seeker_phone, job_seeker_email, job_seeker_weixin, 
     graduate_school, major_subjects, graduate_date, server_create_date, server_update_date, 
@@ -132,5 +140,31 @@
             #{item}
         </foreach>;
     </update>
+    <!--分页查询求职者职位状态信息 todo 未作测试-->
+    <select id="queryJobSeekerPositionDetailVoByCondition" parameterType="com.ntq.baseMgr.page.Page"
+            resultMap="JobSeekerPositionDetailResultMap">
+        SELECT
+          delivery.job_code AS position_no,
+          position_name,
+          job_seeker_phone,
+          job_seeker_weixin,
+          record_of_formal_schooling,
+          delivery.id       AS resumeId,
+          job_seeker_infos_id,
+          deal_status,
+          resume_name,
+          company_name
+        FROM job_seeker_resume_delivery delivery
+          JOIN job_seeker_infos AS jobSeeker ON delivery.job_seeker_infos_id = jobSeeker.id
+          JOIN company_position_infos position ON position.position_no= delivery.job_code  JOIN company_infos company ON company.id=position.company_infos_id
+          <where>
+              <if test="params.positionNo != '' and params.positionNo != null">
+                  AND  delivery.job_code=#{params.positionNo}
+              </if>
+              <if test="params.jobSeekerPhone != '' and params.jobSeekerPhone != null">
+                AND jobSeeker.job_seeker_phone=#{params.jobSeekerPhone}
+              </if>
+          </where>
+</select>
 
 </mapper>

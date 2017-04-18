@@ -4,14 +4,12 @@ package com.ntq.baseMgr.controller;
 import com.ntq.baseMgr.page.Page;
 import com.ntq.baseMgr.po.CompanyInfos;
 import com.ntq.baseMgr.po.CompanyPositionInfos;
-import com.ntq.baseMgr.po.JobSeekerInfosExtDto;
 import com.ntq.baseMgr.po.JobSeekerInfosVo;
 import com.ntq.baseMgr.service.JobSeekerInfosService;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.util.StatusCode;
-import com.ntq.baseMgr.vo.JobSeekerPositionVo;
+import com.ntq.baseMgr.vo.JobSeekerPositionDealVo;
 import com.ntq.baseMgr.vo.UploadFileVo;
-import com.sun.org.apache.regexp.internal.RE;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,13 +50,14 @@ public class JobSeekerInfoController {
     public String index(HttpSession httpSession) {
         return "jobSeekerManagment";
     }
+
     /**
      * 已经录入简历的求职者点击获取验证码
      *
      * @param phoneNumber 电话号码
      * @return 返回
      */
-    @RequestMapping(value = "/getMessageCode",method = RequestMethod.GET)
+    @RequestMapping(value = "/getMessageCode", method = RequestMethod.GET)
     @ResponseBody
     public ResponseResult<Void> getMessageCode(Long phoneNumber) {
         ResponseResult<Void> responseResult = new ResponseResult<>();
@@ -74,7 +73,7 @@ public class JobSeekerInfoController {
 
     /**
      * 验证码校验是否为已注册的公司
-     *  这里需要处理的是当前的用户  但需要注意的在处理验证码失败的情况 返回操作的true 成功 能够转跳,false验证失败暂时没做
+     * 这里需要处理的是当前的用户  但需要注意的在处理验证码失败的情况 返回操作的true 成功 能够转跳,false验证失败暂时没做
      *
      * @param session
      * @param phoneNumber 手机号码
@@ -99,16 +98,16 @@ public class JobSeekerInfoController {
      * 求职者信息录入以及简历上传
      *
      * @param jobSeekerInfosVo 求职者信息录入
-     * @param vo 简历上传
-     * @param request request请求
+     * @param vo               简历上传
+     * @param request          request请求
      * @return
      */
     @RequestMapping(value = "/addJobSeekerInfoAndResume", method = RequestMethod.POST)
     public ResponseResult<Void> addJobSeekerInfoAndResume(JobSeekerInfosVo jobSeekerInfosVo, UploadFileVo vo, HttpServletRequest request) {
-        ResponseResult<Void> responseResult=new ResponseResult<>();
+        ResponseResult<Void> responseResult = new ResponseResult<>();
         //测试的数据
         try {
-            responseResult= jobSeekerInfosService.insertJobSeekerInfo(jobSeekerInfosVo, vo, request);
+            responseResult = jobSeekerInfosService.insertJobSeekerInfo(jobSeekerInfosVo, vo, request);
         } catch (Exception e) {
             responseResult.setCode(StatusCode.INSERT_FAIL.getCode());
             responseResult.setFailureMessage(StatusCode.INSERT_FAIL.getMessage());
@@ -129,22 +128,6 @@ public class JobSeekerInfoController {
         return jobSeekerInfosService.getJobSeekerInfoVoById(id);
     }
 
- /*   *//**
-     * 分页查询求职者信息
-     *
-     * @param page 分页对象
-     * @return
-     *//*
-    @RequestMapping(value = "/queryJobSeekerInfoListByCondition")
-    @ResponseBody
-    public Page<JobSeekerInfosExtDto> queryJobSeekerInfosListByCondition(Page<JobSeekerInfosExtDto> page) {
-        try {
-            return jobSeekerInfosService.queryJobSeekerInfosListByCondition(page);
-        } catch (Exception e) {
-            page.setSuccess(false);
-        }
-        return page;
-    }*/
 
     /**
      * 根据id批量删除求职者个人信息包括简历
@@ -167,13 +150,13 @@ public class JobSeekerInfoController {
         return result;
     }
 
-    /**
+/*    *//**
      * 更新简历状态
      *
      * @param resumeDeliveryId 传递简历的id
      * @param dealStatus       处理状态
      * @return
-     */
+     *//*
     @RequestMapping(value = "/updateResumeDeliveryDealStatus")
     @ResponseBody
     public ResponseResult<Void> updateResumeDeliveryDealStatus(long resumeDeliveryId, int dealStatus) {
@@ -186,7 +169,7 @@ public class JobSeekerInfoController {
 
         }
         return responseResult;
-    }
+    }*/
 
     /**
      * 简历相关意见反馈
@@ -211,14 +194,15 @@ public class JobSeekerInfoController {
 
     /**
      * 求职者投递岗位分页查询
+     *
      * @param page 分页参数
      * @return
      */
     @RequestMapping(value = "/queryJobSeekerPositionVoList")
     @ResponseBody
-    public Page<JobSeekerPositionVo> queryJobSeekerPositionVoList(@RequestBody  Page<JobSeekerPositionVo> page) {
+    public Page<JobSeekerPositionDealVo> queryJobSeekerPositionVoList(@RequestBody Page<JobSeekerPositionDealVo> page) {
         try {
-            return  jobSeekerInfosService.queryJobSeekerPositionVoList(page);
+            return jobSeekerInfosService.queryJobSeekerPositionVoList(page);
         } catch (Exception e) {
             page.setSuccess(false);
         }

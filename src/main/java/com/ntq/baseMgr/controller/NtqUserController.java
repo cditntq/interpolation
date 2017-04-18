@@ -98,7 +98,7 @@ public class NtqUserController {
 
 
     /**
-     * 发布职位 todo 差一些没有晚上
+     * 发布职位 todo 差一些没有完善
      *
      * @param positionId 职位ID编号
      * @return

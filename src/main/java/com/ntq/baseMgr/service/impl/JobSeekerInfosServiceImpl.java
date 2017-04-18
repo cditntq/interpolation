@@ -5,9 +5,8 @@ import com.ntq.baseMgr.page.Page;
 import com.ntq.baseMgr.po.*;
 import com.ntq.baseMgr.service.IUploadFileService;
 import com.ntq.baseMgr.service.JobSeekerInfosService;
-import com.ntq.baseMgr.service.JobSeekerResumeDeliveryService;
 import com.ntq.baseMgr.util.*;
-import com.ntq.baseMgr.vo.JobSeekerPositionVo;
+import com.ntq.baseMgr.vo.JobSeekerPositionDealVo;
 import com.ntq.baseMgr.vo.UploadFileVo;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.NameValuePair;
@@ -23,7 +22,9 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -295,7 +296,7 @@ public class JobSeekerInfosServiceImpl implements JobSeekerInfosService {
      * @return
      */
     @Override
-    public Page<JobSeekerPositionVo> queryJobSeekerPositionVoList(Page<JobSeekerPositionVo> page) throws Exception {
+    public Page<JobSeekerPositionDealVo> queryJobSeekerPositionVoList(Page<JobSeekerPositionDealVo> page) throws Exception {
 
         // 获取当前用户的jobSeekerInfoId
         JobSeekerInfos jobSeekerInfos = (JobSeekerInfos) SessionUtil.getSessionAttribute(ConstantUtil.JOBSEEKER_INFOS);

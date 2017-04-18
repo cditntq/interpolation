@@ -4,6 +4,7 @@ import com.ntq.baseMgr.page.Page;
 import com.ntq.baseMgr.po.JobSeekerInfos;
 import com.ntq.baseMgr.po.JobSeekerInfosExtDto;
 import com.ntq.baseMgr.vo.JobSeekerInfoVo;
+import com.ntq.baseMgr.vo.JobSeekerPositionDetailVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -49,6 +50,7 @@ public interface JobSeekerInfosMapper {
 
     /**
      * 通过电话号码查询求职者记录
+     *
      * @param phoneNumber
      * @return
      */
@@ -56,8 +58,17 @@ public interface JobSeekerInfosMapper {
 
     /**
      * 分页查询求职者信息
+     *
      * @param page
      * @return
      */
     List<JobSeekerInfoVo> queryJobSeekerInfoVoList(Page<JobSeekerInfoVo> page);
+
+    /**
+     * 分页查询求职者应聘详信息List
+     *
+     * @param page
+     * @return
+     */
+    List<JobSeekerPositionDetailVo> queryJobSeekerPositionDetailVoByCondition(Page<JobSeekerPositionDetailVo> page);
 }
