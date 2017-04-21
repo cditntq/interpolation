@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -211,7 +212,7 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
     }
 
     @Override
-    public ResponseResult<Void> verifyMessageCode(HttpSession session, Long phoneNumber, String verifyCode) {
+    public ResponseResult<Void> verifyMessageCode(HttpSession session, Long phoneNumber, String verifyCode) throws Exception {
 
         ResponseResult<Void> responseResult = new ResponseResult<>();
         //1.匹配验证码
@@ -222,10 +223,30 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
             responseResult.setFailureMessage("验证码输入错误");
             return responseResult;
         }
+        //比较两个日期相差的天数
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateStart = format.format(messageValidateRecord.getValideTime());
+        String dateStop = format.format(new Date());
+        Date d1 = null;
+        Date d2 = null;
+
+        d1 = format.parse(String.valueOf(dateStart));
+        d2 = format.parse(dateStop);
+        //时间差
+        long diff = d2.getTime() - d1.getTime();
+        //分钟数
+        long diffMinutes = diff / (60 * 1000) % 60;
+        //差的天数
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+        //判断验证码的安全性
+        if (diffDays > 0 || diffMinutes > 2) {
+            responseResult.setCode(StatusCode.Fail.getCode());
+            responseResult.setFailureMessage("验证码超时已失效！请重新获取");
+            return responseResult;
+        }
         //2.查找公司信息有无与该号码匹配的的公司
         CompanyInfos companyInfo = companyInfosMapper.getCompanyInfoByPhoneNo(phoneNumber);
-        System.out.println(companyInfo.toString());
-        if (companyInfo != null) {
+        if (null != companyInfo) {
             //  SessionUtil.setSession("companyInfos", companyInfo);
             session.setAttribute("companyInfo", companyInfo);
             //转跳到 到职位信息的列表
