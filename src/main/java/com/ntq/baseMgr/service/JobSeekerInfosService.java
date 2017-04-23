@@ -109,7 +109,14 @@ public interface JobSeekerInfosService {
      */
     ResponseResult<CompanyPositionInfos> getCompanyPositionInfoById(Long positionId)throws Exception;
 
+    /**
+     * 短信验证获取
+     * 验证求职者用户是否已存在，1.2如果不存在就发送验证码
+     *
+     * @param phoneNumber
+     * @return
+     */
+    ResponseResult<Void> getMessageAfterValidatePhoneNumber(Long phoneNumber) throws Exception;
 
-
-
+    ResponseResult<Void> verifyJobSeekerPhoneNumber(Long phoneNumber, String verifyCode) throws Exception;
 }

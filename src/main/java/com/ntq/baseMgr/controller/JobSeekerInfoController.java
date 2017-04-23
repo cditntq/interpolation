@@ -94,6 +94,7 @@ public class JobSeekerInfoController {
         return responseResult;
     }
 
+
     /**
      * 求职者信息录入以及简历上传
      *
@@ -148,6 +149,49 @@ public class JobSeekerInfoController {
 
         }
         return result;
+    }
+
+    /**
+     * 短信验证获取
+     * 验证求职者用户是否已存在，1.2如果不存在就发送验证码
+     *
+     * @param phoneNumber
+     * @return
+     */
+    @RequestMapping(value = "/getMessageAfterValidatePhoneNumber", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseResult<Void> getMessageAfterValidatePhoneNumber(Long phoneNumber) {
+        ResponseResult<Void> responseResult = null;
+        try {
+            responseResult = jobSeekerInfosService.getMessageAfterValidatePhoneNumber(phoneNumber);
+        } catch (Exception e) {
+            responseResult = new ResponseResult<>();
+            responseResult.setCode(StatusCode.Fail.getCode());
+            responseResult.setMessage("操作失败！请检查");
+        }
+        return responseResult;
+    }
+
+    /**
+     * 注册求职者信息验证
+     *
+     * @param phoneNumber
+     * @param verifyCode
+     * @return
+     */
+    @RequestMapping(value = "/verifyJobSeekerPhoneNumber", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseResult<Void> verifyJobSeekerPhoneNumber(Long phoneNumber, String verifyCode) {
+        ResponseResult<Void> responseResult = null;
+        try {
+            responseResult = jobSeekerInfosService.verifyJobSeekerPhoneNumber(phoneNumber, verifyCode);
+        } catch (Exception e) {
+            responseResult = new ResponseResult<>();
+            responseResult.setCode(StatusCode.Fail.getCode());
+            responseResult.setMessage("操作失败！请检查");
+        }
+        return responseResult;
+
     }
 
 /*    *//**

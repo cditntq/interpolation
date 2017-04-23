@@ -86,5 +86,23 @@ public interface CompanyInfoService {
     ResponseResult<Void> verifyMessageCode(HttpSession session, Long phoneNumber, String verifyCode) throws Exception;
 
     CompanyInfos getTest();
+
+    /**
+     * 短信验证获取
+     * 验证用户是否已存在(依据用户手机号)，1.2如果不存在就发送验证码
+     *
+     * @param phoneNumber
+     * @return
+     */
+    ResponseResult<Void> getMessageAfterValidatePhoneNumber(Long phoneNumber) throws Exception;
+
+    /**
+     * hr手机注册验证
+     *
+     * @param phoneNumber
+     * @param verifyCode
+     * @return
+     */
+    ResponseResult<Void> verifyHrPhoneNumber(Long phoneNumber, String verifyCode) throws Exception;
 }
 

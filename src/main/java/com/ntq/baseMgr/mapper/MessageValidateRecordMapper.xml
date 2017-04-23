@@ -16,12 +16,13 @@
         select
         <include refid="Base_Column_List"/>
         from message_validate_record
-        where phone_num=#{phoneNumber,jdbcType=BIGINT} AND token= #{verifyCode,jdbcType=VARCHAR}
+        where
+        phone_num=#{phoneNumber,jdbcType=BIGINT} AND token= #{verifyCode,jdbcType=VARCHAR}
     </select>
     <!--插入第三方发送的验证码-->
     <insert id="insertMessageValidateRecord" parameterType="com.ntq.baseMgr.po.MessageValidateRecord">
       insert into message_validate_record (phone_num, token,
-      valide_time, send_success)
+      valide_time, send_success )
     values (#{phoneNum,jdbcType=BIGINT}, #{token,jdbcType=VARCHAR},
       #{valideTime,jdbcType=TIMESTAMP}, #{sendSuccess,jdbcType=TINYINT})
   </insert>

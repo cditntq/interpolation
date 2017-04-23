@@ -2,6 +2,10 @@ package com.ntq.baseMgr.util;/**
  * Created by hejh on 17/4/1.
  */
 
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -9,9 +13,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 /**
  * <b>Description:</b><br>
  *
@@ -33,17 +34,29 @@ public class DateUtil {
     private static String timePattern = "HH:mm";
     private static Calendar cale = Calendar.getInstance();
     public static final String TS_FORMAT = DateUtil.getDatePattern() + " HH:mm:ss.S";
-    /** 日期格式yyyy-MM字符串常量 */
+    /**
+     * 日期格式yyyy-MM字符串常量
+     */
     private static final String MONTH_FORMAT = "yyyy-MM";
-    /** 日期格式yyyy-MM-dd字符串常量 */
+    /**
+     * 日期格式yyyy-MM-dd字符串常量
+     */
     private static final String DATE_FORMAT = "yyyy-MM-dd";
-    /** 日期格式HH:mm:ss字符串常量 */
+    /**
+     * 日期格式HH:mm:ss字符串常量
+     */
     private static final String HOUR_FORMAT = "HH:mm:ss";
-    /** 日期格式yyyy-MM-dd HH:mm:ss字符串常量 */
+    /**
+     * 日期格式yyyy-MM-dd HH:mm:ss字符串常量
+     */
     private static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    /** 某天开始时分秒字符串常量  00:00:00 */
+    /**
+     * 某天开始时分秒字符串常量  00:00:00
+     */
     private static final String DAY_BEGIN_STRING_HHMMSS = " 00:00:00";
-    /**  某天结束时分秒字符串常量  23:59:59  */
+    /**
+     * 某天结束时分秒字符串常量  23:59:59
+     */
     public static final String DAY_END_STRING_HHMMSS = " 23:59:59";
     private static SimpleDateFormat sdf_date_format = new SimpleDateFormat(DATE_FORMAT);
     private static SimpleDateFormat sdf_hour_format = new SimpleDateFormat(HOUR_FORMAT);
@@ -58,9 +71,10 @@ public class DateUtil {
 
     /**
      * 获得服务器当前日期及时间，以格式为：yyyy-MM-dd HH:mm:ss的日期字符串形式返回
+     *
+     * @return
      * @author
      * @date
-     * @return
      */
     public static String getDateTime() {
         try {
@@ -73,9 +87,10 @@ public class DateUtil {
 
     /**
      * 获得服务器当前日期，以格式为：yyyy-MM-dd的日期字符串形式返回
+     *
+     * @return
      * @author
      * @date Mar 11, 2012
-     * @return
      */
     public static String getDate() {
         try {
@@ -88,9 +103,10 @@ public class DateUtil {
 
     /**
      * 获得服务器当前时间，以格式为：HH:mm:ss的日期字符串形式返回
+     *
+     * @return
      * @author
      * @date Mar 11, 2012
-     * @return
      */
     public static String getTime() {
         String temp = " ";
@@ -105,9 +121,10 @@ public class DateUtil {
 
     /**
      * 统计时开始日期的默认值
+     *
+     * @return
      * @author
      * @date Mar 11, 2012
-     * @return
      */
     public static String getStartDate() {
         try {
@@ -120,9 +137,10 @@ public class DateUtil {
 
     /**
      * 统计时结束日期的默认值
+     *
+     * @return
      * @author
      * @date Mar 11, 2012
-     * @return
      */
     public static String getEndDate() {
         try {
@@ -135,9 +153,10 @@ public class DateUtil {
 
     /**
      * 获得服务器当前日期的年份
+     *
+     * @return
      * @author
      * @date Mar 11, 2012
-     * @return
      */
     public static String getYear() {
         try {
@@ -150,9 +169,10 @@ public class DateUtil {
 
     /**
      * 获得服务器当前日期的月份
+     *
+     * @return
      * @author
      * @date Mar 11, 2012
-     * @return
      */
     public static String getMonth() {
         try {
@@ -167,9 +187,10 @@ public class DateUtil {
 
     /**
      * 获得服务器在当前月中天数
+     *
+     * @return
      * @author
      * @date Mar 11, 2012
-     * @return
      */
     public static String getDay() {
         try {
@@ -182,11 +203,12 @@ public class DateUtil {
 
     /**
      * 比较两个日期相差的天数
-     * @author
-     * @date Mar 11, 2012
+     *
      * @param date1
      * @param date2
      * @return
+     * @author
+     * @date Mar 11, 2012
      */
     public static int getMargin(String date1, String date2) {
         int margin;
@@ -206,11 +228,12 @@ public class DateUtil {
 
     /**
      * 比较两个日期相差的天数
-     * @author
-     * @date Mar 11, 2012
+     *
      * @param date1
      * @param date2
      * @return
+     * @author
+     * @date Mar 11, 2012
      */
     public static double getDoubleMargin(String date1, String date2) {
         double margin;
@@ -230,11 +253,12 @@ public class DateUtil {
 
     /**
      * 比较两个日期相差的月数
-     * @author
-     * @date Mar 11, 2012
+     *
      * @param date1
      * @param date2
      * @return
+     * @author
+     * @date Mar 11, 2012
      */
     public static int getMonthMargin(String date1, String date2) {
         int margin;
@@ -251,11 +275,12 @@ public class DateUtil {
 
     /**
      * 返回日期加X天后的日期
-     * @author
-     * @date Mar 11, 2012
+     *
      * @param date
      * @param i
      * @return
+     * @author
+     * @date Mar 11, 2012
      */
     public static String addDay(String date, int i) {
         try {
@@ -273,11 +298,12 @@ public class DateUtil {
 
     /**
      * 返回日期加X月后的日期
-     * @author
-     * @date Mar 11, 2012
+     *
      * @param date
      * @param i
      * @return
+     * @author
+     * @date Mar 11, 2012
      */
     public static String addMonth(String date, int i) {
         try {
@@ -295,11 +321,12 @@ public class DateUtil {
 
     /**
      * 返回日期加X年后的日期
-     * @author
-     * @date Mar 11, 2012
+     *
      * @param date
      * @param i
      * @return
+     * @author
+     * @date Mar 11, 2012
      */
     public static String addYear(String date, int i) {
         try {
@@ -317,11 +344,12 @@ public class DateUtil {
 
     /**
      * 返回某年某月中的最大天
-     * @author
-     * @date Mar 11, 2012
+     *
      * @param
      * @param
      * @return
+     * @author
+     * @date Mar 11, 2012
      */
     public static int getMaxDay(int iyear, int imonth) {
         int day = 0;
@@ -345,12 +373,13 @@ public class DateUtil {
 
     /**
      * 格式化日期
-     * @author
-     * @date Mar 11, 2012
+     *
      * @param orgDate
      * @param Type
      * @param Span
      * @return
+     * @author
+     * @date Mar 11, 2012
      */
     @SuppressWarnings("static-access")
     public String rollDate(String orgDate, int Type, int Span) {
@@ -414,9 +443,10 @@ public class DateUtil {
 
     /**
      * 返回默认的日期格式
+     *
+     * @return
      * @author
      * @date Mar 11, 2012
-     * @return
      */
     public static synchronized String getDatePattern() {
         defaultDatePattern = "yyyy-MM-dd";
@@ -425,10 +455,11 @@ public class DateUtil {
 
     /**
      * 将指定日期按默认格式进行格式代化成字符串后输出如：yyyy-MM-dd
-     * @author
-     * @date Mar 11, 2012
+     *
      * @param aDate
      * @return
+     * @author
+     * @date Mar 11, 2012
      */
     public static final String getDate(Date aDate) {
         SimpleDateFormat df = null;
@@ -442,10 +473,11 @@ public class DateUtil {
 
     /**
      * 取得给定日期的时间字符串，格式为当前默认时间格式
-     * @author
-     * @date Mar 11, 2012
+     *
      * @param theTime
      * @return
+     * @author
+     * @date Mar 11, 2012
      */
     public static String getTimeNow(Date theTime) {
         return getDateTime(timePattern, theTime);
@@ -453,10 +485,11 @@ public class DateUtil {
 
     /**
      * 取得当前时间的Calendar日历对象
-     * @author
-     * @date Mar 11, 2012
+     *
      * @return
      * @throws ParseException
+     * @author
+     * @date Mar 11, 2012
      */
     public Calendar getToday() throws ParseException {
         Date today = new Date();
@@ -469,11 +502,12 @@ public class DateUtil {
 
     /**
      * 将日期类转换成指定格式的字符串形式
-     * @author
-     * @date Mar 11, 2012
+     *
      * @param aMask
      * @param aDate
      * @return
+     * @author
+     * @date Mar 11, 2012
      */
     public static final String getDateTime(String aMask, Date aDate) {
         SimpleDateFormat df = null;
@@ -490,10 +524,11 @@ public class DateUtil {
 
     /**
      * 将指定的日期转换成默认格式的字符串形式
-     * @author
-     * @date Mar 11, 2012
+     *
      * @param aDate
      * @return
+     * @author
+     * @date Mar 11, 2012
      */
     public static final String convertDateToString(Date aDate) {
         return getDateTime(getDatePattern(), aDate);
@@ -501,12 +536,13 @@ public class DateUtil {
 
     /**
      * 将日期字符串按指定格式转换成日期类型
-     * @author
-     * @date Mar 11, 2012
-     * @param aMask 指定的日期格式，如:yyyy-MM-dd
+     *
+     * @param aMask   指定的日期格式，如:yyyy-MM-dd
      * @param strDate 待转换的日期字符串
      * @return
      * @throws ParseException
+     * @author
+     * @date Mar 11, 2012
      */
     public static final Date convertStringToDate(String aMask, String strDate)
             throws ParseException {
@@ -528,11 +564,12 @@ public class DateUtil {
 
     /**
      * 将日期字符串按默认格式转换成日期类型
-     * @author
-     * @date Mar 11, 2012
+     *
      * @param strDate
      * @return
      * @throws ParseException
+     * @author
+     * @date Mar 11, 2012
      */
     public static Date convertStringToDate(String strDate)
             throws ParseException {
@@ -552,9 +589,10 @@ public class DateUtil {
 
     /**
      * 返回一个JAVA简单类型的日期字符串
+     *
+     * @return
      * @author
      * @date Mar 11, 2012
-     * @return
      */
     public static String getSimpleDateFormat() {
         SimpleDateFormat formatter = new SimpleDateFormat();
@@ -564,20 +602,20 @@ public class DateUtil {
 
     /**
      * 将指定字符串格式的日期与当前时间比较
+     *
+     * @param strDate 需要比较时间
+     * @return <p>
+     * int code
+     * <ul>
+     * <li>-1 当前时间 < 比较时间 </li>
+     * <li> 0 当前时间 = 比较时间 </li>
+     * <li>>=1当前时间 > 比较时间 </li>
+     * </ul>
+     * </p>
      * @author DYLAN
      * @date Feb 17, 2012
-     * @param strDate 需要比较时间
-     * @return
-     *      <p>
-     *      int code
-     *      <ul>
-     *      <li>-1 当前时间 < 比较时间 </li>
-     *      <li> 0 当前时间 = 比较时间 </li>
-     *      <li>>=1当前时间 > 比较时间 </li>
-     *      </ul>
-     *      </p>
      */
-    public static int compareToCurTime (String strDate) {
+    public static int compareToCurTime(String strDate) {
         if (StringUtils.isBlank(strDate)) {
             return -1;
         }
@@ -645,8 +683,8 @@ public class DateUtil {
     @SuppressWarnings("deprecation")
     public static String getMonthLastDay(int month) {
         Date date = new Date();
-        int[][] day = { { 0, 30, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 },
-                { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 } };
+        int[][] day = {{0, 30, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31},
+                {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}};
         int year = date.getYear() + 1900;
         if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) {
             return day[1][month] + "";
@@ -663,8 +701,8 @@ public class DateUtil {
      * @return 指定月的总天数
      */
     public static String getMonthLastDay(int year, int month) {
-        int[][] day = { { 0, 30, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 },
-                { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 } };
+        int[][] day = {{0, 30, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31},
+                {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}};
         if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) {
             return day[1][month] + "";
         } else {
@@ -674,10 +712,11 @@ public class DateUtil {
 
     /**
      * 判断是平年还是闰年
-     * @author
-     * @date Mar 11, 2012
+     *
      * @param year
      * @return
+     * @author
+     * @date Mar 11, 2012
      */
     public static boolean isLeapyear(int year) {
         if ((year % 4 == 0 && year % 100 != 0) || (year % 400) == 0) {
@@ -689,9 +728,10 @@ public class DateUtil {
 
     /**
      * 取得当前时间的日戳
+     *
+     * @return
      * @author
      * @date Mar 11, 2012
-     * @return
      */
     @SuppressWarnings("deprecation")
     public static String getTimestamp() {
@@ -714,6 +754,68 @@ public class DateUtil {
                 + date.getTime();
         return timestamp;
     }
+
+
+    /**
+     * 比较两个日期相差的天数
+     *
+     * @param start
+     * @param end
+     * @return
+     * @author
+     * @date Mar 11, 2012
+     */
+    public static int getDaysMargin(Date start) {
+        /*格式化方式*/
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateStart = format.format(start);
+        String dateStop = format.format(new Date());
+        Date d1 = null;
+        Date d2 = null;
+        try {
+            d1 = format.parse(String.valueOf(dateStart));
+            d2 = format.parse(dateStop);
+            //时间差
+            double diff = d2.getTime() - d1.getTime();
+            //差的天数
+            int diffDays = (int) (diff / (24 * 60 * 60 * 1000));
+            return diffDays;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 比较两个日期的时间差范围的比较
+     *
+     * @param start
+     * @param
+     * @return
+     * @author
+     * @date Mar 11, 2012
+     */
+    public static double getMinutesMargin(Date start) {
+        /*格式化方式*/
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateStart = format.format(start);
+        String dateStop = format.format(new Date());
+        Date d1 = null;
+        Date d2 = null;
+        try {
+            d1 = format.parse(String.valueOf(dateStart));
+            d2 = format.parse(dateStop);
+            //时间差
+            long diff = d2.getTime() - d1.getTime();
+            //分钟数e
+            long diffMinutes = diff / (60 * 1000) % 60;
+            return diffMinutes;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
 
     public static void main(String[] args) {
         System.out.println(getYear() + "|" + getMonth() + "|" + getDate());

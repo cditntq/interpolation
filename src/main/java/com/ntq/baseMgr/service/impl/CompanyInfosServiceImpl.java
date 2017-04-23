@@ -10,12 +10,7 @@ import com.ntq.baseMgr.po.MessageValidateRecord;
 import com.ntq.baseMgr.service.CompanyInfoService;
 import com.ntq.baseMgr.util.*;
 import com.ntq.baseMgr.vo.CompanyInfoWithPositionInfoListVo;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
+import com.ntq.baseMgr.vo.MessageValidateRecordExtVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -160,54 +155,27 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
         return responseResult;
     }
 
-
+    /**
+     * todo 替换为工具类的东西 需要测试
+     *
+     * @param phoneNumber
+     * @return
+     * @throws Exception
+     */
     @Override
     public ResponseResult<Void> getMessageCode(Long phoneNumber) throws Exception {
         ResponseResult<Void> responseResult = new ResponseResult<>();
-        //1. 调用接口获取手机号并得到验证码
-        HttpClient client = new HttpClient();
-        PostMethod method = new PostMethod(MessageCodeUtil.GET_MESSAGE_CODE_URL);
-        client.getParams().setContentCharset("GBK");
-        method.setRequestHeader("ContentType", "application/x-www-form-urlencoded;charset=GBK");
-        //1.1生成验证码
-        int mobile_code = (int) ((Math.random() * 9 + 1) * 100000);
-        //1.2生成短信内容
-        String content = "您的验证码是：" + mobile_code + "。请不要把验证码泄露给其他人。";
-        NameValuePair[] data = {//提交短信
-                new NameValuePair("account", MessageCodeUtil.APIID), //查看用户名请登录用户中心->验证码、通知短信->帐户及签名设置->APIID
-                new NameValuePair("password", MessageCodeUtil.APIKEY),  //查看密码请登录用户中心->验证码、通知短信->帐户及签名设置->APIKEY
-                new NameValuePair("mobile", phoneNumber.toString()),
-                new NameValuePair("content", content),
-        };
-        method.setRequestBody(data);
-        client.executeMethod(method);
-        String SubmitResult = method.getResponseBodyAsString();
-        //解析请求得到的参数
-        Document doc = DocumentHelper.parseText(SubmitResult);
-        Element root = doc.getRootElement();
-        String code = root.elementText("code");
-        String msg = root.elementText("msg");
-        String smsid = root.elementText("smsid");
-        /*System.out.println(code);
-        System.out.println(msg);
-        System.out.println(smsid);*/
-        //验证码录入数据库
-        MessageValidateRecord messageValidateRecord = new MessageValidateRecord();
-        messageValidateRecord.setToken(String.valueOf(mobile_code));
-        messageValidateRecord.setValideTime(new Date());//验证码发送时间
-
-        messageValidateRecord.setPhoneNum(phoneNumber);//电话
-        if ("2".equals(code)) {//请求成功
-            // System.out.println("短信提交成功");//插入数验证码的数据库
-            messageValidateRecord.setSendSuccess(1);//发送成功
+        MessageValidateRecordExtVo messageValidateRecordExtVo = MessageCodeUtil.sendAndGetMessageCode(phoneNumber);
+        if ("2".equals(messageValidateRecordExtVo.getCode())) {//请求成功
+            messageValidateRecordExtVo.getMessageValidateRecord().setSendSuccess(1);//发送成功
             responseResult.setCode(StatusCode.INSERT_SUCCESS.getCode());
             responseResult.setMessage("短信发送成功");
         } else {//异常处理
-            messageValidateRecord.setSendSuccess(1);//发送失败
+            messageValidateRecordExtVo.getMessageValidateRecord().setSendSuccess(1);//发送失败
             responseResult.setCode(StatusCode.INSERT_FAIL.getCode());
             responseResult.setFailureMessage("短信发送失败");
         }
-        messageValidateRecordMapper.insertMessageValidateRecord(messageValidateRecord);
+        messageValidateRecordMapper.insertMessageValidateRecord(messageValidateRecordExtVo.getMessageValidateRecord());
         return responseResult;
     }
 
@@ -224,20 +192,12 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
             return responseResult;
         }
         //比较两个日期相差的天数
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String dateStart = format.format(messageValidateRecord.getValideTime());
-        String dateStop = format.format(new Date());
-        Date d1 = null;
-        Date d2 = null;
-
-        d1 = format.parse(String.valueOf(dateStart));
-        d2 = format.parse(dateStop);
-        //时间差
-        long diff = d2.getTime() - d1.getTime();
-        //分钟数
-        long diffMinutes = diff / (60 * 1000) % 60;
         //差的天数
-        long diffDays = diff / (24 * 60 * 60 * 1000);
+        double diffDays = DateUtil.getDaysMargin(messageValidateRecord.getValideTime());
+
+        //分钟数e
+        double diffMinutes = DateUtil.getMinutesMargin(messageValidateRecord.getValideTime());
+
         //判断验证码的安全性
         if (diffDays > 0 || diffMinutes > 2) {
             responseResult.setCode(StatusCode.Fail.getCode());
@@ -263,5 +223,75 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
     public CompanyInfos getTest() {
         Long phoneNo = 15123247202L;
         return companyInfosMapper.getCompanyInfoByPhoneNo(phoneNo);
+    }
+
+    /**
+     * 短信验证获取
+     * 1.验证用户是否已存在(依据用户手机号)，1.2如果不存在就发送验证码
+     *
+     * @param phoneNumber 公司注册手机号
+     * @return
+     */
+    @Override
+    public ResponseResult<Void> getMessageAfterValidatePhoneNumber(Long phoneNumber) throws Exception {
+        ResponseResult<Void> responseResult = new ResponseResult<>();
+        //   1.验证用户是否已存在(依据用户手机号)
+        CompanyInfos companyInfo = companyInfosMapper.getCompanyInfoByPhoneNo(phoneNumber);
+        //可以插入用户信息
+        if (null == companyInfo) {
+            //2 发送短信验证码
+            MessageValidateRecordExtVo messageValidateRecordExtVo = MessageCodeUtil.sendAndGetMessageCode(phoneNumber);
+            if ("2".equals(messageValidateRecordExtVo.getCode())) {//请求成功
+                // System.out.println("短信提交成功");//插入数验证码的数据库
+                messageValidateRecordExtVo.getMessageValidateRecord().setSendSuccess(1);//发送成功
+                responseResult.setCode(StatusCode.INSERT_SUCCESS.getCode());
+                responseResult.setMessage("短信发送成功");
+            } else {//异常处理
+                messageValidateRecordExtVo.getMessageValidateRecord().setSendSuccess(1);//发送失败
+                responseResult.setCode(StatusCode.INSERT_FAIL.getCode());
+                responseResult.setFailureMessage("短信发送失败");
+            }
+            //插入验证码信息
+            messageValidateRecordMapper.insertMessageValidateRecord(messageValidateRecordExtVo.getMessageValidateRecord());
+
+        } else {//返回
+            responseResult.setCode(StatusCode.Fail.getCode());
+            responseResult.setMessage("当前手机号已被注册,请核实");
+            return responseResult;
+        }
+        return responseResult;
+    }
+
+    /**
+     * hr手机注册验证
+     *
+     * @param phoneNumber
+     * @param verifyCode
+     * @return
+     */
+    @Override
+    public ResponseResult<Void> verifyHrPhoneNumber(Long phoneNumber, String verifyCode) throws Exception {
+        ResponseResult<Void> responseResult = new ResponseResult<>();
+        MessageValidateRecord messageValidateRecord = messageValidateRecordMapper.getMessageValidateRecord(phoneNumber, verifyCode);
+        //验证码匹配失败
+        if (null == messageValidateRecord) {
+            responseResult.setCode(StatusCode.Fail.getCode());
+            responseResult.setFailureMessage("验证码输入错误");
+            return responseResult;
+        }
+        //差的天数
+        int diffDays = DateUtil.getDaysMargin(messageValidateRecord.getValideTime());
+        //分钟数e
+        double diffMinutes = DateUtil.getMinutesMargin(messageValidateRecord.getValideTime());
+        //判断验证码的安全性
+        if (diffDays > 0 || diffMinutes > 2) {
+            responseResult.setCode(StatusCode.Fail.getCode());
+            responseResult.setFailureMessage("验证码超时已失效！请重新获取");
+            return responseResult;
+        } else {
+            responseResult.setCode(StatusCode.GET_SUCCESS.getCode());
+            responseResult.setFailureMessage("验证码验证成功");
+            return responseResult;
+        }
     }
 }

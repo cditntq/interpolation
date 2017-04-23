@@ -12,7 +12,8 @@
 		http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd ">
     <!-- 加载配置文件 -->
-    <context:property-placeholder ignore-unresolvable="true" location="classpath:remote_cnn.properties,classpath:ntq_mail.properties" />
+    <context:property-placeholder ignore-unresolvable="true"
+                                  location="classpath:db.properties,classpath:ntq_mail.properties"/>
     <!-- 引入供java类里面使用配置文件 -->
     <bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="locations">
@@ -24,7 +25,7 @@
     </bean>
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
         <property name="properties" ref="configProperties"/>
-        <property name="ignoreUnresolvablePlaceholders" value="true" />
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
     </bean>
     <!--自动扫描-->
     <context:component-scan base-package="com.ntq.baseMgr.service"/>
@@ -83,9 +84,9 @@
 
     <!-- 邮件发送器 163  -->
     <bean id="javaMailSenderImpl" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="host" value="${mail_host}" />
-        <property name="username" value="${mail_username}" />
-        <property name="password" value="${mail_password}" />
+        <property name="host" value="${mail_host}"/>
+        <property name="username" value="${mail_username}"/>
+        <property name="password" value="${mail_password}"/>
         <property name="defaultEncoding" value="UTF-8"/>
         <property name="javaMailProperties">
             <props>

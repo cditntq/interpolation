@@ -7,6 +7,7 @@ import com.ntq.baseMgr.service.IUploadFileService;
 import com.ntq.baseMgr.service.JobSeekerInfosService;
 import com.ntq.baseMgr.util.*;
 import com.ntq.baseMgr.vo.JobSeekerPositionDealVo;
+import com.ntq.baseMgr.vo.MessageValidateRecordExtVo;
 import com.ntq.baseMgr.vo.UploadFileVo;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.NameValuePair;
@@ -278,20 +279,12 @@ public class JobSeekerInfosServiceImpl implements JobSeekerInfosService {
         }
         //判断超期
         //比较两个日期相差的天数
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String dateStart = format.format(messageValidateRecord.getValideTime());
-        String dateStop = format.format(new Date());
-        Date d1 = null;
-        Date d2 = null;
-
-        d1 = format.parse(String.valueOf(dateStart));
-        d2 = format.parse(dateStop);
-        //时间差
-        long diff = d2.getTime() - d1.getTime();
-        //分钟数
-        long diffMinutes = diff / (60 * 1000) % 60;
         //差的天数
-        long diffDays = diff / (24 * 60 * 60 * 1000);
+        double diffDays = DateUtil.getDaysMargin(messageValidateRecord.getValideTime());
+
+        //分钟数e
+        double diffMinutes = DateUtil.getMinutesMargin(messageValidateRecord.getValideTime());
+
         //判断验证码的安全性
         if (diffDays > 0 || diffMinutes > 2) {
             responseResult.setCode(StatusCode.Fail.getCode());
@@ -357,5 +350,68 @@ public class JobSeekerInfosServiceImpl implements JobSeekerInfosService {
         responseResult.setMessage(StatusCode.GET_SUCCESS.getMessage());
         responseResult.setData(companyPositionInfosMapper.getCompanyPositionInfoById(positionId));
         return responseResult;
+    }
+
+    /**
+     * 短信验证获取
+     * 验证求职者用户是否已存在，1.2如果不存在就发送验证码
+     *
+     * @param phoneNumber
+     * @return
+     */
+    @Override
+    public ResponseResult<Void> getMessageAfterValidatePhoneNumber(Long phoneNumber) throws Exception {
+        ResponseResult<Void> responseResult = new ResponseResult<>();
+        //   1.验证用户是否已存在(依据用户手机号)
+        JobSeekerInfos jobSeekerInfo = jobSeekerInfosMapper.getJobSeekerInfoByPhoneNo(phoneNumber);
+        //可以插入用户信息
+        if (null == jobSeekerInfo) {
+            //2 发送短信验证码
+            MessageValidateRecordExtVo messageValidateRecordExtVo = MessageCodeUtil.sendAndGetMessageCode(phoneNumber);
+            if ("2".equals(messageValidateRecordExtVo.getCode())) {//请求成功
+                // System.out.println("短信提交成功");//插入数验证码的数据库
+                messageValidateRecordExtVo.getMessageValidateRecord().setSendSuccess(1);//发送成功
+                responseResult.setCode(StatusCode.INSERT_SUCCESS.getCode());
+                responseResult.setMessage("短信发送成功");
+            } else {//异常处理
+                messageValidateRecordExtVo.getMessageValidateRecord().setSendSuccess(1);//发送失败
+                responseResult.setCode(StatusCode.INSERT_FAIL.getCode());
+                responseResult.setFailureMessage("短信发送失败");
+            }
+            //插入验证码信息
+            messageValidateRecordMapper.insertMessageValidateRecord(messageValidateRecordExtVo.getMessageValidateRecord());
+
+        } else {//返回
+            responseResult.setCode(StatusCode.Fail.getCode());
+            responseResult.setMessage("当前手机号已被注册,请核实");
+            return responseResult;
+        }
+        return responseResult;
+    }
+
+    @Override
+    public ResponseResult<Void> verifyJobSeekerPhoneNumber(Long phoneNumber, String verifyCode) throws Exception {
+        ResponseResult<Void> responseResult = new ResponseResult<>();
+        MessageValidateRecord messageValidateRecord = messageValidateRecordMapper.getMessageValidateRecord(phoneNumber, verifyCode);
+        //验证码匹配失败
+        if (null == messageValidateRecord) {
+            responseResult.setCode(StatusCode.Fail.getCode());
+            responseResult.setFailureMessage("验证码输入错误");
+            return responseResult;
+        }
+        //差的天数
+        int diffDays = DateUtil.getDaysMargin(messageValidateRecord.getValideTime());
+        //分钟数e
+        double diffMinutes = DateUtil.getMinutesMargin(messageValidateRecord.getValideTime());
+        //判断验证码的安全性
+        if (diffDays > 0 || diffMinutes > 2) {
+            responseResult.setCode(StatusCode.Fail.getCode());
+            responseResult.setFailureMessage("验证码超时已失效！请重新获取");
+            return responseResult;
+        } else {
+            responseResult.setCode(StatusCode.GET_SUCCESS.getCode());
+            responseResult.setFailureMessage("验证码验证成功");
+            return responseResult;
+        }
     }
 }

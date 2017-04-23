@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 
 /**
- * <p>@description:公司信息的Controller </p>
+ * <p>@description:公司信息的Controller  注意 这里的公司个体的区别以hr的验证码判断</p>
  *
  * @projectName: interpolation
  * @packageName: com.ntq.baseMgr.controller
@@ -47,7 +47,7 @@ public class CompanyInfoController {
      * @param phoneNumber 电话号码
      * @return 返回
      */
-    @RequestMapping(value = "/getMessageCode",method = RequestMethod.GET)
+    @RequestMapping(value = "/getMessageCode", method = RequestMethod.GET)
     @ResponseBody
     public ResponseResult<Void> getMessageCode(Long phoneNumber) {
         ResponseResult<Void> responseResult = new ResponseResult<>();
@@ -63,7 +63,7 @@ public class CompanyInfoController {
 
     /**
      * 验证码校验是否为已注册的公司
-     *  这里需要处理的是当前的用户  但需要注意的在处理验证码失败的情况 返回操作的true 成功 能够转跳,false验证失败暂时没做
+     * 这里需要处理的是当前的用户  但需要注意的在处理验证码失败的情况 返回操作的true 成功 能够转跳,false验证失败暂时没做
      *
      * @param session
      * @param phoneNumber 手机号码
@@ -82,6 +82,50 @@ public class CompanyInfoController {
 
         }
         return responseResult;
+    }
+
+
+    /**
+     * 短信验证获取
+     * 验证用户是否已存在，1.2如果不存在就发送验证码
+     *
+     * @param phoneNumber
+     * @return
+     */
+    @RequestMapping(value = "/getMessageAfterValidatePhoneNumber", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseResult<Void> getMessageAfterValidatePhoneNumber(Long phoneNumber) {
+        ResponseResult<Void> responseResult = null;
+        try {
+            responseResult = companyInfoService.getMessageAfterValidatePhoneNumber(phoneNumber);
+        } catch (Exception e) {
+            responseResult = new ResponseResult<>();
+            responseResult.setCode(StatusCode.Fail.getCode());
+            responseResult.setMessage("操作失败！请检查");
+        }
+        return responseResult;
+    }
+
+    /**
+     * 注册验证
+     *
+     * @param phoneNumber
+     * @param verifyCode
+     * @return
+     */
+    @RequestMapping(value = "/verifyHrPhoneNumber", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseResult<Void> verifyHrPhoneNumber(Long phoneNumber, String verifyCode) {
+        ResponseResult<Void> responseResult = null;
+        try {
+            responseResult = companyInfoService.verifyHrPhoneNumber(phoneNumber,verifyCode);
+        } catch (Exception e) {
+            responseResult = new ResponseResult<>();
+            responseResult.setCode(StatusCode.Fail.getCode());
+            responseResult.setMessage("操作失败！请检查");
+        }
+        return responseResult;
+
     }
 
     /**
