@@ -96,7 +96,7 @@ public class CompanyPositionInfoServiceImpl implements CompanyPositionInfoServic
             page.setSuccess(false);
         } else {
             //获取公司列表主键
-            Long companyInfoId = 1l;
+            Long companyInfoId = companyInfos.getId();
             Map<String, Object> map = page.getParams();
             map.put(ConstantUtil.COMPANY_INFOS_ID, companyInfoId);//公司编号
             page.setParams(map);
@@ -105,6 +105,8 @@ public class CompanyPositionInfoServiceImpl implements CompanyPositionInfoServic
             page.setSuccess(true);
         }
 
+
+        /***********************测试数据*********************************/
    /*     //获取公司列表主键
         Long companyInfoId = 1l;
         Map<String, Object> map = page.getParams();

@@ -125,11 +125,11 @@
         FROM job_seeker_infos
         JOIN job_seeker_resume_delivery
         ON job_seeker_infos.id = job_seeker_infos_id
-        JOIN company_position_infos
+        JOIN company_position_infos postion
         ON job_code = position_no
         <where>
-            <if test="params.positionNo != '' and params.positionNo != null">
-                AND position_no = #{params.positionNo}
+            <if test="params.positionId != '' and params.positionId != null">
+                AND postion.id = #{params.positionId}
             </if>
         </where>
     </select>

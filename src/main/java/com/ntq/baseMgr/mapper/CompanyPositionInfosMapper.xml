@@ -198,7 +198,9 @@
                 AND position.postion_status = #{params.postionStatus}
             </if>
             <if test="params.publishTime != '' and params.publishTime != null">
-                AND position.publish_time like #{params.publishTime}
+                AND position.publish_time BETWEEN timestamp(DATE (#{params.publishTime,jdbcType=TIMESTAMP}))
+                AND
+                timestamp(DATE (#{params.publishTime,jdbcType=TIMESTAMP}),'23:59:59')
             </if>
             <if test="params.positionName != '' and params.positionName != null">
                 AND position.position_name like CONCAT('%',#{params.positionName},'%')

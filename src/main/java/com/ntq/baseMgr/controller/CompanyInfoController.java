@@ -2,17 +2,26 @@ package com.ntq.baseMgr.controller;
 
 import com.ntq.baseMgr.page.Page;
 import com.ntq.baseMgr.po.CompanyInfos;
+import com.ntq.baseMgr.po.CompanyPositionInfosWithBLOBs;
 import com.ntq.baseMgr.service.CompanyInfoService;
+import com.ntq.baseMgr.service.CompanyPositionInfoService;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.util.StatusCode;
 import com.ntq.baseMgr.vo.CompanyInfoWithPositionInfoListVo;
+import com.ntq.baseMgr.vo.CompanyPositionInfoVo;
+import com.ntq.baseMgr.vo.JobSeekerInfoVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>@description:公司信息的Controller  注意 这里的公司个体的区别以hr的验证码判断</p>
@@ -31,15 +40,10 @@ public class CompanyInfoController {
     @Autowired
     private CompanyInfoService companyInfoService;//公司信息service
 
-/*   *
-     * 公司页面跳转
-     *
-     * @return*/
+    @Autowired
+    private CompanyPositionInfoService companyPositionInfoService;//职位的service
 
-    @RequestMapping(value = "/companyInfosPage")
-    public String index(HttpSession httpSession) {
-        return "companyInfos";
-    }
+
 
     /**
      * 点击获取验证码
@@ -147,12 +151,12 @@ public class CompanyInfoController {
         return responseResult;
     }
 
-    /**
+/*    *//**
      * 公司信息更新
      *
      * @param companyInfos 公司实体
      * @return
-     */
+     *//*
     @RequestMapping(value = "/updateCompanyInfos", method = RequestMethod.POST)
     public ResponseResult<Void> updateCompanyInfos(CompanyInfos companyInfos) {
         ResponseResult<Void> responseResult = new ResponseResult<>();
@@ -163,7 +167,7 @@ public class CompanyInfoController {
             responseResult.setFailureMessage(StatusCode.UPDATE_FAIL.getMessage());
         }
         return responseResult;
-    }
+    }*/
 
     /**
      * 通过id编号获取公司信息
@@ -183,13 +187,13 @@ public class CompanyInfoController {
         }
         return responseResult;
     }
-
-    /**
+/*
+    *//**
      * 分页查询求职者信息
      *
      * @param page 分页对象
      * @return
-     */
+     *//*
     @RequestMapping(value = "/queryCompanyInfoListByCondition")
     @ResponseBody
     public Page<CompanyInfos> queryCompanyInfoListByCondition(Page<CompanyInfos> page) {
@@ -199,14 +203,14 @@ public class CompanyInfoController {
             page.setSuccess(false);
         }
         return page;
-    }
+    }*/
 
-    /**
+/*    *//**
      * 根据id批量删除求职者个人信息包括简历
      *
      * @param ids
      * @return
-     */
+     *//*
     @RequestMapping(value = "/deleteCompanyInfoListByIds")
     @ResponseBody
     public ResponseResult<Void> deleteCompanyInfoListByIds(String ids) {
@@ -219,12 +223,152 @@ public class CompanyInfoController {
 
         }
         return result;
-    }
+    }*/
 
-    @RequestMapping(value = "/getTest")
+/*    @RequestMapping(value = "/getTest")
     @ResponseBody
     public CompanyInfos getTest() {
         return companyInfoService.getTest();
 
+    }*/
+
+/*********************************************职位相关********************************************************/
+
+
+
+    /**
+     * 企业新增发布职位信息
+     *
+     * @param companyPositionInfosWithBLOBs
+     * @return
+     */
+    @RequestMapping(value = "/addCompanyPositionInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseResult<Void> addCompanyPositionInfo(@RequestBody CompanyPositionInfosWithBLOBs companyPositionInfosWithBLOBs) {
+        ResponseResult<Void> result = new ResponseResult<>();
+        try {
+            return companyPositionInfoService.addCompanyPositionInfo(companyPositionInfosWithBLOBs);
+        } catch (Exception e) {
+            result.setCode(StatusCode.INSERT_FAIL.getCode());
+            result.setMessage(StatusCode.INSERT_FAIL.getMessage());
+
+        }
+        return result;
     }
+
+    /**
+     * 通过id查看职位信息
+     *
+     * @param positionId
+     * @return
+     */
+    @RequestMapping(value = "/getCompanyPositionInfoById")
+    @ResponseBody
+    public ResponseResult<CompanyPositionInfosWithBLOBs> getCompanyPositionInfoById(Long positionId) {
+        ResponseResult<CompanyPositionInfosWithBLOBs> result = new ResponseResult<>();
+        try {
+            return companyPositionInfoService.getCompanyPositionInfoById(positionId);
+        } catch (Exception e) {
+            result.setCode(StatusCode.GET_FAIL.getCode());
+            result.setMessage(StatusCode.GET_FAIL.getMessage());
+
+        }
+        return result;
+    }
+
+    /**
+     * 分页查询职位详细信息
+     *
+     * @param page 分页对象
+     * @return
+     */
+    @RequestMapping(value = "/queryCompanyPositionInfoListByCondition")
+    @ResponseBody
+    public Page<CompanyPositionInfoVo> queryCompanyPositionInfoListByCondition(@RequestBody Page<CompanyPositionInfoVo> page) {
+        try {
+            return companyPositionInfoService.queryCompanyPositionInfoListByCondition(page);
+        } catch (Exception e) {
+            page.setSuccess(false);
+        }
+        return page;
+    }
+
+    //
+
+    /**
+     * TODO 重新发布职位 1:当为审核状态时，更新当前信息,当不为审核状态新增加
+     *
+     * @param companyPositionInfosWithBLOBs
+     * @return
+     */
+    @RequestMapping(value = "/updateOrInsertCompanyPositionInfo")
+    @ResponseBody
+    public ResponseResult<Void> updateOrInsertCompanyPositionInfo(CompanyPositionInfosWithBLOBs companyPositionInfosWithBLOBs) {
+        ResponseResult<Void> result = new ResponseResult<>();
+        try {
+            return companyPositionInfoService.updateOrInsertCompanyPositionInfo(companyPositionInfosWithBLOBs);
+        } catch (Exception e) {
+            result.setCode(StatusCode.INSERT_FAIL.getCode());
+            result.setMessage(StatusCode.INSERT_FAIL.getMessage());
+
+        }
+        return result;
+    }
+
+
+    /**
+     * 查看求职者信息
+     * @param page
+     * @return
+     */
+    @RequestMapping(value = "/queryJobSeekerInfoVoList")
+    @ResponseBody
+    public Page<JobSeekerInfoVo> queryJobSeekerInfoVoList(@RequestBody  Page<JobSeekerInfoVo> page) {
+        try {
+            return companyPositionInfoService.queryJobSeekerInfoVoList(page);
+        } catch (Exception e) {
+            page.setSuccess(false);
+        }
+        return page;
+    }
+
+/*
+    */
+
+    /**
+     * 根据id批量删除职位信息
+     *
+     * @param
+     * @return
+     * @throws Exception
+     *//*
+
+    @RequestMapping(value = "/deleteJobSeekerInfoListByIds")
+    @ResponseBody
+    public ResponseResult<Void> deleteCompanyPositionInfoListByIds(String ids) {
+        ResponseResult<Void> result = new ResponseResult<>();
+        try {
+            return companyPositionInfoService.deleteCompanyPositionInfoListByIds(ids);
+        } catch (Exception e) {
+            result.setCode(StatusCode.DELETE_FAIL.getCode());
+            result.setMessage(StatusCode.DELETE_FAIL.getMessage());
+
+        }
+        return result;
+    }
+*/
+    @RequestMapping(value = "/getTest")
+    @ResponseBody
+    public Page<Void> getTest() {
+        Page<Void> page = new Page<>();
+        //测试职位的json数据
+        //CompanyPositionInfos companyPositionInfos = companyPositionInfoService.getTest();
+        //测试分页查询的json数据
+        Map<String, Object> map = new HashMap();
+        map.put("jobSeekerNO", "00001");
+        map.put("jobSeekerName", "杨爽");
+        page.setParams(map);
+        return page;
+    }
+
 }

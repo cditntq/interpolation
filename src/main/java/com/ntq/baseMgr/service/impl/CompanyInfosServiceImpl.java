@@ -103,23 +103,23 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
         return responseResult;
     }
 
-    /**
+  /*  *//**
      * 公司信息更新
      *
      * @param companyInfos 公司实体
      * @return
      * @throws Exception
-     */
+     *//*
     @Override
     public ResponseResult<Void> updateCompanyInfos(CompanyInfos companyInfos) throws Exception {
         ResponseResult<Void> responseResult = new ResponseResult<>();
-        /*设置更新时间*/
+        *//*设置更新时间*//*
         companyInfos.setServerUpdateDate(new Date());
         companyInfosMapper.updateCompanyInfos(companyInfos);
         responseResult.setCode(StatusCode.UPDATE_SUCCESS.getCode());
         responseResult.setMessage(StatusCode.UPDATE_SUCCESS.getMessage());
         return responseResult;
-    }
+    }*/
 
     @Override
     public ResponseResult<Void> addCompanyInfoWithPositionInfoList(CompanyInfoWithPositionInfoListVo companyInfoWithPositionInfoListVo) throws Exception {
@@ -156,7 +156,7 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
     }
 
     /**
-     * todo 替换为工具类的东西 需要测试
+     *
      *
      * @param phoneNumber
      * @return
@@ -194,7 +194,6 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
         //比较两个日期相差的天数
         //差的天数
         double diffDays = DateUtil.getDaysMargin(messageValidateRecord.getValideTime());
-
         //分钟数e
         double diffMinutes = DateUtil.getMinutesMargin(messageValidateRecord.getValideTime());
 

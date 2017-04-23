@@ -51,13 +51,13 @@ public interface CompanyInfoService {
      */
     ResponseResult<Void> deleteCompanyInfoListByIds(String ids) throws Exception;
 
-    /**
+  /*  *//**
      * 公司信息更新
      *
      * @param companyInfos 公司实体
      * @return
-     */
-    ResponseResult<Void> updateCompanyInfos(CompanyInfos companyInfos) throws Exception;
+     *//*
+    ResponseResult<Void> updateCompanyInfos(CompanyInfos companyInfos) throws Exception;*/
 
     /**
      * 新的公司和其发布的职位录入
