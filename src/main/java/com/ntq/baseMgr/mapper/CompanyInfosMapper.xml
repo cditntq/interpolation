@@ -18,6 +18,7 @@
     </resultMap>
     <resultMap id="ResultMapWithBLOBs" type="com.ntq.baseMgr.po.CompanyInfos" extends="BaseResultMap">
         <result column="company_synopsis" property="companySynopsis" jdbcType="LONGVARCHAR"/>
+        <result column="company_benefit" property="companyBenefit" jdbcType="LONGVARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
         id, company_name, company_phone, resume_mail, contact_weixin_id, recruit_type, company_type,
@@ -25,7 +26,7 @@
         recruiter_name
     </sql>
     <sql id="Blob_Column_List">
-    company_synopsis
+    company_synopsis,company_benefit
   </sql>
     <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long">
         select
@@ -46,12 +47,12 @@
         resume_mail, contact_weixin_id, recruit_type,
         company_type, server_create_date, server_update_date,
         is_newly_established, financing_type, is_valid,
-        recruiter_name, company_synopsis)
+        recruiter_name, company_synopsis,company_benefit)
         values (#{companyName,jdbcType=VARCHAR}, #{companyPhone,jdbcType=BIGINT},
         #{resumeMail,jdbcType=VARCHAR}, #{contactWeixinId,jdbcType=VARCHAR}, #{recruitType,jdbcType=INTEGER},
         #{companyType,jdbcType=BIT}, #{serverCreateDate,jdbcType=TIMESTAMP}, #{serverUpdateDate,jdbcType=TIMESTAMP},
         #{isNewlyEstablished,jdbcType=INTEGER}, #{financingType,jdbcType=INTEGER}, #{isValid,jdbcType=INTEGER},
-        #{recruiterName,jdbcType=VARCHAR}, #{companySynopsis,jdbcType=LONGVARCHAR})
+        #{recruiterName,jdbcType=VARCHAR}, #{companySynopsis,jdbcType=LONGVARCHAR},#{companyBenefit,jdbcType=LONGVARCHAR})
     </insert>
     <!--新增公司信息录入-->
     <insert id="addCompanyInfos" parameterType="com.ntq.baseMgr.po.CompanyInfos">

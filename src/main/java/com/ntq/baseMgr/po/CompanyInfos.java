@@ -36,5 +36,7 @@ public class CompanyInfos {
     private String recruiterName;
 
     private String companySynopsis;
+    /*公司福利*/
+    private String companyBenefit;
 
 }

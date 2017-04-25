@@ -126,7 +126,7 @@ public class CompanyPositionInfoServiceImpl implements CompanyPositionInfoServic
         if (1 == positionStatus) {
             //更新操作
             companyPositionInfosMapper.updateCompanyPositionInfo(companyPositionInfosWithBLOBs);
-            companyPositionInfosMapper.addCompanyPositionInfo(companyPositionInfosWithBLOBs);
+            //companyPositionInfosMapper.addCompanyPositionInfo(companyPositionInfosWithBLOBs);
             responseResult.setCode(StatusCode.UPDATE_SUCCESS.getCode());
             responseResult.setMessage(StatusCode.UPDATE_SUCCESS.getMessage());
         } else {//创建新的职位

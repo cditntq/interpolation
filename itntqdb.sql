@@ -28,6 +28,7 @@ CREATE TABLE `company_infos` (
   `recruit_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '招聘类型，1-内推，2-HR招聘',
   `company_type` tinyint(1) NOT NULL DEFAULT '1' COMMENT '企业类型，1-民营，2-国企，3-外企',
   `company_synopsis` text COLLATE utf8_bin NOT NULL COMMENT '公司简介',
+  `company_benefit` text COLLATE utf8_bin  NULL COMMENT '公司福利',
   `server_create_date` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '服务器创建时间',
   `server_update_date` timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '服务器更新时间',
   `is_newly_established` tinyint(1) NOT NULL DEFAULT '2' COMMENT '是否为创业公司。1-是，2-否',
