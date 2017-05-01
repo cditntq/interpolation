@@ -52,7 +52,8 @@
         #{resumeMail,jdbcType=VARCHAR}, #{contactWeixinId,jdbcType=VARCHAR}, #{recruitType,jdbcType=INTEGER},
         #{companyType,jdbcType=BIT}, #{serverCreateDate,jdbcType=TIMESTAMP}, #{serverUpdateDate,jdbcType=TIMESTAMP},
         #{isNewlyEstablished,jdbcType=INTEGER}, #{financingType,jdbcType=INTEGER}, #{isValid,jdbcType=INTEGER},
-        #{recruiterName,jdbcType=VARCHAR}, #{companySynopsis,jdbcType=LONGVARCHAR},#{companyBenefit,jdbcType=LONGVARCHAR})
+        #{recruiterName,jdbcType=VARCHAR},
+        #{companySynopsis,jdbcType=LONGVARCHAR},#{companyBenefit,jdbcType=LONGVARCHAR})
     </insert>
     <!--新增公司信息录入-->
     <insert id="addCompanyInfos" parameterType="com.ntq.baseMgr.po.CompanyInfos">

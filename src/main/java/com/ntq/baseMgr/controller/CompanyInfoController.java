@@ -44,7 +44,6 @@ public class CompanyInfoController {
     private CompanyPositionInfoService companyPositionInfoService;//职位的service
 
 
-
     /**
      * 点击获取验证码
      *
@@ -122,7 +121,7 @@ public class CompanyInfoController {
     public ResponseResult<Void> verifyHrPhoneNumber(Long phoneNumber, String verifyCode) {
         ResponseResult<Void> responseResult = null;
         try {
-            responseResult = companyInfoService.verifyHrPhoneNumber(phoneNumber,verifyCode);
+            responseResult = companyInfoService.verifyHrPhoneNumber(phoneNumber, verifyCode);
         } catch (Exception e) {
             responseResult = new ResponseResult<>();
             responseResult.setCode(StatusCode.Fail.getCode());
@@ -235,7 +234,6 @@ public class CompanyInfoController {
 /*********************************************职位相关********************************************************/
 
 
-
     /**
      * 企业新增发布职位信息
      *
@@ -296,14 +294,14 @@ public class CompanyInfoController {
     //
 
     /**
-     * TODO 重新发布职位 1:当为审核状态时，更新当前信息,当不为审核状态新增加
+     *
      *
      * @param companyPositionInfosWithBLOBs
      * @return
      */
     @RequestMapping(value = "/updateOrInsertCompanyPositionInfo")
     @ResponseBody
-    public ResponseResult<Void> updateOrInsertCompanyPositionInfo(CompanyPositionInfosWithBLOBs companyPositionInfosWithBLOBs) {
+    public ResponseResult<Void> updateOrInsertCompanyPositionInfo(@RequestBody CompanyPositionInfosWithBLOBs companyPositionInfosWithBLOBs) {
         ResponseResult<Void> result = new ResponseResult<>();
         try {
             return companyPositionInfoService.updateOrInsertCompanyPositionInfo(companyPositionInfosWithBLOBs);
@@ -318,12 +316,13 @@ public class CompanyInfoController {
 
     /**
      * 查看求职者信息
+     *
      * @param page
      * @return
      */
     @RequestMapping(value = "/queryJobSeekerInfoVoList")
     @ResponseBody
-    public Page<JobSeekerInfoVo> queryJobSeekerInfoVoList(@RequestBody  Page<JobSeekerInfoVo> page) {
+    public Page<JobSeekerInfoVo> queryJobSeekerInfoVoList(@RequestBody Page<JobSeekerInfoVo> page) {
         try {
             return companyPositionInfoService.queryJobSeekerInfoVoList(page);
         } catch (Exception e) {
@@ -331,6 +330,29 @@ public class CompanyInfoController {
         }
         return page;
     }
+
+    /**
+     * 下架职位 todo 注意这里个人向内推圈发布职位邮箱无法处理
+     * 更新职位状态为 4-待下架
+     *
+     * @param positionId
+     * @param message  职位下架信息
+     * @return
+     */
+    @RequestMapping(value = "/withDrawCompanyPositionInfo")
+    @ResponseBody
+    public ResponseResult<Void> withDrawCompanyPositionInfo(Long positionId,String message) {
+        ResponseResult<Void> result = new ResponseResult<>();
+        try {
+            return companyPositionInfoService.withDrawCompanyPositionInfo(positionId,message);
+        } catch (Exception e) {
+            result.setCode(StatusCode.UPDATE_FAIL.getCode());
+            result.setMessage("职位下架操作失败");
+
+        }
+        return result;
+    }
+
 
 /*
     */

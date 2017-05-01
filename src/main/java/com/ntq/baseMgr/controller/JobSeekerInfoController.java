@@ -40,16 +40,16 @@ public class JobSeekerInfoController {
 
     private final Logger logger = LoggerFactory.getLogger(JobSeekerInfoController.class);
 
-    /**
+/*    *//**
      * 求职者页面管理,暂时不清楚为什么被请求了两次
      *
      * @return
      * @throws Exception
-     */
+     *//*
     @RequestMapping(value = "/jobSeekerManagment")
     public String index(HttpSession httpSession) {
         return "jobSeekerManagment";
-    }
+    }*/
 
     /**
      * 已经录入简历的求职者点击获取验证码
@@ -66,7 +66,7 @@ public class JobSeekerInfoController {
             responseResult = jobSeekerInfosService.getMessageCode(phoneNumber);
         } catch (Exception e) {
             responseResult.setCode(StatusCode.Fail.getCode());
-            responseResult.setFailureMessage(StatusCode.Fail.getMessage());
+            responseResult.setFailureMessage("验证码发送失败");
         }
         return responseResult;
     }

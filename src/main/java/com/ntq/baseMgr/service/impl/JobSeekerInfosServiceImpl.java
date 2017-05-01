@@ -195,7 +195,6 @@ public class JobSeekerInfosServiceImpl implements JobSeekerInfosService {
     @Override
     public ResponseResult<String> resumeFeedBack(String jobSeekerEmail, String feedBackMessage) throws Exception {
         ResponseResult<String> responseResult = new ResponseResult<>();
-        System.out.println(resumPath);
         MailBean mailBean = new MailBean();
         mailBean.setToEmails(new String[]{jobSeekerEmail});
         mailBean.setSubject("简历修改");

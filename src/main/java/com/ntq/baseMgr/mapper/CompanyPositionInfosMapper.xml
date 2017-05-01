@@ -247,24 +247,23 @@
     <update id="updateCompanyPositionInfo" parameterType="com.ntq.baseMgr.po.CompanyPositionInfosWithBLOBs">
     update company_position_infos
     set
-    position_no = #{positionNo,jdbcType=BIGINT},
-    position_name = #{positionName,jdbcType=VARCHAR},
-    high_salary = #{highSalary,jdbcType=DECIMAL},
-    low_salary = #{lowSalary,jdbcType=DECIMAL},
-    position_type = #{positionType,jdbcType=INTEGER},
-    qualifications_type = #{qualificationsType,jdbcType=INTEGER},
-    low_working_life = #{lowWorkingLife,jdbcType=INTEGER},
-    high_working_life = #{highWorkingLife,jdbcType=INTEGER},
-    work_address = #{workAddress,jdbcType=VARCHAR},
-    is_valid = #{isValid,jdbcType=INTEGER},
-    server_update_date = #{serverUpdateDate,jdbcType=TIMESTAMP},
-    deadline = #{deadline,jdbcType=TIMESTAMP},
-    is_discuss_personally = #{isDiscussPersonally,jdbcType=TINYINT},
-    postion_status = #{postionStatus,jdbcType=BIGINT},
-    publish_time = #{publishTime,jdbcType=TIMESTAMP},
-    position_desc = #{positionDesc,jdbcType=LONGVARCHAR},
-    position_requirements = #{positionRequirements,jdbcType=LONGVARCHAR}
-    where id = #{id,jdbcType=BIGINT}
+        position_no = #{positionNo,jdbcType=BIGINT},
+        position_name = #{positionName,jdbcType=VARCHAR},
+        high_salary = #{highSalary,jdbcType=DECIMAL},
+        low_salary = #{lowSalary,jdbcType=DECIMAL},
+        position_type = #{positionType,jdbcType=INTEGER},
+        qualifications_type = #{qualificationsType,jdbcType=INTEGER},
+        low_working_life = #{lowWorkingLife,jdbcType=INTEGER},
+        high_working_life = #{highWorkingLife,jdbcType=INTEGER},
+        work_address = #{workAddress,jdbcType=VARCHAR},
+        is_valid = #{isValid,jdbcType=INTEGER},
+        server_update_date = #{serverUpdateDate,jdbcType=TIMESTAMP},
+        deadline = #{deadline,jdbcType=TIMESTAMP},
+        is_discuss_personally = #{isDiscussPersonally,jdbcType=TINYINT},
+        postion_status = #{postionStatus,jdbcType=BIGINT},
+        position_desc = #{positionDesc,jdbcType=LONGVARCHAR},
+        position_requirements = #{positionRequirements,jdbcType=LONGVARCHAR}
+        where id = #{id,jdbcType=BIGINT}
   </update>
 
     <!--通过职位编号更新职位信息-->

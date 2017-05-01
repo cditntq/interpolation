@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
     <welcome-file-list>
-        <welcome-file>login.jsp</welcome-file>
+        <welcome-file>/page/sentResum.jsp</welcome-file>
     </welcome-file-list>
     <!--配置spring容器监听器-->
     <display-name>interpolation</display-name>

@@ -13,6 +13,7 @@ import com.ntq.baseMgr.vo.CompanyPositionInfoVo;
 import com.ntq.baseMgr.vo.JobSeekerInfoVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -35,6 +36,8 @@ public class CompanyPositionInfoServiceImpl implements CompanyPositionInfoServic
     private CompanyInfosMapper companyInfosMapper;
     @Autowired
     private JobSeekerInfosMapper jobSeekerInfosMapper;
+    @Autowired
+    private MailSenderServiceImpl mailSenderServiceImpl;//邮件发送服务
 
     /**
      * 添加新的职位信息
@@ -126,16 +129,18 @@ public class CompanyPositionInfoServiceImpl implements CompanyPositionInfoServic
         if (1 == positionStatus) {
             //更新操作
             companyPositionInfosMapper.updateCompanyPositionInfo(companyPositionInfosWithBLOBs);
-            //companyPositionInfosMapper.addCompanyPositionInfo(companyPositionInfosWithBLOBs);
             responseResult.setCode(StatusCode.UPDATE_SUCCESS.getCode());
-            responseResult.setMessage(StatusCode.UPDATE_SUCCESS.getMessage());
+            responseResult.setMessage("职位更新成功");
         } else {//创建新的职位
 
             //1.获取公司主键
             CompanyInfos companyInfos = (CompanyInfos) SessionUtil.getSessionAttribute("companyInfos");//获取公司信息
             Long companyInfoId = companyInfos.getId();
+//            Long companyInfoId=1L;//测试用例
             companyPositionInfosWithBLOBs.setCompanyInfosId(companyInfoId);
             //2.生成职位编号 TODO
+            CreateSerialNo createSerialNo = new CreateSerialNo();
+            companyPositionInfosWithBLOBs.setPositionNo(Long.valueOf(createSerialNo.getNum()));
             //3.设置创建和更新时间
             Date currentDate = new Date();
             companyPositionInfosWithBLOBs.setServerCreateDate(currentDate);
@@ -145,7 +150,7 @@ public class CompanyPositionInfoServiceImpl implements CompanyPositionInfoServic
             //todo 发布日期
             companyPositionInfosMapper.addCompanyPositionInfo(companyPositionInfosWithBLOBs);
             responseResult.setCode(StatusCode.INSERT_SUCCESS.getCode());
-            responseResult.setMessage(StatusCode.INSERT_SUCCESS.getMessage());
+            responseResult.setMessage("新增职位成功");
         }
 
         return responseResult;
@@ -169,6 +174,23 @@ public class CompanyPositionInfoServiceImpl implements CompanyPositionInfoServic
         page.setResults(jobSeekerInfoVoList);
         page.setSuccess(true);
         return page;
+    }
+
+    /**
+     * 下架职位
+     * 更新职位状态为 4-待下架
+     *
+     * @param positionId
+     * @param message
+     * @return
+     */
+    @Transactional
+    @Override
+    public ResponseResult<Void> withDrawCompanyPositionInfo(Long positionId, String message) throws Exception{
+        //1.更新职位信息
+        companyPositionInfosMapper.updateCompanyPositionInfoById(positionId,message);
+        //2.发送email
+        return null;
     }
 
 
