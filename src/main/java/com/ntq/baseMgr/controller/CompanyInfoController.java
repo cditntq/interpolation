@@ -294,8 +294,6 @@ public class CompanyInfoController {
     //
 
     /**
-     *
-     *
      * @param companyPositionInfosWithBLOBs
      * @return
      */
@@ -332,30 +330,26 @@ public class CompanyInfoController {
     }
 
     /**
-     * 下架职位 todo 注意这里个人向内推圈发布职位邮箱无法处理
+     * 下架职位
      * 更新职位状态为 4-待下架
      *
-     * @param positionId
-     * @param message  职位下架信息
+     * @param positionId 职位id
+     * @param message    职位下架信息
      * @return
      */
     @RequestMapping(value = "/withDrawCompanyPositionInfo")
     @ResponseBody
-    public ResponseResult<Void> withDrawCompanyPositionInfo(Long positionId,String message) {
+    public ResponseResult<Void> withDrawCompanyPositionInfo(Long positionId, String message) {
         ResponseResult<Void> result = new ResponseResult<>();
         try {
-            return companyPositionInfoService.withDrawCompanyPositionInfo(positionId,message);
+            return companyPositionInfoService.withDrawCompanyPositionInfo(positionId, message);
         } catch (Exception e) {
             result.setCode(StatusCode.UPDATE_FAIL.getCode());
-            result.setMessage("职位下架操作失败");
+            result.setMessage("设置职位下架操作失败");
 
         }
         return result;
     }
-
-
-/*
-    */
 
     /**
      * 根据id批量删除职位信息

@@ -9,18 +9,13 @@ import com.ntq.baseMgr.po.CompanyPositionInfosWithBLOBs;
 import com.ntq.baseMgr.po.MailBean;
 import com.ntq.baseMgr.service.NtqUserService;
 import com.ntq.baseMgr.util.ConstantUtil;
-import com.ntq.baseMgr.util.DateUtil;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.util.StatusCode;
 import com.ntq.baseMgr.vo.CompanyPositionInfoExtVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>@description:内推圈Service接口实现 </p>
@@ -92,8 +87,8 @@ public class NtqUserServiceImpl implements NtqUserService {
     @Override
     public ResponseResult<Void> updatePositionRemarkAndSendMail(Long positionId, String message) throws Exception {
         ResponseResult<Void> responseResult = new ResponseResult<>();
-        //1.更新职位的内容,拒绝发布
-        companyPositionInfosMapper.updateCompanyPositionInfoById(positionId, message);
+        //1.更新职位的内容,拒绝发布  拒绝发布的编号为 3  rejectRelease//拒绝发布
+        companyPositionInfosMapper.updateCompanyPositionInfoById(positionId, message,ConstantUtil.REJECT_RELEASE);
         //2.发送邮件
         //2.1 获取公司id todo 能否只是通过list从当前行获取
         CompanyPositionInfosWithBLOBs companyPositionInfo = companyPositionInfosMapper.getCompanyPositionInfoById(positionId);
@@ -116,7 +111,7 @@ public class NtqUserServiceImpl implements NtqUserService {
     @Override
     public ResponseResult<Void> updateCompanyPositionInfo(Long positionId) {
         ResponseResult<Void> responseResult = new ResponseResult<>();
-        companyPositionInfosMapper.updateCompanyPositionInfoById(positionId, ConstantUtil.REMARK);
+        companyPositionInfosMapper.updateCompanyPositionInfoById(positionId, ConstantUtil.REMARK, ConstantUtil.REJECT_RELEASE);
         responseResult.setCode(StatusCode.UPDATE_SUCCESS.getCode());
         responseResult.setMessage(StatusCode.UPDATE_SUCCESS.getMessage());
         return responseResult;

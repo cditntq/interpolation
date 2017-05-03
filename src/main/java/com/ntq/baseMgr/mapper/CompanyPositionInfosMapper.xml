@@ -270,7 +270,7 @@
     <update id="updateCompanyPositionInfoById">
         update company_position_infos
         set
-        postion_status = 3,
+        postion_status = #{dealStatus,jdbcType=INTEGER},
         remark=#{message,jdbcType=VARCHAR}
         where id = #{positionId,jdbcType=BIGINT}
     </update>

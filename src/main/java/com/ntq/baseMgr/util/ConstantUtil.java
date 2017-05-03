@@ -23,5 +23,10 @@ public class ConstantUtil {
 
     //公司id编号
     public final static String REMARK = "已发布";
+    /************************职位的状态start**************************/
+    public final static Integer REJECT_RELEASE=3;//拒绝发布
+    public final static Integer WAITING_WITHDRAW=4;//等待下架
+    public final static Integer FINAL_WITHDRAW=5;//已下架
+    /************************职位的状态end**************************/
 
 }

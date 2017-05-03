@@ -187,11 +187,33 @@ public class CompanyPositionInfoServiceImpl implements CompanyPositionInfoServic
     @Transactional
     @Override
     public ResponseResult<Void> withDrawCompanyPositionInfo(Long positionId, String message) throws Exception{
-        //1.更新职位信息
-        companyPositionInfosMapper.updateCompanyPositionInfoById(positionId,message);
-        //2.发送email
-        return null;
-    }
+        ResponseResult<Void> responseResult = new ResponseResult<>();
+        //1.更新职位信息 将职位处理为等待下架的状态 todo message是否需要重新设计
+        companyPositionInfosMapper.updateCompanyPositionInfoById(positionId,message, ConstantUtil.WAITING_WITHDRAW);
+        //2.发送email 采用内推圈专用的邮箱
+        CompanyInfos companyInfo = (CompanyInfos) SessionUtil.getSessionAttribute(ConstantUtil.COMPANY_INFOS);
 
+//        测试数据 start
+    /*    CompanyInfos companyInfo = new CompanyInfos();
+        companyInfo.setCompanyName("雅堂");
+        companyInfo.setCompanyPhone(123456l);
+        companyInfo.setResumeMail("247677858@qq.com");
+        companyInfo.setRecruiterName("杨爽");*/
+        ////        测试数据 end
+
+        //拼接向内推圈专用邮箱发送邮件信息请求下架
+        StringBuilder stringBuilder = new StringBuilder();
+        //现有xxx公司的hr杨某某，请求下架职位编号为xxx的职位，ta的联系电话为xxx,邮箱为xxx,微信为xxx,请与ta沟通核实
+        String context=stringBuilder
+                .append("现有")
+                .append(companyInfo.getCompanyPhone())
+                .append("公司的hr:").append(companyInfo.getRecruiterName())
+                .append(",请求下架职位编号为:").append(positionId).append("的职位,ta的联系电话为：").append(companyInfo.getCompanyPhone())
+                .append(",邮箱为").append(companyInfo.getResumeMail()).append(",请与ta沟通核实").toString();
+        mailSenderServiceImpl.sendEmail2ntqEmail(context,message);
+        responseResult.setCode(StatusCode.MAIL_SENDER_SUCCESS.getCode());
+        responseResult.setMessage("已将下架信息发送给内推圈请等待通知");
+        return responseResult;
+    }
 
 }

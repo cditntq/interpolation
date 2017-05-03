@@ -67,8 +67,9 @@ public interface CompanyPositionInfosMapper {
      * 更新职位信息
      * @param positionId
      * @param message
+     * @param dealStatus 处理状态
      */
-    void updateCompanyPositionInfoById(@Param(value = "positionId") Long positionId, @Param(value = "message")String message);
+    void updateCompanyPositionInfoById(@Param(value = "positionId") Long positionId, @Param(value = "message") String message, @Param(value = "dealStatus")Integer dealStatus);
     /**
      * 求职者投递岗位分页查询
      *

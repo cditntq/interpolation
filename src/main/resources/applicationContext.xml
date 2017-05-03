@@ -13,7 +13,7 @@
 		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd ">
     <!-- 加载配置文件 -->
     <context:property-placeholder ignore-unresolvable="true"
-                                  location="classpath:db.properties,classpath:ntq_mail.properties"/>
+                                  location="classpath:remote_cnn.properties,classpath:ntq_mail.properties"/>
     <!-- 引入供java类里面使用配置文件 -->
     <bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="locations">
@@ -82,7 +82,7 @@
         <aop:advisor advice-ref="txAdvice" pointcut="execution(* com.ntq.baseMgr.service.impl.*.*(..))"/>
     </aop:config>
 
-    <!-- 邮件发送器 163  -->
+    <!-- 内推圈专用邮件发送器 163  -->
     <bean id="javaMailSenderImpl" class="org.springframework.mail.javamail.JavaMailSenderImpl">
         <property name="host" value="${mail_host}"/>
         <property name="username" value="${mail_username}"/>
@@ -92,6 +92,19 @@
             <props>
                 <prop key="mail.smtp.auth">${mail.smtp.auth}</prop>
                 <prop key="mail.smtp.timeout">${mail.smtp.timeout}</prop>
+            </props>
+        </property>
+    </bean>
+    <!--处理向内推圈发送邮箱-->
+    <bean id="sendEmailToNTQImpl" class="com.ntq.baseMgr.util.NQTMailSenderImpl">
+        <property name="host" value="${deal_message_mail_host}"/>
+        <property name="username" value="${deal_message_mail_username}"/>
+        <property name="password" value="${deal_message_mail_password}"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">${deal_message_mail.smtp.auth}</prop>
+                <prop key="mail.smtp.timeout">${deal_message_mail.smtp.timeout}</prop>
             </props>
         </property>
     </bean>
