@@ -103,10 +103,12 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
         return responseResult;
     }
 
-  /*  *//**
+  /*  */
+
+    /**
      * 公司信息更新
      *
-     * @param companyInfos 公司实体
+     * @param //companyInfos 公司实体
      * @return
      * @throws Exception
      *//*
@@ -120,7 +122,6 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
         responseResult.setMessage(StatusCode.UPDATE_SUCCESS.getMessage());
         return responseResult;
     }*/
-
     @Override
     public ResponseResult<Void> addCompanyInfoWithPositionInfoList(CompanyInfoWithPositionInfoListVo companyInfoWithPositionInfoListVo) throws Exception {
         ResponseResult<Void> responseResult = new ResponseResult<>();
@@ -156,8 +157,6 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
     }
 
     /**
-     *
-     *
      * @param phoneNumber
      * @return
      * @throws Exception
@@ -165,6 +164,14 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
     @Override
     public ResponseResult<Void> getMessageCode(Long phoneNumber) throws Exception {
         ResponseResult<Void> responseResult = new ResponseResult<>();
+        //1.验证用户是否已经注册
+        CompanyInfos companyInfo = companyInfosMapper.getCompanyInfoByPhoneNo(phoneNumber);
+        if (null == companyInfo) {
+            responseResult.setCode(StatusCode.INSERT_FAIL.getCode());
+            responseResult.setFailureMessage("该手机号为未注册用户,请核实");
+            return responseResult;
+        }
+        //2.发送验证码
         MessageValidateRecordExtVo messageValidateRecordExtVo = MessageCodeUtil.sendAndGetMessageCode(phoneNumber);
         if ("2".equals(messageValidateRecordExtVo.getCode())) {//请求成功
             messageValidateRecordExtVo.getMessageValidateRecord().setSendSuccess(1);//发送成功
@@ -183,7 +190,15 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
     public ResponseResult<Void> verifyMessageCode(HttpSession session, Long phoneNumber, String verifyCode) throws Exception {
 
         ResponseResult<Void> responseResult = new ResponseResult<>();
-        //1.匹配验证码
+
+        //1.查找公司信息有无与该号码匹配的的公司
+        CompanyInfos companyInfo = companyInfosMapper.getCompanyInfoByPhoneNo(phoneNumber);
+        if (null == companyInfo) {
+            responseResult.setCode(StatusCode.Fail.getCode());
+            responseResult.setFailureMessage("没有找到匹配的手机号！请认真核实");
+            return responseResult;
+        }
+        //2.匹配验证码
         MessageValidateRecord messageValidateRecord = messageValidateRecordMapper.getMessageValidateRecord(phoneNumber, verifyCode);
         //验证码匹配失败
         if (null == messageValidateRecord) {
@@ -202,19 +217,13 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
             responseResult.setCode(StatusCode.Fail.getCode());
             responseResult.setFailureMessage("验证码超时已失效！请重新获取");
             return responseResult;
-        }
-        //2.查找公司信息有无与该号码匹配的的公司
-        CompanyInfos companyInfo = companyInfosMapper.getCompanyInfoByPhoneNo(phoneNumber);
-        if (null != companyInfo) {
-            //  SessionUtil.setSession("companyInfos", companyInfo);
+        } else {
             session.setAttribute("companyInfo", companyInfo);
             //转跳到 到职位信息的列表
             responseResult.setCode(StatusCode.OK.getCode());
             responseResult.setMessage(StatusCode.OK.getMessage());
-        } else {
-            responseResult.setCode(StatusCode.Fail.getCode());
-            responseResult.setFailureMessage("没有与该手机号匹配的公司！请认真核实");
         }
+
         return responseResult;
     }
 
@@ -271,6 +280,12 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
     @Override
     public ResponseResult<Void> verifyHrPhoneNumber(Long phoneNumber, String verifyCode) throws Exception {
         ResponseResult<Void> responseResult = new ResponseResult<>();
+        CompanyInfos companyInfo = companyInfosMapper.getCompanyInfoByPhoneNo(phoneNumber);
+        if (null!=companyInfo) {
+            responseResult.setCode(StatusCode.Fail.getCode());
+            responseResult.setFailureMessage("手机号已经被注册，请核实");
+            return responseResult;
+        }
         MessageValidateRecord messageValidateRecord = messageValidateRecordMapper.getMessageValidateRecord(phoneNumber, verifyCode);
         //验证码匹配失败
         if (null == messageValidateRecord) {

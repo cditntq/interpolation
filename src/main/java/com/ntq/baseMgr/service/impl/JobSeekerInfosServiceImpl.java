@@ -214,7 +214,14 @@ public class JobSeekerInfosServiceImpl implements JobSeekerInfosService {
     @Override
     public ResponseResult<Void> getMessageCode(Long phoneNumber) throws Exception {
         ResponseResult<Void> responseResult = new ResponseResult<>();
-        //获取验证码
+        //1.验证该手机号是否已经注册
+        JobSeekerInfos jobSeekerInfo = jobSeekerInfosMapper.getJobSeekerInfoByPhoneNo(phoneNumber);
+        if (null==jobSeekerInfo) {
+            responseResult.setCode(StatusCode.INSERT_FAIL.getCode());
+            responseResult.setFailureMessage("该用户未注册,请核实");
+            return responseResult;
+        }
+        //2.获取验证码
         MessageValidateRecordExtVo messageValidateRecordExtVo = MessageCodeUtil.sendAndGetMessageCode(phoneNumber);
         MessageValidateRecord messageValidateRecord = messageValidateRecordExtVo.getMessageValidateRecord();
         if ("2".equals(messageValidateRecordExtVo.getCode())) {//请求成功
@@ -242,7 +249,15 @@ public class JobSeekerInfosServiceImpl implements JobSeekerInfosService {
     @Override
     public ResponseResult<Void> verifyMessageCode(HttpSession session, Long phoneNumber, String verifyCode) throws Exception {
         ResponseResult<Void> responseResult = new ResponseResult<>();
-        //1.匹配验证码
+
+        //1.查求职者有无与该号码匹配的的信息
+        JobSeekerInfos jobSeekerInfos = jobSeekerInfosMapper.getJobSeekerInfoByPhoneNo(phoneNumber);
+        if (jobSeekerInfos == null) {
+            responseResult.setCode(StatusCode.Fail.getCode());
+            responseResult.setFailureMessage("没有与该手机号匹配的用户！请认真核实");
+            return responseResult;
+        }
+        //2.匹配验证码
         MessageValidateRecord messageValidateRecord = messageValidateRecordMapper.getMessageValidateRecord(phoneNumber, verifyCode);
         //验证码匹配失败
         if (null == messageValidateRecord) {
@@ -254,26 +269,19 @@ public class JobSeekerInfosServiceImpl implements JobSeekerInfosService {
         //比较两个日期相差的天数
         //差的天数
         double diffDays = DateUtil.getDaysMargin(messageValidateRecord.getValideTime());
-
         //分钟数e
         double diffMinutes = DateUtil.getMinutesMargin(messageValidateRecord.getValideTime());
-
         //判断验证码的安全性
         if (diffDays > 0 || diffMinutes > 2) {
             responseResult.setCode(StatusCode.Fail.getCode());
             responseResult.setFailureMessage("验证码超时已失效！请重新获取");
             return responseResult;
         }
-        //2.查求职者有无与该号码匹配的的信息
-        JobSeekerInfos jobSeekerInfos = jobSeekerInfosMapper.getJobSeekerInfoByPhoneNo(phoneNumber);
-        if (jobSeekerInfos != null) {
+        else {//记录jobSeekerInfo到session会话
             session.setAttribute(ConstantUtil.JOBSEEKER_INFOS, jobSeekerInfos);
             //转跳到 到职位信息的列表
             responseResult.setCode(StatusCode.OK.getCode());
             responseResult.setMessage(StatusCode.OK.getMessage());
-        } else {
-            responseResult.setCode(StatusCode.Fail.getCode());
-            responseResult.setFailureMessage("没有与该手机号匹配的用户！请认真核实");
         }
         return responseResult;
     }
