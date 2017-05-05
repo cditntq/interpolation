@@ -153,6 +153,8 @@ public class CompanyInfosServiceImpl implements CompanyInfoService {
         companyPositionInfoMapper.insertByBatch(companyPositionInfosWithBlobList);
         responseResult.setCode(StatusCode.INSERT_SUCCESS.getCode());
         responseResult.setMessage(StatusCode.INSERT_SUCCESS.getMessage());
+        //记录用户的session
+        SessionUtil.setSession(ConstantUtil.COMPANY_INFOS,companyInfo);
         return responseResult;
     }
 
