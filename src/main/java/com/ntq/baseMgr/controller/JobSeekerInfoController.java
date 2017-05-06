@@ -65,6 +65,7 @@ public class JobSeekerInfoController {
         try {
             responseResult = jobSeekerInfosService.getMessageCode(phoneNumber);
         } catch (Exception e) {
+            logger.error("the jobSeekerInfo getMessageCode",e);
             responseResult.setCode(StatusCode.Fail.getCode());
             responseResult.setFailureMessage("验证码发送失败");
         }
@@ -168,6 +169,7 @@ public class JobSeekerInfoController {
             responseResult = new ResponseResult<>();
             responseResult.setCode(StatusCode.Fail.getCode());
             responseResult.setMessage("操作失败！请检查");
+            logger.error("the method getMessageAfterValidatePhoneNumber Failed:",e);
         }
         return responseResult;
     }
@@ -188,7 +190,8 @@ public class JobSeekerInfoController {
         } catch (Exception e) {
             responseResult = new ResponseResult<>();
             responseResult.setCode(StatusCode.Fail.getCode());
-            responseResult.setMessage("操作失败！请检查");
+            responseResult.setMessage("注册的求职者短信验证失败");
+            logger.error("the method verifyJobSeekerPhoneNumber failed",e);
         }
         return responseResult;
 
