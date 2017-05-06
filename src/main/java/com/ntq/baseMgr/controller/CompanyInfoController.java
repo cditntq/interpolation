@@ -59,7 +59,8 @@ public class CompanyInfoController {
             responseResult = companyInfoService.getMessageCode(phoneNumber);
         } catch (Exception e) {
             responseResult.setCode(StatusCode.Fail.getCode());
-            responseResult.setFailureMessage(StatusCode.Fail.getMessage());
+            responseResult.setFailureMessage("获取验证码失败");
+            logger.error("the method getMessageCode in companyInfo controller Failed:",e);
         }
         return responseResult;
     }
@@ -82,6 +83,7 @@ public class CompanyInfoController {
         } catch (Exception e) {
             responseResult.setCode(StatusCode.Fail.getCode());
             responseResult.setFailureMessage("短信验证失败");
+            logger.error("the method verifyMessageCode in companyInfo controller Failed:",e);
 
         }
         return responseResult;
@@ -105,6 +107,7 @@ public class CompanyInfoController {
             responseResult = new ResponseResult<>();
             responseResult.setCode(StatusCode.Fail.getCode());
             responseResult.setMessage("操作失败！请检查");
+            logger.error("the method getMessageAfterValidatePhoneNumber in companyInfo controller Failed:",e);
         }
         return responseResult;
     }
@@ -126,6 +129,7 @@ public class CompanyInfoController {
             responseResult = new ResponseResult<>();
             responseResult.setCode(StatusCode.Fail.getCode());
             responseResult.setMessage("操作失败！请检查");
+            logger.error("the method verifyHrPhoneNumber in companyInfo controller Failed:",e);
         }
         return responseResult;
 
@@ -146,6 +150,7 @@ public class CompanyInfoController {
         } catch (Exception e) {
             responseResult.setCode(StatusCode.INSERT_FAIL.getCode());
             responseResult.setFailureMessage(StatusCode.INSERT_FAIL.getMessage());
+            logger.error("the method addCompanyInfoWithPositionInfoList in companyInfo controller Failed:",e);
         }
         return responseResult;
     }
@@ -250,6 +255,7 @@ public class CompanyInfoController {
             result.setCode(StatusCode.INSERT_FAIL.getCode());
             result.setMessage(StatusCode.INSERT_FAIL.getMessage());
 
+
         }
         return result;
     }
@@ -269,7 +275,7 @@ public class CompanyInfoController {
         } catch (Exception e) {
             result.setCode(StatusCode.GET_FAIL.getCode());
             result.setMessage(StatusCode.GET_FAIL.getMessage());
-
+            logger.error("the method getCompanyPositionInfoById in companyInfo controller Failed:",e);
         }
         return result;
     }
@@ -287,6 +293,7 @@ public class CompanyInfoController {
             return companyPositionInfoService.queryCompanyPositionInfoListByCondition(page);
         } catch (Exception e) {
             page.setSuccess(false);
+            logger.error("the method queryCompanyPositionInfoListByCondition in companyInfo controller Failed:",e);
         }
         return page;
     }
@@ -306,6 +313,7 @@ public class CompanyInfoController {
         } catch (Exception e) {
             result.setCode(StatusCode.INSERT_FAIL.getCode());
             result.setMessage(StatusCode.INSERT_FAIL.getMessage());
+            logger.error("the method updateOrInsertCompanyPositionInfo in companyInfo controller Failed:",e);
 
         }
         return result;
@@ -325,6 +333,7 @@ public class CompanyInfoController {
             return companyPositionInfoService.queryJobSeekerInfoVoList(page);
         } catch (Exception e) {
             page.setSuccess(false);
+            logger.error("the method queryJobSeekerInfoVoList in companyInfo controller Failed:",e);
         }
         return page;
     }
@@ -346,7 +355,7 @@ public class CompanyInfoController {
         } catch (Exception e) {
             result.setCode(StatusCode.UPDATE_FAIL.getCode());
             result.setMessage("设置职位下架操作失败");
-
+            logger.error("the method withDrawCompanyPositionInfo in companyInfo controller Failed:",e);
         }
         return result;
     }
@@ -386,5 +395,6 @@ public class CompanyInfoController {
         page.setParams(map);
         return page;
     }
+
 
 }
