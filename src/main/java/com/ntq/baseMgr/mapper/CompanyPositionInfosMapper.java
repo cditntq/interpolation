@@ -64,7 +64,7 @@ public interface CompanyPositionInfosMapper {
     List<CompanyPositionInfoExtVo> queryCompanyPositionInfoVoListByCondition(Page<CompanyPositionInfoExtVo> page);
 
     /**
-     * 更新职位信息
+     * 更新职位信息  后面封装为一个类参数
      * @param positionId
      * @param message
      * @param dealStatus 处理状态

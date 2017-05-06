@@ -34,7 +34,7 @@
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>*.action</url-pattern>
     </servlet-mapping>
-  <!--  &lt;!&ndash; post乱码处理 &ndash;&gt;
+    <!-- post乱码处理 -->
     <filter>
         <filter-name>CharacterEncodingFilter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -46,9 +46,9 @@
     <filter-mapping>
         <filter-name>CharacterEncodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>-->
+    </filter-mapping>
     <!--临时处理跨域问题-->
- <filter>
+<!-- <filter>
     <filter-name>cors</filter-name>
     <filter-class>com.ntq.baseMgr.util.SimpleCORSFilter</filter-class>
   </filter>
@@ -56,5 +56,5 @@
   <filter-mapping>
     <filter-name>cors</filter-name>
     <url-pattern>/*</url-pattern>
-  </filter-mapping>
+  </filter-mapping>-->
 </web-app>

@@ -1,6 +1,7 @@
 package org.zsl.testmybatis;
 
 import com.ntq.baseMgr.po.MailBean;
+import com.ntq.baseMgr.service.CompanyPositionInfoService;
 import com.ntq.baseMgr.service.impl.JobSeekerInfosServiceImpl;
 import com.ntq.baseMgr.service.impl.MailSenderServiceImpl;
 import org.junit.Test;
@@ -29,6 +30,8 @@ public class MailSenderUtil {
     private JobSeekerInfosServiceImpl jobSeekerInfosService;*/
     @Autowired
     private MailSenderServiceImpl mailSenderService;
+    @Autowired
+    private CompanyPositionInfoService companyPositionInfoService;
     @Test
     public  void test1() throws UnsupportedEncodingException, MessagingException {
        /* ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext.xml");
@@ -45,6 +48,13 @@ public class MailSenderUtil {
     @Test
     public void testSendMail(){
       /* jobSeekerInfosService.resumeFeedBack("247677858@qq.com","简历可能有问题——测试");*/
+        try {
+            companyPositionInfoService.withDrawCompanyPositionInfo(1232456l,"请求下架职位");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+
 
 }

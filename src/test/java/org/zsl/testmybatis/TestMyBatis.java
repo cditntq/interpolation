@@ -3,9 +3,11 @@ package org.zsl.testmybatis;
 import javax.annotation.Resource;
 
 import com.ntq.baseMgr.po.UserInfo;
+import com.ntq.baseMgr.service.impl.CompanyPositionInfoServiceImpl;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -22,6 +24,9 @@ public class TestMyBatis {
 	@Resource
 	private IUserService userService = null;
 
+	@Autowired
+	private CompanyPositionInfoServiceImpl companyPositionInfoService;
+
 	// @Before
 	// public void before() {
 	// ac = new ClassPathXmlApplicationContext("applicationContext.xml");
@@ -34,5 +39,14 @@ public class TestMyBatis {
 		// System.out.println(user.getUserName());
 		// logger.info("值："+user.getUserName());
 		logger.info(JSON.toJSONString(user));
+	}
+
+	public void updateCompanyInfo(){
+		try {
+//            companyPositionInfoService.getTest();
+			companyPositionInfoService.withDrawCompanyPositionInfo(1l,"下架");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

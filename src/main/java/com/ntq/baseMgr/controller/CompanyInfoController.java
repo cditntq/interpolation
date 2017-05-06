@@ -255,7 +255,7 @@ public class CompanyInfoController {
             result.setCode(StatusCode.INSERT_FAIL.getCode());
             result.setMessage(StatusCode.INSERT_FAIL.getMessage());
 
-
+            logger.error("the method addCompanyPositionInfo in  controller of the companyInfo Failed:",e);
         }
         return result;
     }
