@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
 public class JobSeekerInfosServiceImpl implements JobSeekerInfosService {
 
     @Value("#{configProperties['mail_from']}")
-    private String resumPath;//简历存放地址
+    private String resumePath;//简历存放地址
     private static Logger logger = LoggerFactory.getLogger(JobSeekerInfosServiceImpl.class);
     @Autowired
     private JobSeekerInfosMapper jobSeekerInfosMapper;
@@ -62,40 +62,56 @@ public class JobSeekerInfosServiceImpl implements JobSeekerInfosService {
 
     public ResponseResult<Void> insertJobSeekerInfo(JobSeekerInfosVo jobSeekerInfosVo, UploadFileVo vo, HttpServletRequest request) throws Exception {
         ResponseResult<Void> responseResult = new ResponseResult<>();
-        //测试数据录入 start--
-        jobSeekerInfosVo.setIsAddNtqweixin(1);//设置为已经添加
-        jobSeekerInfosVo.setRecordOfFormalSchooling(3);//设置默认为本科
-        //测试数据录入 end--
+
+        //1.职位相关信息核实
+        Long jobCode = jobSeekerInfosVo.getJobCode();
+        CompanyPositionInfos companyPositionInfo=companyPositionInfosMapper.getCompanyPositionInfoByPositionNo(jobCode);
+        //查询职位信息为空的处理
+        if (null==companyPositionInfo) {
+            responseResult.setCode(StatusCode.INSERT_FAIL.getCode());
+            responseResult.setMessage("当前职位编号对应的职位不存在,请核实职位信息");
+            return responseResult;
+        }
+        //查询职位为已经下架的时候的处理
+        if (5==companyPositionInfo.getPostionStatus()) {
+            responseResult.setCode(StatusCode.INSERT_FAIL.getCode());
+            responseResult.setMessage("当前职位编号对应的职位已经下架");
+            return responseResult;
+        }
+        //2.录入求职者信息,以及求职简历信息
         //当前录入时时间
         Date currentDate = new Date();
         jobSeekerInfosVo.setServerCreateDate(currentDate);
         jobSeekerInfosVo.setServerUpdateDate(currentDate);
         jobSeekerInfosVo.setIsValid(1);//设置默认有效
         //录入求职者信息
-        //1.插入用户信息并返回id
+        //2.1.插入用户信息并返回id
         jobSeekerInfosMapper.insertAndGetKey(jobSeekerInfosVo);
         Long jobSeekerInfoId = jobSeekerInfosVo.getId();
 
-        //2.拼接简历名称 "username_"+"职位编码.doc"
+        //2.2.拼接简历名称 "username_"+"职位编码.doc"
         vo.setName(jobSeekerInfosVo.getJobSeekerName() + "_" + jobSeekerInfosVo.getJobCode() + ".doc");
-        //3.上传附件处理并返回存储路径
+        //2.3.上传附件处理并返回存储路径
         String storePath = uploadFileService.uploadForm(vo);
 
-        //4.存储附件相关信息
+        //2.4.存储附件相关信息
         JobSeekerResumeDelivery delivery = new JobSeekerResumeDelivery();
         delivery.setIsValid(1);//默认设置有效
         delivery.setResumePath(storePath);
         delivery.setJobSeekerInfosId(jobSeekerInfoId);
         delivery.setServerCreateDate(currentDate);
         delivery.setServerUpdateDate(currentDate);
-        delivery.setJobCode(jobSeekerInfosVo.getJobCode());
+        delivery.setJobCode(jobSeekerInfosVo.getJobCode().toString());
         delivery.setResumeName(vo.getName());
         delivery.setDealStatus(1);//默认处理状态
         delivery.setIsValid(1);//设置默认有效
         delivery.setIsFeedback(1);//设置默认未反馈
         jobSeekerResumeDeliveryMapper.insertJobSeekerResumDelivery(delivery);
         responseResult.setCode(StatusCode.INSERT_SUCCESS.getCode());
-        responseResult.setMessage(StatusCode.INSERT_SUCCESS.getMessage());
+        responseResult.setMessage("初次录入简历成功");
+        //记录当前的求职者到session
+        JobSeekerInfos jobSeekerInfo = jobSeekerInfosVo;
+        SessionUtil.setSession(ConstantUtil.JOBSEEKER_INFOS, jobSeekerInfo);
         return responseResult;
     }
 
@@ -216,7 +232,7 @@ public class JobSeekerInfosServiceImpl implements JobSeekerInfosService {
         ResponseResult<Void> responseResult = new ResponseResult<>();
         //1.验证该手机号是否已经注册
         JobSeekerInfos jobSeekerInfo = jobSeekerInfosMapper.getJobSeekerInfoByPhoneNo(phoneNumber);
-        if (null==jobSeekerInfo) {
+        if (null == jobSeekerInfo) {
             responseResult.setCode(StatusCode.INSERT_FAIL.getCode());
             responseResult.setFailureMessage("该用户未注册,请核实");
             return responseResult;
@@ -276,8 +292,7 @@ public class JobSeekerInfosServiceImpl implements JobSeekerInfosService {
             responseResult.setCode(StatusCode.Fail.getCode());
             responseResult.setFailureMessage("验证码超时已失效！请重新获取");
             return responseResult;
-        }
-        else {//记录jobSeekerInfo到session会话
+        } else {//记录jobSeekerInfo到session会话
             session.setAttribute(ConstantUtil.JOBSEEKER_INFOS, jobSeekerInfos);
             //转跳到 到职位信息的列表
             responseResult.setCode(StatusCode.OK.getCode());

@@ -1,6 +1,7 @@
 package com.ntq.baseMgr.mapper;
 
 import com.ntq.baseMgr.page.Page;
+import com.ntq.baseMgr.po.CompanyPositionInfos;
 import com.ntq.baseMgr.po.CompanyPositionInfosWithBLOBs;
 import com.ntq.baseMgr.vo.CompanyPositionInfoExtVo;
 import com.ntq.baseMgr.vo.CompanyPositionInfoVo;
@@ -77,4 +78,11 @@ public interface CompanyPositionInfosMapper {
      * @return
      */
     List<JobSeekerPositionDealVo> queryJobSeekerPositionVoList(Page<JobSeekerPositionDealVo> page);
+
+    /**
+     * 通过职位编号查询职位信息
+     * @param companyPositionNo 职位编号
+     * @return 职位信息实体
+     */
+    CompanyPositionInfos getCompanyPositionInfoByPositionNo(Long companyPositionNo);
 }

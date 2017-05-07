@@ -315,4 +315,12 @@
         </where>
     </select>
 
+    <select id="getCompanyPositionInfoByPositionNo" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        FROM company_position_infos
+        where position_no=#{positionNo,jdbcType=BIGINT}
+    </select>
+
+
 </mapper>

@@ -50,6 +50,11 @@ public class CompanyPositionInfoServiceImpl implements CompanyPositionInfoServic
         ResponseResult<Void> responseResult = new ResponseResult<>();
         //1.获取公司主键
         CompanyInfos companyInfos = (CompanyInfos) SessionUtil.getSessionAttribute("companyInfo");//获取公司信息
+        if (null==companyInfos) {
+            responseResult.setCode(StatusCode.INSERT_FAIL.getCode());
+            responseResult.setMessage("新增职位操作失败,当前用户未登录或者登录超时");
+            return responseResult;
+        }
         Long companyInfoId = companyInfos.getId();
         companyPositionInfosWithBLOBs.setCompanyInfosId(companyInfoId);
         //2.生成职位编号

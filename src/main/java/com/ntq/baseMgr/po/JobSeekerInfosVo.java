@@ -18,6 +18,6 @@ public class JobSeekerInfosVo extends JobSeekerInfos {
 
 
     //职位编码
-    private String jobCode;
+    private Long jobCode;
 
 }

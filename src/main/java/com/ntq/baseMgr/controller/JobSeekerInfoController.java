@@ -112,7 +112,8 @@ public class JobSeekerInfoController {
             responseResult = jobSeekerInfosService.insertJobSeekerInfo(jobSeekerInfosVo, vo, request);
         } catch (Exception e) {
             responseResult.setCode(StatusCode.INSERT_FAIL.getCode());
-            responseResult.setFailureMessage(StatusCode.INSERT_FAIL.getMessage());
+            responseResult.setFailureMessage("求职者初次录入职位失败");
+            logger.error("the method addJobSeekerInfoAndResume in the controller of jobSeekerInfo throw Exception:",e);
         }
         return responseResult;
     }
