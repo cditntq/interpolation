@@ -8,6 +8,7 @@ import com.ntq.baseMgr.po.JobSeekerInfosExtDto;
 import com.ntq.baseMgr.po.JobSeekerInfosVo;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.vo.JobSeekerPositionDealVo;
+import com.ntq.baseMgr.vo.JobSeekerResumeWithFile;
 import com.ntq.baseMgr.vo.UploadFileVo;
 
 import javax.servlet.http.HttpServletRequest;
@@ -119,4 +120,11 @@ public interface JobSeekerInfosService {
     ResponseResult<Void> getMessageAfterValidatePhoneNumber(Long phoneNumber) throws Exception;
 
     ResponseResult<Void> verifyJobSeekerPhoneNumber(Long phoneNumber, String verifyCode) throws Exception;
+
+    /**
+     * 新增简历投递
+     * @param jobSeekerResumeWithFile
+     * @return
+     */
+    ResponseResult<Void> addJobSeekerResume(JobSeekerResumeWithFile jobSeekerResumeWithFile) throws Exception;
 }

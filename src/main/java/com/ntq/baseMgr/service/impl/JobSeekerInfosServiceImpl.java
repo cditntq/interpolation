@@ -7,6 +7,7 @@ import com.ntq.baseMgr.service.IUploadFileService;
 import com.ntq.baseMgr.service.JobSeekerInfosService;
 import com.ntq.baseMgr.util.*;
 import com.ntq.baseMgr.vo.JobSeekerPositionDealVo;
+import com.ntq.baseMgr.vo.JobSeekerResumeWithFile;
 import com.ntq.baseMgr.vo.MessageValidateRecordExtVo;
 import com.ntq.baseMgr.vo.UploadFileVo;
 import org.apache.commons.httpclient.HttpClient;
@@ -41,8 +42,8 @@ import java.util.stream.Collectors;
 @Service
 public class JobSeekerInfosServiceImpl implements JobSeekerInfosService {
 
-    @Value("#{configProperties['mail_from']}")
-    private String resumePath;//简历存放地址
+  /*  @Value("#{configProperties['mail_from']}")
+    private String resumePath;//简历存放地址*/
     private static Logger logger = LoggerFactory.getLogger(JobSeekerInfosServiceImpl.class);
     @Autowired
     private JobSeekerInfosMapper jobSeekerInfosMapper;
@@ -409,5 +410,66 @@ public class JobSeekerInfosServiceImpl implements JobSeekerInfosService {
             responseResult.setFailureMessage("验证码验证成功");
             return responseResult;
         }
+    }
+
+    /**
+     * 新增简历投递
+     *
+     * @param jobSeekerResumeWithFile
+     * @return
+     */
+    @Override
+    public ResponseResult<Void> addJobSeekerResume(JobSeekerResumeWithFile jobSeekerResumeWithFile) throws Exception {
+        ResponseResult<Void> responseResult=new ResponseResult<>();
+        //1 获取当前登录用户信息
+        JobSeekerInfos jobSeekerInfos = (JobSeekerInfos) SessionUtil.getSessionAttribute(ConstantUtil.JOBSEEKER_INFOS);
+        if (null==jobSeekerInfos) {
+            responseResult.setFailureMessageAndCode(StatusCode.INSERT_FAIL.getCode(),"用户未登录或失效,请核实后进行操作");
+           return responseResult;
+        }
+        //判断当前的编号的职位信息
+        //2.1职位相关信息核实
+        Long jobCode = jobSeekerResumeWithFile.getPositionNo();
+        CompanyPositionInfos companyPositionInfo=companyPositionInfosMapper.getCompanyPositionInfoByPositionNo(jobCode);
+        //查询职位信息为空的处理
+        if (null==companyPositionInfo) {
+           /* responseResult.setCode(StatusCode.INSERT_FAIL.getCode());
+            responseResult.setMessage("当前职位编号对应的职位不存在,请核实职位信息");*/
+            responseResult.setFailureMessageAndCode(StatusCode.INSERT_FAIL.getCode(),"当前职位编号对应的职位不存在,请核实职位信息");
+            return responseResult;
+        }
+        //2.2查询职位为已经下架的时候的处理
+        if (5==companyPositionInfo.getPostionStatus()) {
+         /*   responseResult.setCode(StatusCode.INSERT_FAIL.getCode());
+            responseResult.setMessage("当前职位编号对应的职位已经下架");*/
+            responseResult.setFailureMessageAndCode(StatusCode.INSERT_FAIL.getCode(),"当前职位编号对应的职位已经下架");
+            return responseResult;
+        }
+        //当前录入时时间
+        Date currentDate = new Date();
+        //录入求职者信息
+        //3.1.插入用户信息并返回id
+        UploadFileVo vo = new UploadFileVo();
+        //3.2.拼接简历名称 "username_"+"职位编码.doc"
+        vo.setName(jobSeekerInfos.getJobSeekerName() + "_" + jobSeekerResumeWithFile.getPositionNo() + ".doc");
+        //3.3.上传附件处理并返回存储路径
+        String storePath = uploadFileService.uploadForm(vo);
+
+        //3.4.存储附件相关信息
+        JobSeekerResumeDelivery delivery = new JobSeekerResumeDelivery();
+        delivery.setIsValid(1);//默认设置有效
+        delivery.setResumePath(storePath);
+        delivery.setJobSeekerInfosId(jobSeekerInfos.getId());
+        delivery.setServerCreateDate(currentDate);
+        delivery.setServerUpdateDate(currentDate);
+        delivery.setJobCode(jobSeekerResumeWithFile.getPositionNo().toString());
+        delivery.setResumeName(vo.getName());
+        delivery.setDealStatus(1);//默认处理状态
+        delivery.setIsValid(1);//设置默认有效
+        delivery.setIsFeedback(1);//设置默认未反馈
+        jobSeekerResumeDeliveryMapper.insertJobSeekerResumDelivery(delivery);
+        responseResult.setCode(StatusCode.INSERT_SUCCESS.getCode());
+        responseResult.setMessage("简历投递成功,等待后台处理");
+        return null;
     }
 }

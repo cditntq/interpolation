@@ -9,6 +9,7 @@ import com.ntq.baseMgr.service.JobSeekerInfosService;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.util.StatusCode;
 import com.ntq.baseMgr.vo.JobSeekerPositionDealVo;
+import com.ntq.baseMgr.vo.JobSeekerResumeWithFile;
 import com.ntq.baseMgr.vo.UploadFileVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -291,6 +292,30 @@ public class JobSeekerInfoController {
         } catch (Exception e) {
             responseResult.setCode(StatusCode.GET_FAIL.getCode());
             responseResult.setFailureMessage(StatusCode.GET_FAIL.getMessage());
+        }
+        return responseResult;
+    }
+
+/*
+
+    */
+/**
+     * 新增投递简历
+     *
+     * @param positionId 职位ID编号
+     * @return
+     */
+
+    @RequestMapping(value = "/addJobSeekerResume",method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseResult<Void> addJobSeekerResume(@RequestBody JobSeekerResumeWithFile jobSeekerResumeWithFile) {
+        ResponseResult<Void> responseResult = new ResponseResult<>();
+        try {
+            responseResult = jobSeekerInfosService.addJobSeekerResume(jobSeekerResumeWithFile);
+        } catch (Exception e) {
+            responseResult.setCode(StatusCode.INSERT_FAIL.getCode());
+            responseResult.setFailureMessage("插入失败");
+            logger.error("the method addJobSeekerResume in the controller of jobSeekerInfo throw Exception:",e);
         }
         return responseResult;
     }

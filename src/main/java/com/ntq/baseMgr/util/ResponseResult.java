@@ -32,6 +32,7 @@ public class ResponseResult<T> {
         // this.messageParams = params;
     }
 
+
     /**
      * 设置失败消息
      * 此方法会将success设置为false
@@ -41,6 +42,17 @@ public class ResponseResult<T> {
     public void setFailureMessage(String message) {
         this.success = false;
         this.message = message;
+    }
+
+    /**
+     * 失败的处理方式
+     * @param errorCode
+     * @param errorMsg
+     */
+    public void setFailureMessageAndCode(int errorCode,String errorMsg) {
+        this.success = false;
+        this.message = message;
+        this.code=errorCode;
     }
 
     /**
@@ -65,6 +77,7 @@ public class ResponseResult<T> {
         setMessage(message);
         //this.messageParams = params;
     }
+
 
 
 }
