@@ -97,7 +97,7 @@ public class CompanyPositionInfoServiceImpl implements CompanyPositionInfoServic
      */
     @Override
     public Page<CompanyPositionInfoVo> queryCompanyPositionInfoListByCondition(Page<CompanyPositionInfoVo> page) throws Exception {
-  /*      //添加查询条件
+        //添加查询条件
         CompanyInfos companyInfos = (CompanyInfos) SessionUtil.getSessionAttribute(ConstantUtil.COMPANY_INFOS);//获取公司信息
         //判断是否登录
         if (null == companyInfos) {//
@@ -111,18 +111,18 @@ public class CompanyPositionInfoServiceImpl implements CompanyPositionInfoServic
             List<CompanyPositionInfoVo> companyPositionInfoVoList = companyPositionInfosMapper.queryCompanyPositionInfoListByCondition(page);
             page.setResults(companyPositionInfoVoList);
             page.setSuccess(true);
-        }*/
+        }
 
 
         /***********************测试数据*********************************/
         //获取公司列表主键
-        Long companyInfoId = 1l;
+  /*      Long companyInfoId = 1l;
         Map<String, Object> map = page.getParams();
         map.put(ConstantUtil.COMPANY_INFOS_ID, companyInfoId);//公司编号
         page.setParams(map);
         List<CompanyPositionInfoVo> companyPositionInfoVoList = companyPositionInfosMapper.queryCompanyPositionInfoListByCondition(page);
         page.setResults(companyPositionInfoVoList);
-        page.setSuccess(true);
+        page.setSuccess(true);*/
         return page;
     }
 
