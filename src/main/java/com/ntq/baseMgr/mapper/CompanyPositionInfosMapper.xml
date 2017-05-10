@@ -185,7 +185,7 @@
         resume_count
         FROM
         company_position_infos position
-        JOIN (SELECT
+        left JOIN (SELECT
         job_code,
         count(1) AS resume_count
         FROM job_seeker_resume_delivery

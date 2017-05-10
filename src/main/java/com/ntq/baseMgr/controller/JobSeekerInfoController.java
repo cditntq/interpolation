@@ -66,7 +66,7 @@ public class JobSeekerInfoController {
         try {
             responseResult = jobSeekerInfosService.getMessageCode(phoneNumber);
         } catch (Exception e) {
-            logger.error("the jobSeekerInfo getMessageCode",e);
+            logger.error("the jobSeekerInfo getMessageCode", e);
             responseResult.setCode(StatusCode.Fail.getCode());
             responseResult.setFailureMessage("验证码发送失败");
         }
@@ -114,7 +114,7 @@ public class JobSeekerInfoController {
         } catch (Exception e) {
             responseResult.setCode(StatusCode.INSERT_FAIL.getCode());
             responseResult.setFailureMessage("求职者初次录入职位失败");
-            logger.error("the method addJobSeekerInfoAndResume in the controller of jobSeekerInfo throw Exception:",e);
+            logger.error("the method addJobSeekerInfoAndResume in the controller of jobSeekerInfo throw Exception:", e);
         }
         return responseResult;
     }
@@ -171,7 +171,7 @@ public class JobSeekerInfoController {
             responseResult = new ResponseResult<>();
             responseResult.setCode(StatusCode.Fail.getCode());
             responseResult.setMessage("操作失败！请检查");
-            logger.error("the method getMessageAfterValidatePhoneNumber Failed:",e);
+            logger.error("the method getMessageAfterValidatePhoneNumber Failed:", e);
         }
         return responseResult;
     }
@@ -193,7 +193,7 @@ public class JobSeekerInfoController {
             responseResult = new ResponseResult<>();
             responseResult.setCode(StatusCode.Fail.getCode());
             responseResult.setMessage("注册的求职者短信验证失败");
-            logger.error("the method verifyJobSeekerPhoneNumber failed",e);
+            logger.error("the method verifyJobSeekerPhoneNumber failed", e);
         }
         return responseResult;
 
@@ -296,17 +296,15 @@ public class JobSeekerInfoController {
         return responseResult;
     }
 
-/*
 
-    */
-/**
+
+    /**
      * 新增投递简历
      *
-     * @param positionId 职位ID编号
+     * @param jobSeekerResumeWithFile 职位编号和附件( todo 测试)
      * @return
      */
-
-    @RequestMapping(value = "/addJobSeekerResume",method = RequestMethod.POST)
+    @RequestMapping(value = "/addJobSeekerResume", method = RequestMethod.POST)
     @ResponseBody
     public ResponseResult<Void> addJobSeekerResume(@RequestBody JobSeekerResumeWithFile jobSeekerResumeWithFile) {
         ResponseResult<Void> responseResult = new ResponseResult<>();
@@ -315,7 +313,7 @@ public class JobSeekerInfoController {
         } catch (Exception e) {
             responseResult.setCode(StatusCode.INSERT_FAIL.getCode());
             responseResult.setFailureMessage("插入失败");
-            logger.error("the method addJobSeekerResume in the controller of jobSeekerInfo throw Exception:",e);
+            logger.error("the method addJobSeekerResume in the controller of jobSeekerInfo throw Exception:", e);
         }
         return responseResult;
     }

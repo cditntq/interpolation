@@ -15,7 +15,7 @@ import com.ntq.baseMgr.vo.CompanyPositionInfoExtVo;
  * @author: shuangyang
  * @date: 17-4-13 下午5:32
  */
-public interface NtqUserService {
+public interface NtqCompanyPositionDealService {
     /**
      * 分页查询公司职位信息
      *

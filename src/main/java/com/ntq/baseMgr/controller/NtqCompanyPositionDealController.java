@@ -1,11 +1,7 @@
 package com.ntq.baseMgr.controller;
 
 import com.ntq.baseMgr.page.Page;
-import com.ntq.baseMgr.po.CompanyInfos;
-import com.ntq.baseMgr.po.CompanyPositionInfos;
-import com.ntq.baseMgr.service.NtqUserService;
-import com.ntq.baseMgr.util.ResponseResult;
-import com.ntq.baseMgr.util.StatusCode;
+import com.ntq.baseMgr.service.NtqCompanyPositionDealService;
 import com.ntq.baseMgr.vo.CompanyPositionInfoExtVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,12 +9,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
+/**
+ * <p>@description: 内推圈审核公司职位相关信息</p>
+ *
+ * @projectName: interpolation
+ * @packageName: com.ntq.baseMgr.controller
+ * @className:
+ * @author: shuangyang
+ * @date: 17-4-17 下午9:32
+ */
 @Controller
-@RequestMapping("/ntqUser")
-public class NtqUserController {
+@RequestMapping("/ntqCompanyPositionDealController")
+public class NtqCompanyPositionDealController {
 
     @Autowired
-    private NtqUserService userService;
+    private NtqCompanyPositionDealService ntqCompanyPositionDealService;
 
     /**
      * 分页查询公司职位信息
@@ -30,19 +36,19 @@ public class NtqUserController {
     @ResponseBody
     public Page<CompanyPositionInfoExtVo> queryCompanyPositionInfoVoListByCondition(@RequestBody Page<CompanyPositionInfoExtVo> page) {
         try {
-            page = userService.queryCompanyPositionInfoVoListByCondition(page);
+            page = ntqCompanyPositionDealService.queryCompanyPositionInfoVoListByCondition(page);
         } catch (Exception e) {
             page.setSuccess(false);
         }
         return page;
     }
-
-    /**
+/*
+    *//**
      * 通过id编号获取公司信息
      *
      * @param companyInfoId 公司自增id
      * @return
-     */
+     *//*
     @RequestMapping(value = "/getCompanyInfoById")
     @ResponseBody
     public ResponseResult<CompanyInfos> getCompanyInfoById(Long companyInfoId) {
@@ -56,12 +62,12 @@ public class NtqUserController {
         return responseResult;
     }
 
-    /**
+    *//**
      * 通过id编号获取职位相关信息
      *
      * @param positionId 职位ID编号
      * @return
-     */
+     *//*
     @RequestMapping(value = "/getCompanyPositionInfoById")
     @ResponseBody
     public ResponseResult<CompanyPositionInfos> getCompanyPositionInfoById(Long positionId) {
@@ -76,13 +82,13 @@ public class NtqUserController {
     }
 
 
-    /**
+    *//**
      * 通过职位id发送给公司职位拒绝发送，包括理由
      *
      * @param positionId 职位ID编号
      * @param message    拒绝理由
      * @return
-     */
+     *//*
     @RequestMapping(value = "/rejectPositionRelease")
     @ResponseBody
     public ResponseResult<Void> rejectPositionRelease(Long positionId, String message) {
@@ -97,12 +103,12 @@ public class NtqUserController {
     }
 
 
-    /**
+    *//**
      * 发布职位 todo 差一些没有完善
      *
      * @param positionId 职位ID编号
      * @return
-     */
+     *//*
     @RequestMapping(value = "/positionRelease")
     @ResponseBody
     public ResponseResult<Void> positionRelease(Long positionId) {
@@ -114,7 +120,7 @@ public class NtqUserController {
             responseResult.setFailureMessage(StatusCode.UPDATE_FAIL.getMessage());
         }
         return responseResult;
-    }
+    }*/
 
 
 }

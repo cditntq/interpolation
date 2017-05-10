@@ -1,8 +1,11 @@
 package com.ntq.baseMgr.service.impl;
 
+import com.ntq.baseMgr.mapper.CompanyInfosMapper;
+import com.ntq.baseMgr.mapper.CompanyPositionInfosMapper;
 import com.ntq.baseMgr.mapper.JobSeekerInfosMapper;
 import com.ntq.baseMgr.mapper.JobSeekerResumeDeliveryMapper;
 import com.ntq.baseMgr.page.Page;
+import com.ntq.baseMgr.po.CompanyInfos;
 import com.ntq.baseMgr.po.CompanyPositionInfos;
 import com.ntq.baseMgr.po.JobSeekerInfos;
 import com.ntq.baseMgr.po.MailBean;
@@ -36,6 +39,11 @@ public class NtqJobSeekerPositionServiceImpl implements NtqJobSeekerPositionServ
     @Autowired
     private MailSenderServiceImpl mailSenderService;
 
+    @Autowired
+    private CompanyPositionInfosMapper companyPositionInfosMapper;
+    @Autowired
+    private CompanyInfosMapper companyInfosMapper;
+
     /**
      * 分页查询求职者应聘详信息List
      *
@@ -58,7 +66,11 @@ public class NtqJobSeekerPositionServiceImpl implements NtqJobSeekerPositionServ
      */
     @Override
     public ResponseResult<CompanyPositionInfos> getCompanyPositionInfoById(Long positionId)throws Exception {
-        return null;
+        ResponseResult<CompanyPositionInfos> responseResult=new ResponseResult<>();
+        responseResult.setData(companyPositionInfosMapper.getCompanyPositionInfoById(positionId));
+        responseResult.setCode(StatusCode.GET_SUCCESS.getCode());
+        responseResult.setMessage("查询职位信息成功");
+        return responseResult;
     }
 
     /**
@@ -95,6 +107,19 @@ public class NtqJobSeekerPositionServiceImpl implements NtqJobSeekerPositionServ
         mailSenderService.sendMail(mailBean);
         responseResult.setCode(StatusCode.OK.getCode());
         responseResult.setMessage("简历状态更新成功");
+        return responseResult;
+    }
+    /**
+     * 根据公司编号获取公司的基本信息
+     * @param companyInfoId
+     * @return
+     */
+    @Override
+    public ResponseResult<CompanyInfos> getCompanyInfoById(Long companyInfoId) throws Exception{
+        ResponseResult<CompanyInfos> responseResult = new ResponseResult<>();
+        responseResult.setData(companyInfosMapper.getCompanyInfoById(companyInfoId));
+        responseResult.setCode(StatusCode.GET_SUCCESS.getCode());
+        responseResult.setMessage("根据公司编号查询公司信息成功");
         return responseResult;
     }
 }

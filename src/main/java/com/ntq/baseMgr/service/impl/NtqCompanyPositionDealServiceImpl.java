@@ -7,7 +7,7 @@ import com.ntq.baseMgr.po.CompanyInfos;
 import com.ntq.baseMgr.po.CompanyPositionInfos;
 import com.ntq.baseMgr.po.CompanyPositionInfosWithBLOBs;
 import com.ntq.baseMgr.po.MailBean;
-import com.ntq.baseMgr.service.NtqUserService;
+import com.ntq.baseMgr.service.NtqCompanyPositionDealService;
 import com.ntq.baseMgr.util.ConstantUtil;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.util.StatusCode;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * <p>@description:内推圈Service接口实现 </p>
+ * <p>@description:内推圈公司职位处理Service接口实现 </p>
  *
  * @projectName: interpolation
  * @packageName: com.ntq.baseMgr.service
@@ -27,7 +27,7 @@ import java.util.List;
  * @date: 17-4-13 下午5:33
  */
 @Service
-public class NtqUserServiceImpl implements NtqUserService {
+public class NtqCompanyPositionDealServiceImpl implements NtqCompanyPositionDealService {
 
     @Autowired
     private CompanyPositionInfosMapper companyPositionInfosMapper;

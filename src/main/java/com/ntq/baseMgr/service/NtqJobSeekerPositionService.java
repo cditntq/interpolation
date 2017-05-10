@@ -1,6 +1,7 @@
 package com.ntq.baseMgr.service;
 
 import com.ntq.baseMgr.page.Page;
+import com.ntq.baseMgr.po.CompanyInfos;
 import com.ntq.baseMgr.po.CompanyPositionInfos;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.vo.JobSeekerPositionDealVo;
@@ -25,7 +26,7 @@ public interface NtqJobSeekerPositionService {
     Page<JobSeekerPositionDetailVo> queryJobSeekerPositionDetailVoByCondition(Page<JobSeekerPositionDetailVo> page) throws Exception;
 
     /**
-     * 通过职位id获取职位信息 todo 这里可能需要连带做预览功能 暂时先不动
+     * 通过职位id获取职位信息 todo
      *
      * @param positionId
      * @return
@@ -39,4 +40,11 @@ public interface NtqJobSeekerPositionService {
      * @return
      */
     ResponseResult<Void> updateResumeDeliveryDealStatus(JobSeekerPositionDealVo jobSeekerPositionDealVo) throws Exception;
+
+    /**
+     * 根据公司编号获取公司的基本信息
+     * @param companyInfoId
+     * @return
+     */
+    ResponseResult<CompanyInfos> getCompanyInfoById(Long companyInfoId) throws Exception;
 }
