@@ -64,7 +64,7 @@ public class JobSeekerInfosServiceImpl implements JobSeekerInfosService {
     public ResponseResult<Void> insertJobSeekerInfo(JobSeekerInfosVo jobSeekerInfosVo, UploadFileVo vo, HttpServletRequest request) throws Exception {
         ResponseResult<Void> responseResult = new ResponseResult<>();
 
-        //1.职位相关信息核实
+        //1.1职位相关信息核实
         Long jobCode = jobSeekerInfosVo.getJobCode();
         CompanyPositionInfos companyPositionInfo=companyPositionInfosMapper.getCompanyPositionInfoByPositionNo(jobCode);
         //查询职位信息为空的处理
@@ -79,6 +79,8 @@ public class JobSeekerInfosServiceImpl implements JobSeekerInfosService {
             responseResult.setMessage("当前职位编号对应的职位已经下架");
             return responseResult;
         }
+        //1.2判断简历是否上传todo
+     /*   vo.getFileName().isEmpty()||vo.getName().*/
         //2.录入求职者信息,以及求职简历信息
         //当前录入时时间
         Date currentDate = new Date();

@@ -73,12 +73,12 @@ public class NtqJobSeekerPositionInfoDealController {
         return responseResult;
     }
 
-    /**
-     * 根据公司编号获取公司相关信息(todo 待测试)
+  /*  *//**
+     * 根据公司编号获取公司相关信息(todo 待测试这个功能可能并不需要)
      *
      * @param companyInfoId
      * @return
-     */
+     *//*
     @RequestMapping(value = "/getCompanyInfoById")
     @ResponseBody
     public ResponseResult<CompanyInfos> getCompanyInfoById(Long companyInfoId) {
@@ -92,7 +92,7 @@ public class NtqJobSeekerPositionInfoDealController {
         }
         return responseResult;
     }
-
+*/
 
     /**
      * 更新简历状态
@@ -109,48 +109,13 @@ public class NtqJobSeekerPositionInfoDealController {
         } catch (Exception e) {
             responseResult.setCode(StatusCode.Fail.getCode());
             responseResult.setMessage("简历状态更新失败");
+            logger.error("the method updateResumeDeliveryDealStatus in the controller of ntqJobSeekerPositionInfoDealController throw Exception:", e);
         }
         return responseResult;
 
     }
-  /*  *//**
-     * 通过职位id发送给公司职位拒绝发送，包括理由
-     *
-     * @param positionId 职位ID编号
-     * @param message    拒绝理由
-     * @return
-     *//*
-    @RequestMapping(value = "/rejectPositionRelease")
-    @ResponseBody
-    public ResponseResult<Void> rejectPositionRelease(Long positionId, String message) {
-        ResponseResult<Void> responseResult = new ResponseResult<>();
-        try {
-            responseResult = userService.updatePositionRemarkAndSendMail(positionId, message);
-        } catch (Exception e) {
-            responseResult.setCode(StatusCode.Fail.getCode());
-            responseResult.setFailureMessage(StatusCode.Fail.getMessage());
-        }
-        return responseResult;
-    }
+    /**简历预览未做
+     * */
 
-
-    *//**
-     * 发布职位 todo 差一些没有完善
-     *
-     * @param positionId 职位ID编号
-     * @return
-     *//*
-    @RequestMapping(value = "/positionRelease")
-    @ResponseBody
-    public ResponseResult<Void> positionRelease(Long positionId) {
-        ResponseResult<Void> responseResult = new ResponseResult<>();
-        try {
-            responseResult = userService.updateCompanyPositionInfo(positionId);
-        } catch (Exception e) {
-            responseResult.setCode(StatusCode.UPDATE_FAIL.getCode());
-            responseResult.setFailureMessage(StatusCode.UPDATE_FAIL.getMessage());
-        }
-        return responseResult;
-    }*/
 
 }

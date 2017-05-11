@@ -41,17 +41,6 @@ public class JobSeekerInfoController {
 
     private final Logger logger = LoggerFactory.getLogger(JobSeekerInfoController.class);
 
-/*    *//**
-     * 求职者页面管理,暂时不清楚为什么被请求了两次
-     *
-     * @return
-     * @throws Exception
-     *//*
-    @RequestMapping(value = "/jobSeekerManagment")
-    public String index(HttpSession httpSession) {
-        return "jobSeekerManagment";
-    }*/
-
     /**
      * 已经录入简历的求职者点击获取验证码
      *
@@ -121,40 +110,6 @@ public class JobSeekerInfoController {
 
 
     /**
-     * 通过求职者信息id查看投递简历相信信息
-     *
-     * @param id
-     * @return
-     */
-    @RequestMapping(value = "/getJobSeekerInfoVoById")
-    @ResponseBody
-    public ResponseResult<JobSeekerInfosVo> getJobSeekerInfoVoById(Long id) {
-        return jobSeekerInfosService.getJobSeekerInfoVoById(id);
-    }
-
-
-    /**
-     * 根据id批量删除求职者个人信息包括简历
-     *
-     * @param ids
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping(value = "/deleteJobSeekerInfoListByIds")
-    @ResponseBody
-    public ResponseResult<Void> deleteJobSeekerInfoListByIds(String ids) {
-        ResponseResult<Void> result = new ResponseResult<>();
-        try {
-            return jobSeekerInfosService.deleteBatchJobSeekerInfoList(ids);
-        } catch (Exception e) {
-            result.setCode(StatusCode.DELETE_FAIL.getCode());
-            result.setMessage(StatusCode.DELETE_FAIL.getMessage());
-
-        }
-        return result;
-    }
-
-    /**
      * 短信验证获取
      * 验证求职者用户是否已存在，1.2如果不存在就发送验证码
      *
@@ -220,13 +175,13 @@ public class JobSeekerInfoController {
         return responseResult;
     }*/
 
-    /**
+/*    *//**
      * 简历相关意见反馈
      *
      * @param jobSeekerEmail  求职者邮箱
      * @param feedBackMessage 反馈信息
      * @return
-     */
+     *//*
     @RequestMapping(value = "/resumeFeedBack")
     @ResponseBody
     public ResponseResult<String> resumeFeedBack(String jobSeekerEmail, String feedBackMessage) {
@@ -238,7 +193,7 @@ public class JobSeekerInfoController {
             responseResult.setFailureMessage(StatusCode.Fail.getMessage());
         }
         return responseResult;
-    }
+    }*/
 
 
     /**
@@ -273,6 +228,7 @@ public class JobSeekerInfoController {
         } catch (Exception e) {
             responseResult.setCode(StatusCode.GET_FAIL.getCode());
             responseResult.setFailureMessage(StatusCode.GET_FAIL.getMessage());
+            logger.error("the method getCompanyInfoById in the controller of jobSeekerInfo throw Exception:", e);
         }
         return responseResult;
     }
@@ -292,10 +248,11 @@ public class JobSeekerInfoController {
         } catch (Exception e) {
             responseResult.setCode(StatusCode.GET_FAIL.getCode());
             responseResult.setFailureMessage(StatusCode.GET_FAIL.getMessage());
+            logger.error("the method getCompanyPositionInfoById in the controller of jobSeekerInfo throw Exception:", e);
         }
         return responseResult;
-    }
 
+    }
 
 
     /**
@@ -318,5 +275,39 @@ public class JobSeekerInfoController {
         return responseResult;
     }
 
+
+ /*   *//**
+     * 通过求职者信息id查看投递简历相信信息
+     *
+     * @param id
+     * @return
+     *//*
+    @RequestMapping(value = "/getJobSeekerInfoVoById")
+    @ResponseBody
+    public ResponseResult<JobSeekerInfosVo> getJobSeekerInfoVoById(Long id) {
+        return jobSeekerInfosService.getJobSeekerInfoVoById(id);
+    }*/
+
+/*
+    *//**
+     * 根据id批量删除求职者个人信息包括简历
+     *
+     * @param ids
+     * @return
+     * @throws Exception
+     *//*
+    @RequestMapping(value = "/deleteJobSeekerInfoListByIds")
+    @ResponseBody
+    public ResponseResult<Void> deleteJobSeekerInfoListByIds(String ids) {
+        ResponseResult<Void> result = new ResponseResult<>();
+        try {
+            return jobSeekerInfosService.deleteBatchJobSeekerInfoList(ids);
+        } catch (Exception e) {
+            result.setCode(StatusCode.DELETE_FAIL.getCode());
+            result.setMessage(StatusCode.DELETE_FAIL.getMessage());
+
+        }
+        return result;
+    }*/
 
 }
