@@ -299,7 +299,7 @@
                 AND company.company_name  like CONCAT('%',#{params.companyName},'%')
             </if>
             <if test="params.dealStatus != '' and params.dealStatus != null">
-                AND delivery.deal_status = #{params.postionStatus}
+                AND delivery.deal_status = #{params.dealStatus}
             </if>
             <if test="params.positionName != '' and params.positionName != null">
                 AND position.position_name like CONCAT('%',#{params.positionName},'%')
