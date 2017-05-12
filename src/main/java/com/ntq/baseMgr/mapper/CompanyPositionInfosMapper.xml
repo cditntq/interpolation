@@ -50,7 +50,7 @@
     </resultMap>
     <!--求职者查看职位信息的ResultMap-->
 
-    <resultMap id="JobSeekerPositionVoResultMap" type="com.ntq.baseMgr.vo.JobSeekerPositionDealVo">
+    <resultMap id="JobSeekerPositionVoResultMap" type="com.ntq.baseMgr.vo.JobSeekerPositionVo">
         <result column="position_id" property="positionId" jdbcType="BIGINT"/>
         <result column="company_infos_id" property="companyInfosId" jdbcType="BIGINT"/>
         <result column="company_name" property="companyName" jdbcType="VARCHAR"/>
@@ -296,7 +296,7 @@
                 AND jobSeeker.id= #{params.jobSeekerInfosId}
             </if>
             <if test="params.companyName != '' and params.companyName != null">
-                AND company.company_name = like CONCAT('%',#{params.companyName},'%')
+                AND company.company_name  like CONCAT('%',#{params.companyName},'%')
             </if>
             <if test="params.dealStatus != '' and params.dealStatus != null">
                 AND delivery.deal_status = #{params.postionStatus}

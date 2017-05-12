@@ -6,10 +6,7 @@ import com.ntq.baseMgr.po.*;
 import com.ntq.baseMgr.service.IUploadFileService;
 import com.ntq.baseMgr.service.JobSeekerInfosService;
 import com.ntq.baseMgr.util.*;
-import com.ntq.baseMgr.vo.JobSeekerPositionDealVo;
-import com.ntq.baseMgr.vo.JobSeekerResumeWithFile;
-import com.ntq.baseMgr.vo.MessageValidateRecordExtVo;
-import com.ntq.baseMgr.vo.UploadFileVo;
+import com.ntq.baseMgr.vo.*;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -311,12 +308,12 @@ public class JobSeekerInfosServiceImpl implements JobSeekerInfosService {
      * @return
      */
     @Override
-    public Page<JobSeekerPositionDealVo> queryJobSeekerPositionVoList(Page<JobSeekerPositionDealVo> page) throws Exception {
+    public Page<JobSeekerPositionDetailVo> queryJobSeekerPositionVoList(Page<JobSeekerPositionDetailVo> page) throws Exception {
 
         // 获取当前用户的jobSeekerInfoId
-        JobSeekerInfos jobSeekerInfos = (JobSeekerInfos) SessionUtil.getSessionAttribute(ConstantUtil.JOBSEEKER_INFOS);
+      /*  JobSeekerInfos jobSeekerInfos = (JobSeekerInfos) SessionUtil.getSessionAttribute(ConstantUtil.JOBSEEKER_INFOS);
         Long jobSeekerInfosId = jobSeekerInfos.getId();
-        page.getParams().put("jobSeekerInfosId", jobSeekerInfosId);
+        page.getParams().put("jobSeekerInfosId", jobSeekerInfosId);*/
         //执行查询
         page.setResults(companyPositionInfosMapper.queryJobSeekerPositionVoList(page));
         page.setSuccess(true);

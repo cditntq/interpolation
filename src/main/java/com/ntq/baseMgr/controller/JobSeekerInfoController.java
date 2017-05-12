@@ -9,6 +9,7 @@ import com.ntq.baseMgr.service.JobSeekerInfosService;
 import com.ntq.baseMgr.util.ResponseResult;
 import com.ntq.baseMgr.util.StatusCode;
 import com.ntq.baseMgr.vo.JobSeekerPositionDealVo;
+import com.ntq.baseMgr.vo.JobSeekerPositionDetailVo;
 import com.ntq.baseMgr.vo.JobSeekerResumeWithFile;
 import com.ntq.baseMgr.vo.UploadFileVo;
 import org.slf4j.Logger;
@@ -204,11 +205,12 @@ public class JobSeekerInfoController {
      */
     @RequestMapping(value = "/queryJobSeekerPositionVoList")
     @ResponseBody
-    public Page<JobSeekerPositionDealVo> queryJobSeekerPositionVoList(@RequestBody Page<JobSeekerPositionDealVo> page) {
+    public Page<JobSeekerPositionDetailVo> queryJobSeekerPositionVoList(@RequestBody Page<JobSeekerPositionDetailVo> page) {
         try {
             return jobSeekerInfosService.queryJobSeekerPositionVoList(page);
         } catch (Exception e) {
             page.setSuccess(false);
+            logger.error("the method queryJobSeekerPositionVoList in the controller of jobSeekerInfo throw Exception:", e);
         }
         return page;
     }
