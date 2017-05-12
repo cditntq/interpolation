@@ -20,7 +20,7 @@ public class ResponseResult<T> {
     private T data;//返回的数据
 
     public ResponseResult() {
-        LOGGER.info("私有构造方法");
+        LOGGER.info("public return data method");
     }
 
     public ResponseResult(String message) {
