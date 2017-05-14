@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @date: 17-4-17 下午9:32
  */
 @Controller
-@RequestMapping("/ntqCompanyPositionDealController")
+@RequestMapping("/ntqCompanyPositionDeal")
 public class NtqCompanyPositionDealController {
     private final Logger logger = LoggerFactory.getLogger(NtqCompanyPositionDealController.class);
     @Autowired
