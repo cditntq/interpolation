@@ -111,7 +111,7 @@ public class NtqCompanyPositionDealServiceImpl implements NtqCompanyPositionDeal
     @Override
     public ResponseResult<Void> updateCompanyPositionInfo(Long positionId) {
         ResponseResult<Void> responseResult = new ResponseResult<>();
-        companyPositionInfosMapper.updateCompanyPositionInfoById(positionId, ConstantUtil.REMARK, ConstantUtil.REJECT_RELEASE);
+        companyPositionInfosMapper.updateCompanyPositionInfoById(positionId, ConstantUtil.REMARK, ConstantUtil.DONE_RELEASE);
         responseResult.setCode(StatusCode.UPDATE_SUCCESS.getCode());
         responseResult.setMessage(StatusCode.UPDATE_SUCCESS.getMessage());
         return responseResult;

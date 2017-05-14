@@ -27,6 +27,7 @@ public class ConstantUtil {
     public final static Integer REJECT_RELEASE=3;//拒绝发布
     public final static Integer WAITING_WITHDRAW=4;//等待下架
     public final static Integer FINAL_WITHDRAW=5;//已下架
+    public final static Integer DONE_RELEASE=2;//已发布
     /************************职位的状态end**************************/
 
 }
