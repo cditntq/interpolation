@@ -44,7 +44,7 @@ public class TestMyBatis {
 	public void updateCompanyInfo(){
 		try {
 //            companyPositionInfoService.getTest();
-			companyPositionInfoService.withDrawCompanyPositionInfo(1l,"下架");
+			companyPositionInfoService.withDrawCompanyPositionInfo(1l);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -49,7 +49,7 @@ public class MailSenderUtil {
     public void testSendMail(){
       /* jobSeekerInfosService.resumeFeedBack("247677858@qq.com","简历可能有问题——测试");*/
         try {
-            companyPositionInfoService.withDrawCompanyPositionInfo(1232456l,"请求下架职位");
+            companyPositionInfoService.withDrawCompanyPositionInfo(1232456l);
         } catch (Exception e) {
             e.printStackTrace();
         }
