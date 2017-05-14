@@ -199,14 +199,14 @@ public class CompanyPositionInfoServiceImpl implements CompanyPositionInfoServic
         String message="职位下架请求";
         companyPositionInfosMapper.updateCompanyPositionInfoById(positionId,message, ConstantUtil.WAITING_WITHDRAW);
         //2.发送email 采用内推圈专用的邮箱
-        CompanyInfos companyInfo = (CompanyInfos) SessionUtil.getSessionAttribute(ConstantUtil.COMPANY_INFOS);
+//        CompanyInfos companyInfo = (CompanyInfos) SessionUtil.getSessionAttribute(ConstantUtil.COMPANY_INFOS);
 
 //        测试数据 start
-    /*    CompanyInfos companyInfo = new CompanyInfos();
+        CompanyInfos companyInfo = new CompanyInfos();
         companyInfo.setCompanyName("雅堂");
         companyInfo.setCompanyPhone(123456l);
         companyInfo.setResumeMail("247677858@qq.com");
-        companyInfo.setRecruiterName("杨爽");*/
+        companyInfo.setRecruiterName("杨爽");
         ////        测试数据 end
 
         //拼接向内推圈专用邮箱发送邮件信息请求下架
