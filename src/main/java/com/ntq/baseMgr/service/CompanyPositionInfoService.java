@@ -66,8 +66,7 @@ public interface CompanyPositionInfoService {
      * 下架职位
      * 更新职位状态为 4-待下架
      * @param positionId
-     * @param message 职位下架信息
      * @return
      */
-    ResponseResult<Void> withDrawCompanyPositionInfo(Long positionId, String message) throws Exception;
+    ResponseResult<Void> withDrawCompanyPositionInfo(Long positionId) throws Exception;
 }

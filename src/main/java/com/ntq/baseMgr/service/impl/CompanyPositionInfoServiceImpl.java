@@ -49,13 +49,14 @@ public class CompanyPositionInfoServiceImpl implements CompanyPositionInfoServic
     public ResponseResult<Void> addCompanyPositionInfo(CompanyPositionInfosWithBLOBs companyPositionInfosWithBLOBs) throws Exception {
         ResponseResult<Void> responseResult = new ResponseResult<>();
         //1.获取公司主键
-        CompanyInfos companyInfos = (CompanyInfos) SessionUtil.getSessionAttribute("companyInfo");//获取公司信息
-        if (null==companyInfos) {
-            responseResult.setCode(StatusCode.INSERT_FAIL.getCode());
-            responseResult.setMessage("新增职位操作失败,当前用户未登录或者登录超时");
-            return responseResult;
-        }
-        Long companyInfoId = companyInfos.getId();
+//        CompanyInfos companyInfos = (CompanyInfos) SessionUtil.getSessionAttribute("companyInfo");//获取公司信息
+//        if (null==companyInfos) {
+//            responseResult.setCode(StatusCode.INSERT_FAIL.getCode());
+//            responseResult.setMessage("新增职位操作失败,当前用户未登录或者登录超时");
+//            return responseResult;
+//        }
+//        Long companyInfoId = companyInfos.getId();
+        Long companyInfoId = 1L;
         companyPositionInfosWithBLOBs.setCompanyInfosId(companyInfoId);
         //2.生成职位编号
         CreateSerialNo serialNo = new CreateSerialNo();
@@ -188,14 +189,14 @@ public class CompanyPositionInfoServiceImpl implements CompanyPositionInfoServic
      * 更新职位状态为 4-待下架
      *
      * @param positionId
-     * @param message
      * @return
      */
     @Transactional
     @Override
-    public ResponseResult<Void> withDrawCompanyPositionInfo(Long positionId, String message) throws Exception{
+    public ResponseResult<Void> withDrawCompanyPositionInfo(Long positionId) throws Exception{
         ResponseResult<Void> responseResult = new ResponseResult<>();
-        //1.更新职位信息 将职位处理为等待下架的状态 todo message是否需要重新设计
+        //1.更新职位信息 将职位处理为等待下架的状态
+        String message="职位下架请求";
         companyPositionInfosMapper.updateCompanyPositionInfoById(positionId,message, ConstantUtil.WAITING_WITHDRAW);
         //2.发送email 采用内推圈专用的邮箱
         CompanyInfos companyInfo = (CompanyInfos) SessionUtil.getSessionAttribute(ConstantUtil.COMPANY_INFOS);

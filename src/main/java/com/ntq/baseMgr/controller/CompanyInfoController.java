@@ -342,15 +342,14 @@ public class CompanyInfoController {
      * 更新职位状态为 4-待下架
      *
      * @param positionId 职位id
-     * @param message    职位下架信息
      * @return
      */
     @RequestMapping(value = "/withDrawCompanyPositionInfo")
     @ResponseBody
-    public ResponseResult<Void> withDrawCompanyPositionInfo(Long positionId, String message) {
+    public ResponseResult<Void> withDrawCompanyPositionInfo(Long positionId) {
         ResponseResult<Void> result = new ResponseResult<>();
         try {
-            return companyPositionInfoService.withDrawCompanyPositionInfo(positionId, message);
+            return companyPositionInfoService.withDrawCompanyPositionInfo(positionId);
         } catch (Exception e) {
             result.setCode(StatusCode.UPDATE_FAIL.getCode());
             result.setMessage("设置职位下架操作失败");
