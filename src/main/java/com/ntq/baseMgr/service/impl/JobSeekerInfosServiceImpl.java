@@ -469,6 +469,6 @@ public class JobSeekerInfosServiceImpl implements JobSeekerInfosService {
         jobSeekerResumeDeliveryMapper.insertJobSeekerResumDelivery(delivery);
         responseResult.setCode(StatusCode.INSERT_SUCCESS.getCode());
         responseResult.setMessage("简历投递成功,等待后台处理");
-        return null;
+        return responseResult;
     }
 }
