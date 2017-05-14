@@ -97,15 +97,20 @@ public class NtqCompanyPositionDealServiceImpl implements NtqCompanyPositionDeal
         CompanyInfos companyInfos = companyInfosMapper.getCompanyInfoById(companyInfoId);
         String resumeMail = companyInfos.getResumeMail();
         //2.3发送邮件
-        //System.out.println(resumPath);
-        MailBean mailBean = new MailBean();
-        mailBean.setToEmails(new String[]{resumeMail});
-        mailBean.setSubject("简历修改");
-        mailBean.setContext(message);
-        mailSenderServiceImpl.sendMail(mailBean);
+        try {
+            //System.out.println(resumPath);
+            MailBean mailBean = new MailBean();
+            mailBean.setToEmails(new String[]{resumeMail});
+            mailBean.setSubject("简历修改");
+            mailBean.setContext(message);
+            mailSenderServiceImpl.sendMail(mailBean);
+        }catch(Exception e1){
+             e1.printStackTrace();
+            }
         responseResult.setCode(StatusCode.OK.getCode());
         responseResult.setMessage(StatusCode.OK.getMessage());
         return responseResult;
+
     }
 
     @Override
